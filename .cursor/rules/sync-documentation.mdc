@@ -1,0 +1,44 @@
+---
+description: Require documentation updates whenever portfolio code changes
+alwaysApply: true
+---
+
+# Sync documentation (required)
+
+Repo: **React 18 + Vite portfolio** (web, not React Native).
+
+## Rule
+
+**Every change to code, config, routes, dependencies, or asset paths must update documentation in the same task/commit.**
+
+Do not finish a task if docs still describe old behavior.
+
+## Read first
+
+1. [AGENTS.md](../../AGENTS.md)
+2. [docs/USAGE_GUIDE.md](../../docs/USAGE_GUIDE.md) — code → doc mapping table
+
+## Quick mapping
+
+| Change | Update docs |
+|--------|-------------|
+| `src/data/*` | `docs/FEATURE_MAP.md`, `FULL_DOCUMENTATION.md`; `CONTENT_SOURCE.md` if copy changed (user chat overrides) |
+| `docs/CONTENT_SOURCE.md` | `USAGE_GUIDE.md` §3.1, `FEATURE_MAP.md` content-source section |
+| `src/App.jsx` routes | `ARCHITECTURE_OVERVIEW.md`, `FEATURE_MAP.md`, `AI_AGENT_GUIDE.md`, `USAGE_GUIDE.md` |
+| `src/projects/*` | `FEATURE_MAP.md` (Fx), `AI_AGENT_GUIDE.md` if workflow changes |
+| `src/components/*` (homepage) | `FEATURE_MAP.md` |
+| `ProjectShell.jsx` | `AI_AGENT_GUIDE.md` (dangerous), `ARCHITECTURE_OVERVIEW.md` |
+| `package.json` | `FULL_DOCUMENTATION.md` §1, `README.md` if scripts change |
+| New project | `FEATURE_MAP`, `ARCHITECTURE`, `AI_AGENT_GUIDE`, `FULL_DOCUMENTATION`, `API_FLOW`, `AGENTS.md` |
+
+## Done checklist
+
+- [ ] Listed doc files updated
+- [ ] `slug` / `link` / `App.jsx` route match `projects.js`
+- [ ] Tell the user which docs were updated
+
+## Do not break
+
+- One project = `src/projects/*Project.jsx` + dedicated CSS
+- No Redux/API unless the user asks
+- Homepage nav uses `/#section` hash links

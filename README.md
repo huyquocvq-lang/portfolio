@@ -3,6 +3,26 @@
 Portfolio React project built from the original HTML template.
 Data is centralized in `src/data/` for easy editing.
 
+## Content source
+
+Long-form copy for mapping lives in **[docs/CONTENT_SOURCE.md](./docs/CONTENT_SOURCE.md)** (not bundled in the app).  
+Runtime text is in `src/data/*` and `src/projects/*`. User instructions override the content source file.
+
+## AI / Cursor / Claude
+
+| File | Purpose |
+|------|---------|
+| [AGENTS.md](./AGENTS.md) | Entry point for AI agents |
+| [docs/USAGE_GUIDE.md](./docs/USAGE_GUIDE.md) | Usage guide + doc sync table |
+| [docs/AI_AGENT_GUIDE.md](./docs/AI_AGENT_GUIDE.md) | Agent workflows (EN) |
+| `.cursor/rules/sync-documentation.mdc` | Rule: every code change must update docs |
+| `.cursor/skills/portfolio-site/SKILL.md` | Cursor skill → invoke or auto-load |
+| `.claude/skills/portfolio-site/SKILL.md` | Claude Code skill → `/portfolio-site` |
+| `.claude/skills/sync-documentation/SKILL.md` | Claude Code skill → `/sync-documentation` |
+| [CLAUDE.md](./CLAUDE.md) | Claude Code project instructions |
+
+**Rule:** any code change → update the matching docs in the same commit.
+
 ## Setup
 
 ```bash

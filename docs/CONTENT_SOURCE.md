@@ -1,4 +1,12 @@
+# Content source (authoring reference)
 
+> **Not bundled in the app.** Long-form copy and project narratives used to map content into `src/data/*` and `src/projects/*`.
+>
+> - **Priority:** explicit user instructions in chat override this file.
+> - **When to update:** on content-change requests, keep this file in sync as the mapping reference unless the user specifies different copy.
+> - **Runtime source of truth:** `src/data/*` (homepage) and `src/projects/*` (case studies).
+
+---
 
 # **Samples of Portpolios want to follow:** [**https://dang10012000.github.io/Portfolio/**](https://dang10012000.github.io/Portfolio/) 
 
