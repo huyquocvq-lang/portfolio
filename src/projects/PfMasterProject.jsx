@@ -1,5 +1,7 @@
 import ProjectShell from '../components/project/ProjectShell'
+import EmbedSlot from '../components/project/EmbedSlot'
 import { getProjectCard } from '../data/projects'
+import { projectEmbeds } from '../data/projectEmbeds'
 import '../styles/projects/pf-master.css'
 
 const meta = getProjectCard('pf-master')
@@ -31,10 +33,10 @@ export default function PfMasterProject() {
   return (
     <ProjectShell slug="pf-master">
       <article className="pfm">
-        <header className="pfm-hero">
-          <p className="pfm-eyebrow">04 · Reporting automation</p>
+        <header className="project-intro">
+          <p className="project-intro__eyebrow">{meta.type}</p>
           <h1>{meta.title}</h1>
-          <p className="pfm-lead">
+          <p className="project-intro__lead">
             One Excel hub: pull Tableau once, update 30+ publisher views automatically.
           </p>
           <div className="pfm-stat-row">
@@ -50,6 +52,8 @@ export default function PfMasterProject() {
             operational notes.
           </p>
         </section>
+
+        <EmbedSlot {...projectEmbeds.pfMaster} />
 
         <div className="pfm-bento">
           {FEATURES.map((f, i) => (

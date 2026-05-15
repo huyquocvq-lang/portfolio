@@ -44,6 +44,20 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 | `skillIcons.js` keys | Unknown `icon` key in `skills.js` → blank icon |
 | `ProjectShell.jsx` | Shared by all 6 project pages |
 
+## Project dashboard embeds (F8–F10)
+
+TSX exports in `src/embeds/`, lazy-loaded by `EmbedSlot.jsx` + `projectEmbeds.js`.
+
+| File | Route |
+|------|-------|
+| `PfMasterDashboard.tsx` | `/projects/pf-master` |
+| `MomTrendDashboard.tsx` | `/projects/publisher-trend-analysis` |
+| `CutoverDashboard.tsx` | `/projects/programmatic-cutover` |
+
+Requires `recharts`. `EmbedSlot` — inline preview + **Fullscreen ↗** text control (same style as former external link).
+
+---
+
 ## Do NOT assume exists
 
 - Redux / Zustand / Context providers

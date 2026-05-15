@@ -27,11 +27,11 @@ export default function AiRewriterProject() {
   return (
     <ProjectShell slug="ai-rewriter">
       <article className="air">
-        <header className="air-hero">
+        <header className="project-intro project-intro--air">
           <div className="air-hero-text">
-            <span className="air-num">06</span>
+            <span className="project-intro__eyebrow">{meta.type}</span>
             <h1>{meta.title}</h1>
-            <p>{meta.subtitle}</p>
+            <p className="project-intro__lead">{meta.subtitle}</p>
           </div>
           <div className="air-mock">
             <div className="air-mock-in">

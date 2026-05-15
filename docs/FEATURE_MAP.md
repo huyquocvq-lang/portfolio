@@ -116,6 +116,16 @@ const nameOpacity = scrollProgress
 
 ---
 
+## Project shell (all detail pages)
+
+| Piece | File |
+|-------|------|
+| Full-width banner | `ProjectShell` — `project.image` (optional `banner` field) |
+| Breadcrumbs | Home → Projects → **current title** (below banner) |
+| Pager | Prev / next project links |
+
+---
+
 ## F7 — Winterplace Ski Resort
 
 | Field | Value |
@@ -136,7 +146,8 @@ const nameOpacity = scrollProgress
 | Route | `/projects/programmatic-cutover` |
 | Component | `src/projects/ProgrammaticCutoverProject.jsx` |
 | Styles | `src/styles/projects/programmatic.css` |
-| Layout | Dark header + publisher tags → 3 layers → formula → score cards → outputs |
+| Layout | Dark header → **TSX dashboard** → 3 layers → formula → score cards → outputs |
+| Embed | `EmbedSlot` · `CutoverDashboard.tsx` · `recharts` |
 
 ---
 
@@ -147,7 +158,8 @@ const nameOpacity = scrollProgress
 | Route | `/projects/publisher-trend-analysis` |
 | Component | `src/projects/PublisherTrendProject.jsx` |
 | Styles | `src/styles/projects/publisher-trend.css` |
-| Layout | Large number hero → metric chips → problem/method columns → numbered recommendations |
+| Layout | Large number hero → **TSX dashboard** → metric chips → problem/method → recommendations |
+| Embed | `EmbedSlot` · `MomTrendDashboard.tsx` |
 
 ---
 
@@ -158,7 +170,8 @@ const nameOpacity = scrollProgress
 | Route | `/projects/pf-master` |
 | Component | `src/projects/PfMasterProject.jsx` |
 | Styles | `src/styles/projects/pf-master.css` |
-| Layout | Gradient hero + bento grid of 5 feature cards |
+| Layout | Gradient hero → context → **TSX dashboard** → bento feature cards |
+| Embed | `EmbedSlot` · `PfMasterDashboard.tsx` |
 
 ---
 

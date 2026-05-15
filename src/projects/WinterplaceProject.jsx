@@ -3,18 +3,13 @@ import { featuredProject as meta } from '../data/projects'
 import '../styles/projects/winterplace.css'
 
 export default function WinterplaceProject() {
-  const hero = { backgroundImage: `url(${meta.image})` }
-
   return (
     <ProjectShell slug="winterplace">
       <article className="wp">
-        <header className="wp-hero">
-          <div className="wp-hero-bg" style={hero} aria-hidden="true" />
-          <div className="wp-hero-inner">
-            <span className="wp-num">01 / Marketing Strategy</span>
-            <h1 className="wp-title">{meta.headline}</h1>
-            <p className="wp-sub">{meta.subtitle}</p>
-          </div>
+        <header className="project-intro">
+          <span className="project-intro__eyebrow">{meta.type}</span>
+          <h1 className="wp-title">{meta.headline}</h1>
+          <p className="project-intro__lead">{meta.subtitle}</p>
         </header>
 
         <div className="wp-insight">

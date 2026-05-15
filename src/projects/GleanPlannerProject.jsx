@@ -16,10 +16,10 @@ export default function GleanPlannerProject() {
   return (
     <ProjectShell slug="glean-planner">
       <article className="glean">
-        <header className="glean-hero">
-          <span className="glean-badge">AI Workflow</span>
+        <header className="project-intro project-intro--center">
+          <span className="project-intro__eyebrow">{meta.type}</span>
           <h1>{meta.title}</h1>
-          <p>{meta.subtitle}</p>
+          <p className="project-intro__lead">{meta.subtitle}</p>
         </header>
 
         <section className="glean-why">

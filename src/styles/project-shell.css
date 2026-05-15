@@ -2,27 +2,66 @@
   background: #fff;
 }
 
-.project-shell-top {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 20px 32px 0;
+.project-shell-banner {
+  width: 100%;
+  height: clamp(240px, 38vw, 420px);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.project-shell-back {
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-weight: 600;
+.project-shell-banner--fallback {
+  background-image: linear-gradient(
+    125deg,
+    #0f1720 0%,
+    #1e3a4f 42%,
+    #163040 70%,
+    #0d1218 100%
+  );
+}
+
+.project-shell-breadcrumbs-bar {
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.project-shell-breadcrumbs-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px 32px;
+}
+
+.project-shell-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.project-shell-breadcrumbs a {
   color: #888;
   transition: color 0.2s;
 }
 
-.project-shell-back:hover {
+.project-shell-breadcrumbs a:hover {
   color: #117a9b;
 }
 
+.project-shell-breadcrumbs__sep {
+  color: #c8c8c8;
+  user-select: none;
+}
+
+.project-shell-breadcrumbs__current {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
 .project-shell-pager {
-  max-width: 1100px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 32px 80px;
   display: grid;
@@ -64,7 +103,11 @@
 }
 
 @media (max-width: 768px) {
-  .project-shell-top,
+  .project-shell-banner {
+    height: clamp(200px, 45vw, 300px);
+  }
+
+  .project-shell-breadcrumbs-wrap,
   .project-shell-pager {
     padding-left: 20px;
     padding-right: 20px;

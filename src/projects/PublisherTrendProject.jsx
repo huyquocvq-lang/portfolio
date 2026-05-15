@@ -1,5 +1,7 @@
 import ProjectShell from '../components/project/ProjectShell'
+import EmbedSlot from '../components/project/EmbedSlot'
 import { getProjectCard } from '../data/projects'
+import { projectEmbeds } from '../data/projectEmbeds'
 import '../styles/projects/publisher-trend.css'
 
 const meta = getProjectCard('publisher-trend-analysis')
@@ -20,11 +22,13 @@ export default function PublisherTrendProject() {
   return (
     <ProjectShell slug="publisher-trend-analysis">
       <article className="trend">
-        <header className="trend-hero">
-          <span className="trend-num">03</span>
+        <header className="project-intro project-intro--trend">
+          <span className="project-intro__eyebrow">{meta.type}</span>
           <h1>{meta.title}</h1>
-          <p>{meta.subtitle}</p>
+          <p className="project-intro__lead">{meta.subtitle}</p>
         </header>
+
+        <EmbedSlot {...projectEmbeds.momTrend} />
 
         <section className="trend-metrics">
           <p className="trend-label">Metrics tracked</p>

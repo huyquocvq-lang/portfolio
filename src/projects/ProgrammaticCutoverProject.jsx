@@ -1,5 +1,7 @@
 import ProjectShell from '../components/project/ProjectShell'
+import EmbedSlot from '../components/project/EmbedSlot'
 import { getProjectCard } from '../data/projects'
+import { projectEmbeds } from '../data/projectEmbeds'
 import '../styles/projects/programmatic.css'
 
 const meta = getProjectCard('programmatic-cutover')
@@ -32,10 +34,10 @@ export default function ProgrammaticCutoverProject() {
   return (
     <ProjectShell slug="programmatic-cutover">
       <article className="pgm">
-        <header className="pgm-header">
-          <span className="pgm-num">02 / Programmatic Media</span>
+        <header className="project-intro">
+          <span className="project-intro__eyebrow">{meta.type}</span>
           <h1>{meta.title}</h1>
-          <p className="pgm-lead">{meta.subtitle}</p>
+          <p className="project-intro__lead">{meta.subtitle}</p>
           <div className="pgm-tags">
             <span>NAF</span>
             <span>DV360</span>
@@ -54,6 +56,8 @@ export default function ProgrammaticCutoverProject() {
             needed a structured way to balance revenue growth, client KPI, and profitability at month start.
           </p>
         </section>
+
+        <EmbedSlot {...projectEmbeds.cutover} />
 
         <section className="pgm-layers">
           <h2 className="pgm-section-title">Three-layer model</h2>

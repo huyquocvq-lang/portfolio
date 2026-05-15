@@ -1,27 +1,9 @@
-.air-hero {
+.project-intro--air {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: center;
   max-width: 1000px;
-  margin: 0 auto;
-  padding: 56px 32px 48px;
-}
-.air-num {
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  color: #999;
-  display: block;
-  margin-bottom: 12px;
-}
-.air-hero-text h1 {
-  font-size: clamp(24px, 3.5vw, 34px);
-  font-weight: 300;
-  margin-bottom: 10px;
-}
-.air-hero-text p {
-  font-size: 17px;
-  color: #666;
 }
 .air-mock {
   display: flex;
@@ -144,7 +126,7 @@
   color: #117a9b;
 }
 @media (max-width: 768px) {
-  .air-hero {
+  .project-intro--air {
     grid-template-columns: 1fr;
     padding: 40px 20px;
   }
