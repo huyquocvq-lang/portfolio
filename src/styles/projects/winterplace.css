@@ -1,0 +1,161 @@
+/* Winterplace — marketing case study layout */
+.wp-hero {
+  position: relative;
+  min-height: 48vh;
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  overflow: hidden;
+}
+.wp-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.wp-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 35, 48, 0.92), rgba(20, 35, 48, 0.4));
+}
+.wp-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 48px 32px 56px;
+}
+.wp-num {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  display: block;
+  margin-bottom: 16px;
+}
+.wp-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+.wp-sub {
+  font-size: 18px;
+  opacity: 0.9;
+  max-width: 560px;
+  line-height: 1.5;
+}
+.wp-insight {
+  background: #1e3a4a;
+  color: #fff;
+  padding: 40px 32px;
+  text-align: center;
+}
+.wp-insight-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+.wp-insight-text {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 300;
+  line-height: 1.45;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.wp-insight-text strong {
+  font-weight: 600;
+  color: #7ec8e3;
+}
+.wp-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 32px 48px;
+}
+.wp-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.wp-block h2 {
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #999;
+  margin-bottom: 16px;
+}
+.wp-block p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #555;
+}
+.wp-rec {
+  background: #f0f7fa;
+  border-left: 4px solid #117a9b;
+  padding: 32px 36px;
+  margin-bottom: 48px;
+}
+.wp-rec h2 {
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #117a9b;
+  margin-bottom: 12px;
+}
+.wp-rec-main {
+  font-size: 28px;
+  font-weight: 300;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+.wp-rec p:last-child {
+  font-size: 16px;
+  color: #666;
+}
+.wp-impact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.wp-stat {
+  border: 1px solid #e5e5e5;
+  padding: 28px;
+  text-align: center;
+}
+.wp-stat-val {
+  display: block;
+  font-size: 36px;
+  font-weight: 300;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+.wp-stat-lbl {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+}
+.wp-tools {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.7;
+}
+.wp-tools strong {
+  color: #1a1a1a;
+}
+@media (max-width: 768px) {
+  .wp-hero-inner { padding: 32px 20px 40px; }
+  .wp-insight { padding: 28px 20px; }
+  .wp-body { padding: 40px 20px; }
+  .wp-split, .wp-impact { grid-template-columns: 1fr; gap: 32px; }
+}

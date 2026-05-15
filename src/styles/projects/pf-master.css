@@ -1,0 +1,114 @@
+.pfm-hero {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8eef2 100%);
+  padding: 56px 32px 40px;
+}
+.pfm-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #117a9b;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.pfm-hero h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 300;
+  max-width: 720px;
+  margin-bottom: 12px;
+}
+.pfm-lead {
+  font-size: 18px;
+  color: #555;
+  max-width: 560px;
+  margin-bottom: 24px;
+}
+.pfm-stat-row {
+  display: flex;
+  gap: 32px;
+  font-size: 15px;
+  color: #666;
+}
+.pfm-stat-row strong {
+  font-size: 22px;
+  font-weight: 300;
+  color: #1a1a1a;
+  display: block;
+}
+.pfm-context {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 32px 0;
+  font-size: 17px;
+  line-height: 1.85;
+  color: #555;
+}
+.pfm-bento {
+  max-width: 1000px;
+  margin: 40px auto 0;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: minmax(140px, auto);
+  gap: 16px;
+}
+.pfm-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  padding: 24px;
+}
+.pfm-card h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.pfm-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #666;
+}
+.pfm-card--1 { grid-column: span 3; }
+.pfm-card--2 { grid-column: span 3; }
+.pfm-card--3 { grid-column: span 2; }
+.pfm-card--4 { grid-column: span 2; }
+.pfm-card--5 {
+  grid-column: span 2;
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}
+.pfm-card--5 h2 { color: #fff; }
+.pfm-card--5 p { color: rgba(255, 255, 255, 0.75); }
+.pfm-daily {
+  max-width: 720px;
+  margin: 48px auto 32px;
+  padding: 0 32px 24px;
+}
+.pfm-daily h2 {
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+.pfm-daily p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #555;
+}
+@media (max-width: 768px) {
+  .pfm-hero,
+  .pfm-context,
+  .pfm-bento,
+  .pfm-daily {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .pfm-bento {
+    grid-template-columns: 1fr;
+  }
+  .pfm-card--1,
+  .pfm-card--2,
+  .pfm-card--3,
+  .pfm-card--4,
+  .pfm-card--5 {
+    grid-column: span 1;
+  }
+}
