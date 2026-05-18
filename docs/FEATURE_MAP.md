@@ -8,36 +8,48 @@
 | F2 | Sticky navigation | `src/components/Nav.jsx` | global |
 | F3 | Impact highlights | `src/components/Impact.jsx` | `/#impact` |
 | F4 | About + skills grid | `src/components/AboutSkills.jsx`, `Skill.jsx` | `/#about` |
-| F5 | Projects listing | `src/components/Projects.jsx`, `FeaturedProject.jsx`, `OtherProject.jsx` | `/#work` |
+| F4b | Personal interest + masonry image wall | `src/components/PersonalInterest.jsx`, `src/data/personal.js` | `/#personal` |
+| F5 | Projects listing (animated banner thumbs) | `src/components/Projects.jsx`, `FeaturedProject.jsx`, `OtherProject.jsx`, `BannerEmbed.jsx` | `/#work` |
 | F6 | Footer / CTA | `src/components/Footer.jsx` | footer |
-| F7–F12 | Individual project case studies | `src/projects/*Project.jsx` | `/projects/:slug` |
+| F7–F13 | Individual project case studies | `src/projects/*Project.jsx` | `/projects/:slug` |
+| FX | Theme tokens (charcoal + bronze) | `src/styles/global.css` `:root` | global |
+| FY | Dashboard embed system | `src/components/project/EmbedSlot.jsx`, `src/embeds/*.tsx`, `src/data/projectEmbeds.js` | every detail page |
+| FZ | Banner system (home thumbs + detail hero) | `public/banners/*.html`, `BannerEmbed.jsx`, `ProjectShell.jsx` | home + detail |
 
 ---
 
 ## F1 — Hero banner
 
-**Purpose:** Full-viewport introduction with animated entrance, scroll-driven content fade, author name reveal, scroll-down affordance.
+**Purpose:** Full-viewport intro (`100vw × 100dvh`) with a responsive art-directed background image and left-anchored text panel.
 
 **Data sources:**
-- `src/data/profile.js` — name, role, tagline, intro, `heroImage`
-- `src/data/stats.js` — `heroStats` (3 metrics; intro/stats hidden on mobile via CSS)
+- `src/data/profile.js` — `name` (split into lead + accent), `role` (separator transformed `· → |` for the subtitle)
 
-**Key behavior (`Hero.jsx`):**
+**Responsive image (`<picture>`):** Browser picks the first `<source>` whose `media` matches AND whose `type` is supported. WebP first, PNG fallback for each art-direction.
 
-```javascript
-// Scroll progress: 0 at top → 1 after ~55% of hero height scrolled
-const progress = Math.min(1, Math.max(0, scrolled / (height * 0.55)))
+| Media query | Variant |
+|-------------|---------|
+| `(max-aspect-ratio: 3/4)` | `hero_mobile_portrait` |
+| `(min-aspect-ratio: 21/10)` | `hero_ultrawide` |
+| `(min-width: 3000px)` | `hero_desktop_4k` |
+| `(min-width: 2200px)` | `hero_desktop_qhd` |
+| `(min-aspect-ratio: 14/10) and (max-aspect-ratio: 17/10)` | `hero_macbook_13` |
+| `(max-aspect-ratio: 14/10)` | `hero_tablet` |
+| default `<img>` | `hero_desktop_fhd` |
 
-// Main content fades out; scroll-name fades in from bottom
-const mainOpacity = 1 - scrollProgress
-const nameOpacity = scrollProgress
-```
+Order in `Hero.jsx` matters — most specific first; width caps before generic aspect-ratio buckets.
 
-**CSS:** `src/styles/global.css` — `.hero`, `.hero--ready`, `.hero--preload`, `.hero-scroll-name`, `.hero-scroll-down`
+**Assets:** `public/hero-banners/<variant>.{webp,png}` (8 variants × 2 formats; `hero_mobile_landscape.*` exists but isn't wired by default — add a `(orientation: landscape) and (max-width: 900px)` source if needed). `<img>` uses `loading="eager"`, `fetchpriority="high"`, `decoding="async"`.
 
-**User interactions:**
-- Click scroll icon → smooth scroll to `#impact`
-- Scroll down → crossfade to author name overlay
+**Layout (`.hero-content`):** flex column, vertically centered, `max-width: 50%`, left padding `clamp(24px, 6vw, 96px)`. Mobile (≤768px) → `max-width: 100%`; portrait (`max-aspect-ratio: 3/4`) → content sticks to bottom with gradient flipping to a bottom-up dim.
+
+**Text:**
+- Kicker (`.hero-kicker`) — monospace, bronze, wide letter-spacing — `"Portfolio · 2026"`
+- Title (`.hero-title`) — light weight; second word wrapped in `.hero-title-accent` (Cormorant Garamond italic, bronze, trailing `.`)
+- Subtitle (`.hero-subtitle`) — derived from `profile.role` with ` · ` replaced by ` | `
+- CTA (`.hero-cta`) — outline bronze button, hover fills accent; `href="#work"` (smooth scroll via `html { scroll-behavior: smooth }`)
+
+**CSS:** `src/styles/global.css` — `.hero`, `.hero-picture`, `.hero-img`, `.hero-overlay`, `.hero-content`, `.hero-kicker`, `.hero-title`, `.hero-title-accent`, `.hero-subtitle`, `.hero-cta`.
 
 ---
 
@@ -87,20 +99,40 @@ const nameOpacity = scrollProgress
 
 ---
 
+## F4b — Personal interest + masonry wall
+
+**Purpose:** Personal copy + Pinterest-style masonry of personal photos between About and Projects.
+
+**Data:** `src/data/personal.js` — `eyebrow`, `heading`, `paragraphs[]`, `images[]`
+
+**Component:** `src/components/PersonalInterest.jsx` — header + `.personal-masonry` (CSS `column-count: 3 / 2 / 1` responsive)
+
+**Images:** `public/images/personal/personal_1.jpeg` … `personal_6.jpeg`. Hover scales image to 1.05.
+
+**Anchor:** `id="personal"` · Nav link: "Interests"
+
+**CSS:** `src/styles/global.css` — `.personal*` block
+
+---
+
 ## F5 — Projects listing
 
-**Purpose:** One featured project (large layout) + grid of five additional projects.
+**Purpose:** One featured project (large layout) + grid of six additional projects (7 total).
 
 **Data:** `src/data/projects.js`
 - `featuredProject` — full card + detail route
 - `otherProjects[]` — grid cards
+- Each card carries `slug`, `link`, `image` (fallback) and optional `banner` (`/banners/<slug>.html`)
 - Helpers: `getAllProjects()`, `getProjectCard(slug)`
 
 **Navigation:** Each card uses `react-router-dom` `<Link to={project.link}>`
 
 **Subcomponents:**
-- `FeaturedProject.jsx` — image link + meta + CTA
-- `OtherProject.jsx` — thumb + title + impact line
+- `FeaturedProject.jsx` — image link + meta + CTA; renders `<BannerEmbed>` iframe when `project.banner` set
+- `OtherProject.jsx` — thumb + title + impact line; ditto
+- `BannerEmbed.jsx` — sandboxed iframe (`allow-scripts allow-same-origin`, lazy-loaded) — single source for home thumbs + detail hero
+
+**Card aspect-ratio:** `560/510` when a banner is present (matches banner native canvas); falls back to `16/10` for image-only cards. Classes `thumb--banner` / `featured-img--banner` + `:has(iframe)` both trigger the override.
 
 **Anchor:** `id="work"`
 
@@ -120,7 +152,9 @@ const nameOpacity = scrollProgress
 
 | Piece | File |
 |-------|------|
-| Full-width banner | `ProjectShell` — `project.image` (optional `banner` field) |
+| Hero banner | `ProjectShell` — embeds `public/banners/<slug>.html` via `<BannerEmbed>` when `project.banner` ends in `.html/.svg`; otherwise `project.image` as background-image; fallback dark gradient |
+| Hero overlay | `radial-gradient` + `linear-gradient` dim layer (`.project-shell-banner--embed::after`) — banner reads as a hero image, not a card |
+| Hero height | `clamp(280px, 38vw, 420px)` — banner fits width, top/bottom cropped centered |
 | Breadcrumbs | Home → Projects → **current title** (below banner) |
 | Pager | Prev / next project links |
 
@@ -133,7 +167,8 @@ const nameOpacity = scrollProgress
 | Route | `/projects/winterplace` |
 | Component | `src/projects/WinterplaceProject.jsx` |
 | Styles | `src/styles/projects/winterplace.css` |
-| Layout | Hero image → insight banner → split problem/approach → recommendation → impact stats |
+| Layout | Hero image → insight banner → **TSX dashboard** → split problem/approach → recommendation → impact stats |
+| Embed | `EmbedSlot` · `WinterplaceDashboard.tsx` · `recharts` |
 
 **Design intent:** Marketing case study (`.wp-*` classes).
 
@@ -182,7 +217,8 @@ const nameOpacity = scrollProgress
 | Route | `/projects/glean-planner` |
 | Component | `src/projects/GleanPlannerProject.jsx` |
 | Styles | `src/styles/projects/glean-planner.css` |
-| Layout | Centered hero → source pills → vertical timeline steps |
+| Layout | Centered hero → source pills → vertical timeline steps → example trigger → **TSX dashboard** |
+| Embed | `EmbedSlot` · `GleanPlannerDashboard.tsx` |
 
 ---
 
@@ -193,21 +229,98 @@ const nameOpacity = scrollProgress
 | Route | `/projects/ai-rewriter` |
 | Component | `src/projects/AiRewriterProject.jsx` |
 | Styles | `src/styles/projects/ai-rewriter.css` |
-| Layout | Draft→polished mock → audience pills → output format list |
+| Layout | Draft→polished mock → audience pills → output format list → demo description + screenshots (click-to-zoom) → **TSX dashboard** |
+| Embed | `EmbedSlot` · `AiRewriterDashboard.tsx` |
+| Extras | Inline lightbox: each `.air-shot-trigger` opens an overlay (`.air-lightbox`) showing the enlarged image; close via overlay click, × button, or Escape. Body scroll-locked while open. |
 
 ---
 
-## Shared project chrome (all F7–F12)
+## F13 — Monthly Media Ops Retro Analyst
+
+| Field | Value |
+|-------|-------|
+| Route | `/projects/media-ops-retro` |
+| Component | `src/projects/MediaOpsRetroProject.jsx` |
+| Styles | `src/styles/projects/media-ops-retro.css` |
+| Layout | Centered hero → problem → what-it-does → rules → 5-step pipeline → 3 tab cards → **TSX dashboard** → mock-data note |
+| Embed | `EmbedSlot` · `MediaOpsRetroDashboard.tsx` · `recharts` |
+
+---
+
+## Shared project chrome (all F7–F13)
 
 **Component:** `src/components/project/ProjectShell.jsx`
 
 Provides:
 - `Nav`
-- “← All Projects” → `/#work`
+- Banner (image or `<BannerEmbed>` iframe) + dim overlay
+- Breadcrumbs strip (Home → Projects → current title)
 - `children` (unique page body)
 - Prev/Next pager from `getAllProjects()` order
 - `Footer`
 - `window.scrollTo(0, 0)` on slug change
+
+---
+
+## FX — Theme tokens
+
+Charcoal + bronze gold dark theme. Defined as CSS variables on `:root` in `src/styles/global.css`. Use `var(...)` everywhere new — never hardcode the swatches.
+
+| Variable | Value | Use |
+|----------|-------|-----|
+| `--bg-primary` | `#1a1a1a` | Body + most section backgrounds |
+| `--bg-elevated` | `#222222` | Cards, panels, raised surfaces |
+| `--bg-elevated-2` | `#2a2a2a` | Tiles, dashboard internal surfaces |
+| `--accent` | `#c5a47e` | Eyebrows, links, accent borders, CTA |
+| `--accent-hover` | `#d4b896` | Hover state for accent |
+| `--text-heading` | `#ffffff` | h1/h2/h3, big stat numbers |
+| `--text-body` | `#a0a0a0` | Paragraph copy |
+| `--text-muted` | `#808080` | Labels, captions, meta |
+| `--text-on-accent` | `#ffffff` | Text inside accent-filled buttons |
+| `--border-subtle` | `#2a2a2a` | Quiet section dividers |
+| `--border-accent` | `rgba(197,164,126,0.35)` | Accented separators (impact, featured-project top rule) |
+
+Hero overlays (`rgba(0,0,0,…)`) and dashboard internal palettes stay as-is — they're already dark.
+
+---
+
+## FY — Dashboard embed system
+
+| Piece | File |
+|-------|------|
+| Slot component | `src/components/project/EmbedSlot.jsx` — lazy-loads from `dashboards` map; supports Fullscreen toggle (Esc to exit) |
+| Keys + titles | `src/data/projectEmbeds.js` (one entry per embed) |
+| TSX dashboards | `src/embeds/*Dashboard.tsx` — Claude artifact exports, default-exported React components |
+| Styles | `src/styles/embed-slot.css` |
+| Docs | `src/embeds/README.md` (full wiring guide) |
+
+Every detail page (F7–F13) mounts one `<EmbedSlot {...projectEmbeds.<key>} />`. `recharts` is the only chart dependency.
+
+---
+
+## FZ — Banner system
+
+Animated/interactive project banners shared between the home page cards and detail page heroes.
+
+| Piece | File |
+|-------|------|
+| Banner HTML | `public/banners/<slug>.html` — self-contained doc with native 560×510 canvas + inline `<script>` that sets a CSS var to scale to iframe width |
+| Iframe wrapper | `src/components/BannerEmbed.jsx` — sandboxed `<iframe>` (`allow-scripts allow-same-origin`), `loading="lazy"`, `scrolling="no"` |
+| Home card mount | `FeaturedProject.jsx` / `OtherProject.jsx` — passes `className="featured-img-inner"` / `"thumb-inner"` |
+| Detail hero mount | `ProjectShell.jsx` — detects `.html`/`.svg` banner, renders `<BannerEmbed>` + dim overlay |
+| Source of truth | `public/banners/*.html` — edit in place; no separate `docs/` source dir |
+
+Scaling pattern inside each banner:
+```js
+function setScale() {
+  document.documentElement.style.setProperty('--scale', window.innerWidth / 560);
+}
+setScale(); window.addEventListener('resize', setScale);
+```
+```css
+.banner-fit { width: 560px; height: 510px; transform: scale(var(--scale, 1)); }
+```
+This is required because `transform: scale(calc(100vw / 560))` is invalid CSS (calc returns a `length`, scale needs `<number>`).
 
 ---
 
@@ -229,7 +342,9 @@ When updating narrative (unless the user says otherwise): sync `CONTENT_SOURCE.m
 | Feature | Depends on |
 |---------|------------|
 | Hero | `profile`, `stats.heroStats`, `#impact` existing |
-| Nav | `profile.contact` |
-| Projects cards | `projects.js` links matching `App.jsx` routes |
-| Project pages | `projects.js` for pager + optional `getProjectCard` |
+| Nav | `profile.contact` + section anchors `#impact`, `#about`, `#personal`, `#work` |
+| Personal Interest | `personal.images[]` files present in `public/images/personal/` |
+| Projects cards | `projects.js` links matching `App.jsx` routes; `banner` path matching a file in `public/banners/` |
+| Project pages | `projects.js` for pager + optional `getProjectCard`; matching key in `projectEmbeds.js` + lazy entry in `EmbedSlot.jsx` for dashboards |
 | Skill icons | `skills.icon` key ∈ `skillIconMap` keys |
+| Theme | All non-hero/non-dashboard surfaces must reference `var(--*)` tokens from global.css `:root` |

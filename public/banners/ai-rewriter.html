@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project banner</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Native 560×510 — scale set via JS to fill iframe width exactly. */
+  .banner-fit {
+    width: 560px;
+    height: 510px;
+    flex-shrink: 0;
+    transform-origin: center center;
+    transform: scale(var(--scale, 1));
+  }
+</style>
+<script>
+  function setScale() {
+    var s = window.innerWidth / 560;
+    document.documentElement.style.setProperty('--scale', s);
+  }
+  setScale();
+  window.addEventListener('resize', setScale);
+</script>
+</head>
+<body>
+<div class="banner-fit">
+
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes flowPulse{0%,100%{stroke-dashoffset:0}100%{stroke-dashoffset:-20}}
+@keyframes scanH{from{left:-80px}to{left:580px}}
+@keyframes drift{0%{opacity:0;transform:translate(0,0)}20%{opacity:.35}80%{opacity:.15}100%{opacity:0;transform:translate(10px,-35px)}}
+@keyframes typeCursor{0%,100%{opacity:1}50%{opacity:0}}
+.fu{animation:fadeUp .5s ease both}
+</style>
+<div style="width:560px;height:510px;background:linear-gradient(155deg,#0C0F16 0%,#1a0f28 40%,#0c1520 100%);border-radius:12px;overflow:hidden;position:relative;font-family:'Inter','Anthropic Sans',-apple-system,sans-serif;">
+
+  <div style="position:absolute;top:0;left:0;width:100%;height:1px;overflow:hidden;pointer-events:none;">
+    <div style="position:absolute;width:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,.5),transparent);animation:scanH 5s linear infinite;"></div>
+  </div>
+  <div id="pts" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;"></div>
+
+  <svg width="560" height="280" style="position:absolute;top:8px;left:0;pointer-events:none;">
+    <g opacity=".03" stroke="#fff" stroke-width="0.5">
+      <line x1="0" y1="70" x2="560" y2="70"/><line x1="0" y1="140" x2="560" y2="140"/><line x1="0" y1="210" x2="560" y2="210"/>
+    </g>
+
+    <rect x="60" y="35" width="120" height="50" rx="8" fill="rgba(248,113,113,.06)" stroke="rgba(248,113,113,.15)" stroke-width="0.8"/>
+    <text x="120" y="54" text-anchor="middle" font-size="9" fill="#F87171" opacity=".7" font-weight="500">Rough Draft</text>
+    <text x="120" y="72" text-anchor="middle" font-size="22" opacity=".3">📝</text>
+
+    <line x1="180" y1="60" x2="230" y2="130" stroke="#A78BFA" stroke-width="1" opacity=".15" stroke-dasharray="4 3"/>
+    <line x1="180" y1="60" x2="330" y2="130" stroke="#2DD4BF" stroke-width="1" opacity=".15" stroke-dasharray="4 3"/>
+
+    <circle cx="280" cy="105" r="10" fill="rgba(251,191,36,.08)" stroke="rgba(251,191,36,.2)" stroke-width="0.8"/>
+    <text x="280" y="109" text-anchor="middle" font-size="11" opacity=".7">🔀</text>
+    <text x="280" y="128" text-anchor="middle" font-size="8" fill="#FBBF24" opacity=".4">Branch</text>
+
+    <rect x="180" y="140" width="100" height="44" rx="7" fill="rgba(167,139,250,.07)" stroke="rgba(167,139,250,.2)" stroke-width="0.8"/>
+    <text x="194" y="156" font-size="8" fill="#A78BFA" opacity=".6" font-weight="500">👔 Executive</text>
+    <text x="194" y="172" font-size="7" fill="#64748B" opacity=".5">Strategic, formal</text>
+
+    <rect x="310" y="140" width="100" height="44" rx="7" fill="rgba(45,212,191,.07)" stroke="rgba(45,212,191,.2)" stroke-width="0.8"/>
+    <text x="324" y="156" font-size="8" fill="#2DD4BF" opacity=".6" font-weight="500">🤝 Acct Manager</text>
+    <text x="324" y="172" font-size="7" fill="#64748B" opacity=".5">Actionable, direct</text>
+
+    <line x1="230" y1="184" x2="310" y2="215" stroke="#A78BFA" stroke-width="0.8" opacity=".12" stroke-dasharray="3 3"/>
+    <line x1="360" y1="184" x2="310" y2="215" stroke="#2DD4BF" stroke-width="0.8" opacity=".12" stroke-dasharray="3 3"/>
+
+    <circle cx="310" cy="215" r="8" fill="rgba(132,204,22,.08)" stroke="rgba(132,204,22,.2)" stroke-width="0.8"/>
+    <text x="310" y="219" text-anchor="middle" font-size="9" opacity=".6">✨</text>
+    <text x="310" y="238" text-anchor="middle" font-size="7" fill="#84CC16" opacity=".4">Refine</text>
+
+    <line x1="310" y1="240" x2="410" y2="258" stroke="#84CC16" stroke-width="0.8" opacity=".12" stroke-dasharray="3 3"/>
+
+    <rect x="380" y="245" width="130" height="30" rx="6" fill="rgba(52,211,153,.06)" stroke="rgba(52,211,153,.15)" stroke-width="0.8"/>
+    <text x="450" y="260" text-anchor="middle" font-size="7" fill="#34D399" opacity=".5" font-family="monospace">Final polished output</text>
+    <rect x="385" y="264" width="50" height="2" rx="1" fill="#34D399" opacity=".2"/>
+    <rect x="440" y="264" width="30" height="2" rx="1" fill="#34D399" opacity=".15"/>
+    <rect x="385" y="269" width="70" height="2" rx="1" fill="#34D399" opacity=".12"/>
+
+    <g opacity=".25">
+      <rect x="440" y="40" width="90" height="55" rx="6" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.05)" stroke-width="0.5"/>
+      <rect x="448" y="50" width="35" height="2" rx="1" fill="#A78BFA" opacity=".4"/>
+      <rect x="448" y="56" width="60" height="2" rx="1" fill="#94A3B8" opacity=".2"/>
+      <rect x="448" y="62" width="50" height="2" rx="1" fill="#94A3B8" opacity=".2"/>
+      <rect x="448" y="68" width="55" height="2" rx="1" fill="#94A3B8" opacity=".15"/>
+      <rect x="448" y="74" width="40" height="2" rx="1" fill="#94A3B8" opacity=".15"/>
+      <rect x="448" y="80" width="65" height="2" rx="1" fill="#2DD4BF" opacity=".25"/>
+      <text x="533" y="88" text-anchor="end" font-size="6" fill="#64748B" opacity=".4">▌</text>
+    </g>
+  </svg>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:0 28px 22px;">
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+        <span style="font-size:15px;">✍️</span>
+        <span style="font-size:10px;color:#A78BFA;letter-spacing:2.5px;font-weight:600;">AI CONTENT REPHRASING AGENT</span>
+      </div>
+      <div style="font-size:22px;font-weight:600;color:#E2E8F0;font-family:Georgia,serif;line-height:1.3;margin-bottom:4px;">Audience-aware update writer</div>
+      <div style="font-size:11px;color:#64748B;line-height:1.5;">AI agent that takes rough draft updates, branches by audience type (Executive vs. Account Manager), and rewrites content with the appropriate tone, structure, and level of detail — eliminating manual reformatting across stakeholder communications</div>
+    </div>
+
+    <div style="display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;">
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(167,139,250,.12);color:#A78BFA;border:1px solid rgba(167,139,250,.2);">Glean AI</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(251,191,36,.1);color:#FBBF24;border:1px solid rgba(251,191,36,.2);">Branching logic</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(132,204,22,.1);color:#84CC16;border:1px solid rgba(132,204,22,.2);">Content refinement</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(45,212,191,.1);color:#2DD4BF;border:1px solid rgba(45,212,191,.2);">Multi-audience</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
+      <div class="fu" style="animation-delay:.15s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#A78BFA;font-family:Georgia,serif;">2</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">AUDIENCES</div>
+      </div>
+      <div class="fu" style="animation-delay:.3s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#FBBF24;font-family:Georgia,serif;">5-step</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">WORKFLOW</div>
+      </div>
+      <div class="fu" style="animation-delay:.45s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#84CC16;font-family:Georgia,serif;">~15min</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">SAVED / UPDATE</div>
+      </div>
+      <div class="fu" style="animation-delay:.6s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#2DD4BF;font-family:Georgia,serif;">1-click</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">TONE SWITCH</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);">
+      <div style="font-size:10px;color:#334155;letter-spacing:1.5px;">GLEAN AI · WORKFLOW DESIGN · PROMPT ENGINEERING</div>
+      <div style="font-size:10px;color:#475569;">Clone & customize</div>
+    </div>
+  </div>
+</div>
+<script>
+const p=document.getElementById('pts');
+function s(){const d=document.createElement('div');const x=50+Math.random()*460;const y=30+Math.random()*220;const sz=1.5+Math.random()*2;const c=['#A78BFA','#2DD4BF','#84CC16','#FBBF24','#F472B6'];d.style.cssText=`position:absolute;left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;border-radius:50%;background:${c[Math.floor(Math.random()*5)]};animation:drift ${2+Math.random()*2}s ease-out forwards;`;p.appendChild(d);setTimeout(()=>d.remove(),4000);}
+setInterval(s,700);
+</script>
+</div>
+</body>
+</html>

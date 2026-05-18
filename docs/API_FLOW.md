@@ -36,19 +36,42 @@ sequenceDiagram
 | `https://fonts.googleapis.com/...` | GET | `index.html` | Source Sans Pro + Cormorant Garamond |
 | `profile.contact.linkedin` | GET (browser navigation) | `Nav.jsx` | User profile |
 | `profile.contact.resume` | GET (browser navigation) | `Nav.jsx` | Google Docs resume |
-| `/images/*` | GET | Hero, project heroes | Static assets from `public/images/` |
+| `/images/*` | GET | Hero, project heroes, personal masonry | Static assets from `public/images/` |
+| `/banners/<slug>.html` | GET (iframe) | `BannerEmbed` on home cards + `ProjectShell` on detail | Self-contained animated banner per project |
 
 ### Image asset paths (static files)
 
 | Path | Referenced in |
 |------|----------------|
-| `/images/hero-bg.jpg` | `profile.heroImage` |
+| `/hero-banners/hero_*.{webp,png}` | `Hero.jsx` — 8 art-directed variants × 2 formats (mobile portrait, mobile landscape, tablet, MacBook 13, FHD, QHD, 4K, ultrawide) |
 | `/images/projects/winterplace.jpg` | `featuredProject.image` |
 | `/images/projects/programmatic.jpg` | `otherProjects[0]` |
 | `/images/projects/trend-analysis.jpg` | `otherProjects[1]` |
 | `/images/projects/pf-master.jpg` | `otherProjects[2]` |
 | `/images/projects/glean-planner.jpg` | `otherProjects[3]` |
 | `/images/projects/ai-rewriter.jpg` | `otherProjects[4]` |
+| `/images/projects/media-ops-retro.jpg` | `otherProjects[5]` (optional fallback) |
+| `/images/personal/personal_1.jpeg` … `personal_6.jpeg` | `personal.images[]` (masonry wall) |
+| `/images/agents/ai-rewriter-input.png` | `AiRewriterProject` demo screenshot 1 |
+| `/images/agents/ai-rewriter-output.png` | `AiRewriterProject` demo screenshot 2 |
+
+### Banner asset paths (static HTML, served as iframe documents)
+
+| Path | Referenced in |
+|------|----------------|
+| `/banners/winterplace.html` | `featuredProject.banner` |
+| `/banners/programmatic-cutover.html` | `otherProjects[0].banner` |
+| `/banners/publisher-trend-analysis.html` | `otherProjects[1].banner` |
+| `/banners/pf-master.html` | `otherProjects[2].banner` |
+| `/banners/glean-planner.html` | `otherProjects[3].banner` |
+| `/banners/ai-rewriter.html` | `otherProjects[4].banner` |
+| `/banners/media-ops-retro.html` | `otherProjects[5].banner` |
+
+Each file is loaded as an `<iframe>` document — keeps animation CSS / inline `<script>` self-contained. The sandbox flags are `allow-scripts allow-same-origin`.
+
+### Lazy-loaded dashboard chunks
+
+Compiled by Vite from `src/embeds/*Dashboard.tsx` and split into per-project chunks (loaded only when the matching detail page mounts the `EmbedSlot`). Filenames are hash-suffixed in `dist/assets/` and not referenced from outside JS.
 
 See `public/images/README.txt` for placement notes.
 
@@ -63,6 +86,9 @@ No API error boundaries. Possible runtime issues:
 | Scenario | Behavior |
 |----------|----------|
 | Missing image file | Broken background image (browser 404) |
+| Missing banner HTML | iframe shows empty document (cards keep aspect-ratio + dark `--bg-primary` background) |
+| Banner JS error inside iframe | Iframe renders at native 560×510 with no scaling; visible black margins on wider containers |
+| Missing embed in `EmbedSlot.dashboards` map | `EmbedSlot` silently renders nothing (returns `null`) |
 | Invalid project slug | `ProjectPage` pattern removed; unknown routes fall through unless host returns SPA index |
 | Missing route in `App.jsx` | Blank or host 404 depending on deployment |
 

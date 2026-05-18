@@ -4,7 +4,6 @@ export const profile = {
   tagline: 'I build data tools that help teams see what matters, act faster, and scale profitably.',
   intro:
     'I help teams turn complex media performance data into clear business decisions. Curious by nature, a fast learner, and energized by understanding how a business works, identifying complex problems, and using data, creativity, and strategic thinking to help teams grow.',
-  heroImage: '/images/hero-bg.jpg',
   currentRole: {
     title: 'Media Operations Analyst',
     company: 'Gen Digital · Personal Finance'

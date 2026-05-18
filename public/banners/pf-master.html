@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project banner</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Native 560×510 — scale set via JS to fill iframe width exactly. */
+  .banner-fit {
+    width: 560px;
+    height: 510px;
+    flex-shrink: 0;
+    transform-origin: center center;
+    transform: scale(var(--scale, 1));
+  }
+</style>
+<script>
+  function setScale() {
+    var s = window.innerWidth / 560;
+    document.documentElement.style.setProperty('--scale', s);
+  }
+  setScale();
+  window.addEventListener('resize', setScale);
+</script>
+</head>
+<body>
+<div class="banner-fit">
+
+<h2 class="sr-only">Animated portfolio banner for the master analysis dashboard project showing 1st and 3rd party data reconciliation</h2>
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scanH{from{left:-60px}to{left:560px}}
+@keyframes blink{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes pulse3{0%,100%{r:3}50%{r:5}}
+@keyframes drift{0%{opacity:0;transform:translate(0,0)}20%{opacity:.4}80%{opacity:.2}100%{opacity:0;transform:translate(15px,-45px)}}
+.fi{animation:fadeUp .5s ease both}
+</style>
+<div style="width:560px;height:510px;background:linear-gradient(155deg,#0B0F19 0%,#10142a 45%,#0d1520 100%);border-radius:12px;overflow:hidden;position:relative;font-family:'Inter','Anthropic Sans',-apple-system,sans-serif;">
+
+  <svg width="560" height="260" style="position:absolute;top:0;left:0;pointer-events:none;">
+    <g opacity=".03" stroke="#fff" stroke-width="0.5">
+      <line x1="0" y1="65" x2="560" y2="65"/><line x1="0" y1="130" x2="560" y2="130"/><line x1="0" y1="195" x2="560" y2="195"/>
+      <line x1="112" y1="0" x2="112" y2="260"/><line x1="224" y1="0" x2="224" y2="260"/><line x1="336" y1="0" x2="336" y2="260"/><line x1="448" y1="0" x2="448" y2="260"/>
+    </g>
+    <ellipse cx="160" cy="120" rx="120" ry="80" fill="rgba(45,212,191,.04)"/>
+    <ellipse cx="420" cy="100" rx="100" ry="70" fill="rgba(167,139,250,.04)"/>
+
+    <g opacity=".5">
+      <rect x="60" y="195" width="12" height="40" rx="2" fill="#2DD4BF" opacity=".6"/>
+      <rect x="74" y="205" width="12" height="30" rx="2" fill="#A78BFA" opacity=".5"/>
+      <rect x="100" y="180" width="12" height="55" rx="2" fill="#2DD4BF" opacity=".65"/>
+      <rect x="114" y="192" width="12" height="43" rx="2" fill="#A78BFA" opacity=".55"/>
+      <rect x="140" y="170" width="12" height="65" rx="2" fill="#2DD4BF" opacity=".7"/>
+      <rect x="154" y="178" width="12" height="57" rx="2" fill="#A78BFA" opacity=".55"/>
+      <rect x="180" y="160" width="12" height="75" rx="2" fill="#2DD4BF" opacity=".75"/>
+      <rect x="194" y="185" width="12" height="50" rx="2" fill="#A78BFA" opacity=".5"/>
+      <rect x="220" y="155" width="12" height="80" rx="2" fill="#2DD4BF" opacity=".7"/>
+      <rect x="234" y="168" width="12" height="67" rx="2" fill="#A78BFA" opacity=".55"/>
+    </g>
+
+    <g opacity=".4">
+      <polyline points="280,190 310,175 340,180 370,160 400,168 430,145 460,155 490,138 520,148" fill="none" stroke="#FBBF24" stroke-width="1.5"/>
+      <polyline points="280,200 310,192 340,195 370,182 400,188 430,172 460,178 490,165 520,172" fill="none" stroke="#F472B6" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <circle cx="430" cy="145" r="3" fill="#FBBF24" opacity=".8"><animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/></circle>
+    </g>
+
+    <g opacity=".35">
+      <rect x="60" y="60" width="55" height="14" rx="3" fill="#34D399" opacity=".3"/><text x="87" y="71" text-anchor="middle" font-size="8" fill="#34D399" font-family="monospace">OK</text>
+      <rect x="125" y="60" width="55" height="14" rx="3" fill="#34D399" opacity=".3"/><text x="152" y="71" text-anchor="middle" font-size="8" fill="#34D399" font-family="monospace">OK</text>
+      <rect x="190" y="60" width="80" height="14" rx="3" fill="#F87171" opacity=".3"/><text x="230" y="71" text-anchor="middle" font-size="8" fill="#F87171" font-family="monospace">VARIANCE</text>
+      <rect x="280" y="60" width="55" height="14" rx="3" fill="#34D399" opacity=".3"/><text x="307" y="71" text-anchor="middle" font-size="8" fill="#34D399" font-family="monospace">OK</text>
+      <rect x="345" y="60" width="55" height="14" rx="3" fill="#64748B" opacity=".3"/><text x="372" y="71" text-anchor="middle" font-size="8" fill="#64748B" font-family="monospace">IGNORE</text>
+      <rect x="410" y="60" width="80" height="14" rx="3" fill="#F87171" opacity=".3"/><text x="450" y="71" text-anchor="middle" font-size="8" fill="#F87171" font-family="monospace">VARIANCE</text>
+
+      <rect x="60" y="82" width="55" height="14" rx="3" fill="#34D399" opacity=".25"/><text x="87" y="93" text-anchor="middle" font-size="8" fill="#34D399" font-family="monospace">OK</text>
+      <rect x="125" y="82" width="55" height="14" rx="3" fill="#64748B" opacity=".25"/><text x="152" y="93" text-anchor="middle" font-size="8" fill="#64748B" font-family="monospace">IGNORE</text>
+      <rect x="190" y="82" width="55" height="14" rx="3" fill="#34D399" opacity=".25"/><text x="217" y="93" text-anchor="middle" font-size="8" fill="#34D399" font-family="monospace">OK</text>
+      <rect x="280" y="82" width="55" height="14" rx="3" fill="#34D399" opacity=".25"/><text x="307" y="93" text-anchor="middle" font-size="8" fill="#34D399" font-family="monospace">OK</text>
+      <rect x="345" y="82" width="80" height="14" rx="3" fill="#F87171" opacity=".25"/><text x="385" y="93" text-anchor="middle" font-size="8" fill="#F87171" font-family="monospace">-36%</text>
+      <rect x="435" y="82" width="55" height="14" rx="3" fill="#34D399" opacity=".25"/><text x="462" y="93" text-anchor="middle" font-size="8" fill="#34D399" font-family="monospace">OK</text>
+    </g>
+
+    <line x1="60" y1="110" x2="500" y2="110" stroke="rgba(45,212,191,.15)" stroke-width="0.5"/>
+    <text x="62" y="125" font-size="8" fill="rgba(45,212,191,.3)" font-family="monospace">1P: 557,038</text>
+    <text x="160" y="125" font-size="8" fill="rgba(167,139,250,.3)" font-family="monospace">3P: 534,754</text>
+    <text x="280" y="125" font-size="8" fill="rgba(251,191,36,.3)" font-family="monospace">Δ 4.0% overall variance</text>
+  </svg>
+
+  <div style="position:absolute;top:0;left:0;width:100%;height:1px;overflow:hidden;pointer-events:none;">
+    <div style="position:absolute;width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(52,211,153,.6),transparent);animation:scanH 5s linear infinite;"></div>
+  </div>
+
+  <div id="particles" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;"></div>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:0 28px 22px;">
+
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:#34D399;animation:blink 2s infinite;"></div>
+        <span style="font-size:10px;color:#34D399;letter-spacing:2.5px;font-weight:500;">1ST PARTY · 3RD PARTY · DATA RECONCILIATION</span>
+      </div>
+      <div style="font-size:22px;font-weight:600;color:#E2E8F0;font-family:Georgia,serif;line-height:1.3;margin-bottom:4px;">Master analysis dashboard</div>
+      <div style="font-size:11px;color:#64748B;line-height:1.5;">Automated 1P/3P click reconciliation & QA flagging across 34 publishers. Three-view DOD analysis: aggregate performance, offer→placement breakdowns, and placement→offer drill-downs.</div>
+    </div>
+
+    <div style="display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;">
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(52,211,153,.12);color:#34D399;border:1px solid rgba(52,211,153,.2);">QA flagging</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(45,212,191,.12);color:#2DD4BF;border:1px solid rgba(45,212,191,.2);">Offer → pub DOD</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(167,139,250,.12);color:#A78BFA;border:1px solid rgba(167,139,250,.2);">Pub → offer DOD</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(251,191,36,.12);color:#FBBF24;border:1px solid rgba(251,191,36,.2);">34 publishers</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
+      <div class="fi" style="animation-delay:.15s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#2DD4BF;font-family:Georgia,serif;">$5.80M</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">REVENUE</div>
+      </div>
+      <div class="fi" style="animation-delay:.3s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#FBBF24;font-family:Georgia,serif;">14.2K</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">CONVERSIONS</div>
+      </div>
+      <div class="fi" style="animation-delay:.45s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#F472B6;font-family:Georgia,serif;">$408</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">eCPA</div>
+      </div>
+      <div class="fi" style="animation-delay:.6s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#A78BFA;font-family:Georgia,serif;">4%</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">1P/3P VARIANCE</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);">
+      <div style="font-size:10px;color:#334155;letter-spacing:1.5px;">EXCEL · TABLEAU · AUTOMATED QA</div>
+      <div style="font-size:10px;color:#475569;">April 2026</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const p=document.getElementById('particles');
+function s(){const d=document.createElement('div');const x=50+Math.random()*460;const y=50+Math.random()*180;const sz=1.5+Math.random()*2.5;const c=['#2DD4BF','#A78BFA','#34D399','#FBBF24','#F87171'];d.style.cssText=`position:absolute;left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;border-radius:50%;background:${c[Math.floor(Math.random()*5)]};animation:drift ${2+Math.random()*2}s ease-out forwards;`;p.appendChild(d);setTimeout(()=>d.remove(),4000);}
+setInterval(s,700);
+</script>
+</div>
+</body>
+</html>

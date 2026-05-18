@@ -1,426 +1,472 @@
-import { useState, useMemo } from "react";
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, AreaChart, Area, PieChart, Pie, Legend } from "recharts";
+import { useState, useEffect, useMemo } from "react";
+import { BarChart, Bar, LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
-const COLORS = {
-  bg: "#0B0F1A",
-  card: "#111827",
-  cardHover: "#1a2235",
-  border: "#1E293B",
-  accent: "#22D3EE",
-  accentDim: "rgba(34,211,238,0.15)",
-  green: "#10B981",
-  greenDim: "rgba(16,185,129,0.15)",
-  red: "#F43F5E",
-  redDim: "rgba(244,63,94,0.15)",
-  amber: "#F59E0B",
-  amberDim: "rgba(245,158,11,0.15)",
-  purple: "#A78BFA",
-  purpleDim: "rgba(167,139,250,0.15)",
-  text: "#F1F5F9",
-  textMuted: "#94A3B8",
-  textDim: "#64748B",
+const C = {
+  bg: "#0B0F19", card: "#131825", border: "#1E2535", hover: "#1A2030",
+  teal: "#2DD4BF", purple: "#A78BFA", pink: "#F472B6", amber: "#FBBF24",
+  red: "#F87171", green: "#34D399", blue: "#60A5FA", orange: "#FB923C",
+  text: "#E2E8F0", muted: "#64748B", subtle: "#94A3B8",
+};
+
+const days = Array.from({ length: 17 }, (_, i) => {
+  const d = i + 1;
+  return `Apr ${d}`;
+});
+
+const offers = [
+  { id: "o1", name: "HighYield CD 12M", color: C.teal },
+  { id: "o2", name: "Premium Checking", color: C.purple },
+  { id: "o3", name: "Savings Plus", color: C.amber },
+  { id: "o4", name: "Brokerage Account", color: C.pink },
+  { id: "o5", name: "Cash Reserve", color: C.blue },
+];
+
+const pubs = [
+  { id: "p1", name: "Network Alpha" },
+  { id: "p2", name: "Publisher Omega" },
+  { id: "p3", name: "DSP Platform Y" },
+  { id: "p4", name: "Premium Pub Q" },
+  { id: "p5", name: "Search Engine G" },
+  { id: "p6", name: "Ad Network Delta" },
+  { id: "p7", name: "Finance Wire M" },
+];
+
+const placements = [
+  "In-Content-300x600", "Below-Article", "Marketplace-CAU", "HP-CAU-Rev-Share",
+  "Mobile-Partner-Bin", "ROS-300x250", "Text-Ad", "Banner-970x250",
+  "Splash-Page", "Traffic-Driver",
+];
+
+function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function seed(s) { let h = 0; for (let i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; } return Math.abs(h); }
+
+const dodData = useMemoGen();
+function useMemoGen() {
+  const d = {};
+  offers.forEach(o => {
+    d[o.id] = {};
+    pubs.forEach(p => {
+      const s = seed(o.id + p.id);
+      d[o.id][p.id] = days.map((_, i) => {
+        const base = (s % 500) * 50 + 10000;
+        const imp = Math.round(base * (0.7 + Math.sin(i * 0.5 + s) * 0.3));
+        const clicks = Math.round(imp * (0.00003 + (s % 10) * 0.000008));
+        const conv = Math.round(clicks * (0.01 + (s % 5) * 0.005));
+        const rev = conv * (300 + (s % 8) * 40);
+        return { day: days[i], imp, clicks, conv, rev, ctr: (clicks / imp * 100), c2c: clicks > 0 ? (conv / clicks * 100) : 0 };
+      });
+    });
+  });
+  return d;
+}
+
+const qaData = [];
+offers.forEach(o => {
+  pubs.forEach(p => {
+    placements.slice(0, 3 + seed(o.id + p.id) % 5).forEach(pl => {
+      const s = seed(o.id + p.id + pl);
+      const p1 = s % 500;
+      const variance = (s % 20) - 10;
+      const p3 = Math.max(0, Math.round(p1 * (1 + variance / 100)));
+      const diff = p1 > 0 ? Math.abs((p3 - p1) / p1 * 100) : 0;
+      let status = "OK";
+      if (p1 === 0 && p3 === 0) status = "IGNORE";
+      else if (diff > 15) status = `HIGH VARIANCE (${variance > 0 ? "+" : ""}${variance}%)`;
+      qaData.push({ offer: o.name, pub: p.name, placement: `${p.name.split(" ")[0]}_${pl}`, p1Clicks: p1, p3Clicks: p3, status, diff: Math.round(diff) });
+    });
+  });
+});
+
+const aggData = {
+  revenue: 5798304, cost: 4827328, gpm: 16.7, impressions: 676015951,
+  clicks1p: 557038, clicks3p: 534754, conversions: 14198,
+  ctc: 10547, vtc: 2211, ecpa: 408, publishers: 34, funded: 558,
 };
 
 const fmt = (n) => {
-  if (n >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
-  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
-  return `$${n}`;
-};
-const fmtN = (n) => {
-  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
-  if (n >= 1e3) return `${(n / 1e3).toFixed(1)}K`;
+  if (n >= 1e6) return "$" + (n / 1e6).toFixed(2) + "M";
+  if (n >= 1e3) return (n / 1e3).toFixed(0) + "K";
   return n.toString();
 };
-const pct = (n) => `${(n * 100).toFixed(1)}%`;
-
-const dailyData = [
-  { d: "Day 1", rev: 9120, cost: 5890, conv: 49 },
-  { d: "Day 2", rev: 8940, cost: 5530, conv: 55 },
-  { d: "Day 3", rev: 234400, cost: 219800, conv: 636 },
-  { d: "Day 4", rev: 202740, cost: 169000, conv: 512 },
-  { d: "Day 5", rev: 204970, cost: 151240, conv: 464 },
-  { d: "Day 6", rev: 311650, cost: 189090, conv: 721 },
-  { d: "Day 7", rev: 203420, cost: 175110, conv: 582 },
-  { d: "Day 8", rev: 232900, cost: 187260, conv: 660 },
-  { d: "Day 9", rev: 214500, cost: 160220, conv: 563 },
-  { d: "Day 10", rev: 232710, cost: 153840, conv: 601 },
-  { d: "Day 11", rev: 216220, cost: 171290, conv: 520 },
-  { d: "Day 12", rev: 232290, cost: 173160, conv: 509 },
-  { d: "Day 13", rev: 274500, cost: 218010, conv: 672 },
-  { d: "Day 14", rev: 261720, cost: 213300, conv: 661 },
-  { d: "Day 15", rev: 224580, cost: 199780, conv: 612 },
-  { d: "Day 16", rev: 217830, cost: 204440, conv: 607 },
-  { d: "Day 17", rev: 246980, cost: 207840, conv: 658 },
-  { d: "Day 18", rev: 236530, cost: 193790, conv: 541 },
-  { d: "Day 19", rev: 265170, cost: 208180, conv: 558 },
-  { d: "Day 20", rev: 321200, cost: 263380, conv: 786 },
-  { d: "Day 21", rev: 321030, cost: 287730, conv: 787 },
-  { d: "Day 22", rev: 330030, cost: 275180, conv: 833 },
-  { d: "Day 23", rev: 315310, cost: 257520, conv: 800 },
-  { d: "Day 24", rev: 344720, cost: 285930, conv: 829 },
-  { d: "Day 25", rev: 291120, cost: 253840, conv: 661 },
-  { d: "Day 26", rev: 263360, cost: 216750, conv: 564 },
-  { d: "Day 27", rev: 307030, cost: 240270, conv: 769 },
-  { d: "Day 28", rev: 242240, cost: 223550, conv: 643 },
-  { d: "Day 29", rev: 241820, cost: 235870, conv: 614 },
-  { d: "Day 30", rev: 185940, cost: 194370, conv: 494 },
-].map((r) => ({ ...r, profit: r.rev - r.cost, gpm: r.rev > 0 ? ((r.rev - r.cost) / r.rev) : 0 }));
-
-const publishers = [
-  { name: "Channel Alpha - SEM", rev: 2685594, cost: 2667434, conv: 6845, gpm: 0.0068, ecpa: 389.7, clicks: 56404 },
-  { name: "Channel Beta - Social", rev: 785040, cost: 848578, conv: 2078, gpm: -0.0809, ecpa: 408.28, clicks: 27065 },
-  { name: "Channel Gamma - Search", rev: 617412, cost: 587982, conv: 1656, gpm: 0.0477, ecpa: 355.06, clicks: 11839 },
-  { name: "Partner Network A", rev: 579149, cost: 342836, conv: 1296, gpm: 0.408, ecpa: 264.53, clicks: 54486 },
-  { name: "DSP Platform X", rev: 531736, cost: 314221, conv: 1921, gpm: 0.4091, ecpa: 163.55, clicks: 47915 },
-  { name: "Channel Alpha - Direct", rev: 373410, cost: 251880, conv: 779, gpm: 0.3255, ecpa: 323.42, clicks: 25091 },
-  { name: "Publisher Hub Z", rev: 344952, cost: 0, conv: 125, gpm: 1.0, ecpa: 0, clicks: 91280 },
-  { name: "App Network M", rev: 250505, cost: 175182, conv: 804, gpm: 0.3007, ecpa: 217.89, clicks: 10591 },
-  { name: "Channel Delta - Feed", rev: 215190, cost: 192617, conv: 553, gpm: 0.1049, ecpa: 348.19, clicks: 9205 },
-  { name: "Channel Beta - Display", rev: 125359, cost: 118981, conv: 185, gpm: 0.0509, ecpa: 643.84, clicks: 15245 },
-  { name: "DSP Platform Y", rev: 119441, cost: 50305, conv: 404, gpm: 0.5788, ecpa: 124.39, clicks: 10961 },
-  { name: "Premium Pub Q", rev: 110882, cost: 77713, conv: 103, gpm: 0.2991, ecpa: 753.03, clicks: 21169 },
-];
-
-const offers = [
-  { name: "Product A - Premium Card", rev: 1651260, cost: 405832, conv: 4024 },
-  { name: "Product B - Balance Transfer", rev: 704676, cost: 352342, conv: 1758 },
-  { name: "Product C - Savings Account", rev: 571970, cost: 236674, conv: 2365 },
-  { name: "Product D - Cashback Card", rev: 502710, cost: 376750, conv: 1547 },
-  { name: "Product E - Rewards Card", rev: 486780, cost: 351612, conv: 1388 },
-  { name: "Product F - Travel Card", rev: 356160, cost: 249961, conv: 548 },
-  { name: "Product G - Cash Rewards", rev: 297420, cost: 244594, conv: 740 },
-  { name: "Product H - Checking Acct", rev: 261995, cost: 139066, conv: 1411 },
-  { name: "Product I - Everyday Acct", rev: 253080, cost: 193048, conv: 844 },
-  { name: "Product J - Term Deposit", rev: 252648, cost: 140743, conv: 276 },
-];
-
-const CHART_COLORS = ["#22D3EE", "#A78BFA", "#10B981", "#F59E0B", "#F43F5E", "#818CF8", "#34D399", "#FB923C", "#E879F9", "#38BDF8"];
-
-const totals = {
-  rev: 6957965,
-  cost: 5792794,
-  profit: 1165171,
-  gpm: 0.167,
-  conv: 17038,
-  ecpa: 408,
-  funded: 670,
-  fundAmt: 1539802,
-  apps: 27011,
-  approved: 12847,
+const fmtN = (n) => {
+  if (n >= 1e9) return (n / 1e9).toFixed(2) + "B";
+  if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
+  if (n >= 1e3) return (n / 1e3).toFixed(0) + "K";
+  return n.toString();
 };
 
-function KpiCard({ label, value, sub, color }) {
-  return (
-    <div style={{
-      background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16,
-      padding: "22px 24px", display: "flex", flexDirection: "column", gap: 6,
-      position: "relative", overflow: "hidden",
-    }}>
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, height: 3,
-        background: `linear-gradient(90deg, ${color}, transparent)`,
-      }} />
-      <span style={{ fontSize: 12, color: COLORS.textDim, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>{label}</span>
-      <span style={{ fontSize: 28, fontWeight: 700, color: COLORS.text, fontFamily: "'JetBrains Mono', monospace" }}>{value}</span>
-      {sub && <span style={{ fontSize: 12, color: COLORS.textMuted }}>{sub}</span>}
-    </div>
-  );
-}
-
-function CustomTooltip({ active, payload, label, formatter }) {
+const Tip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{
-      background: "#1E293B", border: `1px solid ${COLORS.border}`, borderRadius: 10,
-      padding: "12px 16px", boxShadow: "0 8px 32px rgba(0,0,0,.5)",
-    }}>
-      <p style={{ color: COLORS.textMuted, fontSize: 11, margin: 0, marginBottom: 6 }}>{label}</p>
+    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: "8px 12px", fontSize: 11, fontFamily: "inherit" }}>
+      <div style={{ color: C.amber, fontWeight: 500, marginBottom: 3 }}>{label}</div>
       {payload.map((p, i) => (
-        <p key={i} style={{ color: p.color, fontSize: 13, margin: "3px 0", fontWeight: 600 }}>
-          {p.name}: {formatter ? formatter(p.value) : p.value}
-        </p>
+        <div key={i} style={{ color: C.text, display: "flex", alignItems: "center", gap: 5 }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: p.color || p.stroke }} />
+          {p.name}: <strong>{typeof p.value === "number" ? p.value.toLocaleString() : p.value}</strong>
+        </div>
       ))}
     </div>
   );
-}
+};
 
-function SectionHeader({ title, subtitle }) {
+function Card({ children, style }) {
+  return <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: 16, ...style }}>{children}</div>;
+}
+function Label({ children }) {
+  return <div style={{ fontSize: 13, fontWeight: 500, color: C.text, marginBottom: 10 }}>{children}</div>;
+}
+function Badge({ val, type }) {
+  const colors = { OK: C.green, IGNORE: C.muted, VARIANCE: C.red };
+  const bg = { OK: "rgba(52,211,153,.1)", IGNORE: "rgba(100,116,139,.1)", VARIANCE: "rgba(248,113,113,.12)" };
+  const t = type === "OK" ? "OK" : type === "IGNORE" ? "IGNORE" : "VARIANCE";
+  return <span style={{ fontSize: 10, fontWeight: 600, color: colors[t], background: bg[t], padding: "2px 8px", borderRadius: 8, whiteSpace: "nowrap" }}>{val}</span>;
+}
+function Metric({ label, value, sub, accent = C.teal }) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: COLORS.text, letterSpacing: -0.3 }}>{title}</h2>
-      {subtitle && <p style={{ margin: "4px 0 0", fontSize: 12, color: COLORS.textDim }}>{subtitle}</p>}
+    <div style={{ background: "rgba(255,255,255,.02)", borderRadius: 8, padding: "12px 14px", borderLeft: `3px solid ${accent}`, borderRadius: 0 }}>
+      <div style={{ fontSize: 10, color: C.muted, letterSpacing: 1, marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 18, fontWeight: 600, color: C.text, fontFamily: "Georgia, serif" }}>{value}</div>
+      {sub && <div style={{ fontSize: 10, color: accent, marginTop: 2 }}>{sub}</div>}
     </div>
   );
 }
 
-const tabs = ["Overview", "Publishers", "Offers"];
-
-export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("Overview");
-  const [pubSort, setPubSort] = useState("rev");
-
-  const sortedPubs = useMemo(() => {
-    const s = [...publishers];
-    if (pubSort === "rev") s.sort((a, b) => b.rev - a.rev);
-    else if (pubSort === "gpm") s.sort((a, b) => b.gpm - a.gpm);
-    else if (pubSort === "conv") s.sort((a, b) => b.conv - a.conv);
-    else if (pubSort === "ecpa") s.sort((a, b) => a.ecpa - b.ecpa);
-    return s;
-  }, [pubSort]);
-
-  const pieData = offers.slice(0, 6).map((o, i) => ({ name: o.name, value: o.rev, fill: CHART_COLORS[i] }));
+function Banner() {
+  const [tick, setTick] = useState(0);
+  useEffect(() => { const t = setInterval(() => setTick(v => v + 1), 60); return () => clearInterval(t); }, []);
 
   return (
-    <div style={{
-      background: COLORS.bg, minHeight: "100vh", color: COLORS.text,
-      fontFamily: "'Inter', -apple-system, sans-serif", padding: "0",
-    }}>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
-
-      {/* Header */}
-      <div style={{
-        background: "linear-gradient(135deg, #0B0F1A 0%, #1a1040 50%, #0B0F1A 100%)",
-        borderBottom: `1px solid ${COLORS.border}`, padding: "28px 32px 20px",
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-              <div style={{
-                width: 10, height: 10, borderRadius: "50%", background: COLORS.green,
-                boxShadow: `0 0 8px ${COLORS.green}`,
-              }} />
-              <span style={{ fontSize: 11, color: COLORS.green, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}>Sample Data — Demo Month</span>
+    <div style={{ position: "relative", height: 180, overflow: "hidden", borderRadius: 12, background: `linear-gradient(135deg, #0B0F19 0%, #150d25 50%, #0d1520 100%)`, marginBottom: 16 }}>
+      <svg width="100%" height="180" viewBox="0 0 800 180" style={{ position: "absolute", inset: 0 }}>
+        <g opacity=".04" stroke="#fff" strokeWidth="0.5">
+          {[45, 90, 135].map(y => <line key={y} x1="0" y1={y} x2="800" y2={y} />)}
+          {[160, 320, 480, 640].map(x => <line key={x} x1={x} y1="0" x2={x} y2="180" />)}
+        </g>
+        {[
+          { pts: "0,120 50,100 100,110 150,85 200,95 250,70 300,80 350,65 400,75 450,55 500,68 550,50 600,62 650,45 700,58 750,42 800,55", c: C.teal },
+          { pts: "0,140 50,130 100,135 150,118 200,125 250,108 300,120 350,105 400,115 450,98 500,110 550,92 600,105 650,88 700,100 750,85 800,95", c: C.purple },
+        ].map((l, i) => <polyline key={i} points={l.pts} fill="none" stroke={l.c} strokeWidth="1.2" opacity=".3" />)}
+        {Array.from({ length: 15 }).map((_, i) => {
+          const x = (tick * 0.6 + i * 55) % 820;
+          const y = 30 + Math.sin(tick * 0.015 + i * 0.8) * 50;
+          return <circle key={i} cx={x} cy={y} r={1.5 + Math.sin(i) * 0.5} fill={[C.teal, C.purple, C.pink, C.amber][i % 4]} opacity={0.15 + Math.sin(tick * 0.02 + i) * 0.08} />;
+        })}
+      </svg>
+      <div style={{ position: "relative", zIndex: 1, padding: "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: C.green, boxShadow: `0 0 6px ${C.green}` }} />
+            <span style={{ fontSize: 10, color: C.green, letterSpacing: 2.5, fontWeight: 500 }}>1ST PARTY · 3RD PARTY · QA FLAGGING</span>
+          </div>
+          <h1 style={{ fontSize: 20, fontWeight: 600, color: C.text, margin: "0 0 3px", fontFamily: "Georgia, serif" }}>Master analysis dashboard — April 2026</h1>
+          <p style={{ fontSize: 11, color: C.muted, margin: 0 }}>Aggregate, offer→placement & placement→offer DOD performance with data reconciliation</p>
+        </div>
+        <div style={{ display: "flex", gap: 14, marginTop: 8 }}>
+          {[
+            { label: "REVENUE", val: "$5.80M", c: C.teal },
+            { label: "GPM", val: "16.7%", c: C.amber },
+            { label: "CONV", val: "14.2K", c: C.purple },
+            { label: "eCPA", val: "$408", c: C.pink },
+          ].map((k, i) => (
+            <div key={i} style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 17, fontWeight: 600, color: k.c, fontFamily: "Georgia, serif" }}>{k.val}</div>
+              <div style={{ fontSize: 8, color: C.muted, letterSpacing: 1 }}>{k.label}</div>
             </div>
-            <h1 style={{ margin: 0, fontSize: 28, fontWeight: 800, letterSpacing: -0.8, background: "linear-gradient(135deg, #F1F5F9, #22D3EE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Performance Marketing Dashboard
-            </h1>
-            <p style={{ margin: "4px 0 0", color: COLORS.textDim, fontSize: 13 }}>Monthly Analysis — Day 1–30 • All names & figures anonymized</p>
-          </div>
-          <div style={{ display: "flex", gap: 6, background: COLORS.card, borderRadius: 10, padding: 4, border: `1px solid ${COLORS.border}` }}>
-            {tabs.map((t) => (
-              <button key={t} onClick={() => setActiveTab(t)} style={{
-                background: activeTab === t ? "linear-gradient(135deg, #22D3EE22, #A78BFA22)" : "transparent",
-                border: activeTab === t ? `1px solid ${COLORS.accent}44` : "1px solid transparent",
-                borderRadius: 8, padding: "8px 18px", color: activeTab === t ? COLORS.accent : COLORS.textDim,
-                fontWeight: 600, fontSize: 13, cursor: "pointer", transition: "all .2s",
-              }}>{t}</button>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
+      <div style={{ position: "relative", zIndex: 1, padding: "0 24px", display: "flex", gap: 6 }}>
+        {["1P vs 3P QA flagging", "Offer → placement DOD", "Placement → offer DOD", "34 publishers"].map((t, i) => (
+          <span key={i} style={{ fontSize: 10, padding: "2px 10px", borderRadius: 10, background: [C.green, C.teal, C.purple, C.amber][i] + "15", color: [C.green, C.teal, C.purple, C.amber][i], border: `1px solid ${[C.green, C.teal, C.purple, C.amber][i]}30` }}>{t}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-      <div style={{ padding: "24px 32px", maxWidth: 1400, margin: "0 auto" }}>
-        {/* KPI Row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, marginBottom: 28 }}>
-          <KpiCard label="Total Revenue" value={fmt(totals.rev)} sub={`Avg ${fmt(Math.round(totals.rev / 30))} / day`} color={COLORS.accent} />
-          <KpiCard label="Total Cost" value={fmt(totals.cost)} sub={`${((totals.cost / totals.rev) * 100).toFixed(1)}% of revenue`} color={COLORS.red} />
-          <KpiCard label="Gross Profit" value={fmt(totals.profit)} sub={`GPM ${pct(totals.gpm)}`} color={COLORS.green} />
-          <KpiCard label="Conversions" value={fmtN(totals.conv)} sub={`eCPA $${totals.ecpa}`} color={COLORS.purple} />
-          <KpiCard label="Accounts Funded" value={fmtN(totals.funded)} sub={`${fmt(totals.fundAmt)} funded`} color={COLORS.amber} />
-          <KpiCard label="Applications" value={fmtN(totals.apps)} sub={`${fmtN(totals.approved)} approved (${((totals.approved / totals.apps) * 100).toFixed(1)}%)`} color="#818CF8" />
+export default function App() {
+  const [view, setView] = useState("aggregate");
+  const [selOffer, setSelOffer] = useState("o1");
+  const [selPub, setSelPub] = useState("p1");
+  const [qaFilter, setQaFilter] = useState("ALL");
+
+  const views = [
+    { id: "aggregate", label: "Aggregate" },
+    { id: "offer-dod", label: "Offer → placement DOD" },
+    { id: "pub-dod", label: "Placement → offer DOD" },
+    { id: "qa", label: "1P / 3P QA" },
+  ];
+
+  const curDod = dodData[selOffer]?.[selPub] || [];
+  const filteredQa = qaFilter === "ALL" ? qaData.slice(0, 60) :
+    qaFilter === "VARIANCE" ? qaData.filter(q => q.status.includes("VARIANCE")).slice(0, 40) :
+    qaData.filter(q => q.status === qaFilter).slice(0, 40);
+
+  const offerAgg = offers.map(o => {
+    let totalImp = 0, totalClk = 0, totalConv = 0, totalRev = 0;
+    pubs.forEach(p => { (dodData[o.id]?.[p.id] || []).forEach(d => { totalImp += d.imp; totalClk += d.clicks; totalConv += d.conv; totalRev += d.rev; }); });
+    return { name: o.name, imp: totalImp, clicks: totalClk, conv: totalConv, rev: totalRev, ctr: (totalClk / totalImp * 100), c2c: totalClk > 0 ? (totalConv / totalClk * 100) : 0 };
+  });
+
+  return (
+    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Inter', -apple-system, sans-serif", color: C.text }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "16px 20px 60px" }}>
+        <Banner />
+
+        <div style={{ display: "flex", gap: 0, marginBottom: 14, background: C.card, borderRadius: 8, border: `1px solid ${C.border}`, overflow: "hidden" }}>
+          {views.map(v => (
+            <button key={v.id} onClick={() => setView(v.id)} style={{
+              flex: 1, padding: "10px 6px", fontSize: 11, fontWeight: view === v.id ? 600 : 400, fontFamily: "inherit",
+              color: view === v.id ? C.teal : C.muted, background: view === v.id ? "rgba(45,212,191,.07)" : "transparent",
+              border: "none", cursor: "pointer", borderBottom: view === v.id ? `2px solid ${C.teal}` : "2px solid transparent",
+            }}>{v.label}</button>
+          ))}
         </div>
 
-        {activeTab === "Overview" && (
+        {view === "aggregate" && (
           <>
-            {/* Revenue vs Cost Area Chart */}
-            <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16, padding: 24, marginBottom: 24 }}>
-              <SectionHeader title="Daily Revenue vs. Cost" subtitle="Revenue outpaces cost most days, with a strong ramp in the second half" />
-              <ResponsiveContainer width="100%" height={300}>
-                <AreaChart data={dailyData} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="gRev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor={COLORS.accent} stopOpacity={0.35} />
-                      <stop offset="100%" stopColor={COLORS.accent} stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="gCost" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor={COLORS.red} stopOpacity={0.2} />
-                      <stop offset="100%" stopColor={COLORS.red} stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} />
-                  <XAxis dataKey="d" tick={{ fill: COLORS.textDim, fontSize: 10 }} interval={2} axisLine={{ stroke: COLORS.border }} />
-                  <YAxis tick={{ fill: COLORS.textDim, fontSize: 10 }} tickFormatter={(v) => `$${(v/1000).toFixed(0)}K`} axisLine={{ stroke: COLORS.border }} />
-                  <Tooltip content={<CustomTooltip formatter={(v) => fmt(v)} />} />
-                  <Area type="monotone" dataKey="rev" name="Revenue" stroke={COLORS.accent} fill="url(#gRev)" strokeWidth={2} />
-                  <Area type="monotone" dataKey="cost" name="Cost" stroke={COLORS.red} fill="url(#gCost)" strokeWidth={2} />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8, marginBottom: 14 }}>
+              <Metric label="REVENUE" value="$5.80M" accent={C.teal} />
+              <Metric label="COST" value="$4.83M" accent={C.red} />
+              <Metric label="GPM" value="16.7%" sub="Target: 20%" accent={C.amber} />
+              <Metric label="1P CLICKS" value="557K" accent={C.purple} />
+              <Metric label="3P CLICKS" value="535K" sub="Δ 4% variance" accent={C.blue} />
+              <Metric label="CONVERSIONS" value="14.2K" sub="CTC: 10.5K · VTC: 2.2K" accent={C.green} />
             </div>
-
-            {/* Two-col: Daily Profit + Conversions */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 }}>
-              <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16, padding: 24 }}>
-                <SectionHeader title="Daily Gross Profit" subtitle="Green = positive, red = negative margin days" />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+              <Card>
+                <Label>1st party vs. 3rd party clicks — all offers</Label>
                 <ResponsiveContainer width="100%" height={220}>
-                  <BarChart data={dailyData} margin={{ top: 5, right: 5, left: 5, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} />
-                    <XAxis dataKey="d" tick={{ fill: COLORS.textDim, fontSize: 9 }} interval={3} axisLine={{ stroke: COLORS.border }} />
-                    <YAxis tick={{ fill: COLORS.textDim, fontSize: 9 }} tickFormatter={(v) => `$${(v/1000).toFixed(0)}K`} axisLine={{ stroke: COLORS.border }} />
-                    <Tooltip content={<CustomTooltip formatter={(v) => fmt(v)} />} />
-                    <Bar dataKey="profit" name="Profit" radius={[3, 3, 0, 0]}>
-                      {dailyData.map((d, i) => (
-                        <Cell key={i} fill={d.profit >= 0 ? COLORS.green : COLORS.red} opacity={0.85} />
-                      ))}
+                  <BarChart data={offers.map(o => {
+                    const s = seed(o.id);
+                    const p1 = 50000 + s % 120000;
+                    const p3 = Math.round(p1 * (0.92 + (s % 10) * 0.01));
+                    return { name: o.name.split(" ").slice(0, 2).join(" "), "1P": p1, "3P": p3 };
+                  })}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                    <XAxis dataKey="name" stroke={C.muted} tick={{ fontSize: 10 }} />
+                    <YAxis stroke={C.muted} tick={{ fontSize: 10 }} tickFormatter={v => fmtN(v)} />
+                    <Tooltip content={<Tip />} />
+                    <Bar dataKey="1P" fill={C.teal} radius={[3, 3, 0, 0]} barSize={14} name="1st party" />
+                    <Bar dataKey="3P" fill={C.purple} radius={[3, 3, 0, 0]} barSize={14} name="3rd party" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Card>
+              <Card>
+                <Label>Offer performance — revenue & conversions</Label>
+                <ResponsiveContainer width="100%" height={220}>
+                  <BarChart data={offerAgg} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke={C.border} horizontal={false} />
+                    <XAxis type="number" stroke={C.muted} tick={{ fontSize: 10 }} tickFormatter={v => "$" + fmtN(v)} />
+                    <YAxis dataKey="name" type="category" stroke={C.muted} tick={{ fontSize: 10 }} width={95} />
+                    <Tooltip content={<Tip />} />
+                    <Bar dataKey="rev" fill={C.amber} radius={[0, 3, 3, 0]} barSize={12} name="Revenue" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Card>
+            </div>
+            <Card>
+              <Label>Daily impressions trend — all offers</Label>
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={days.map((d, i) => {
+                  const o = { day: d };
+                  offers.forEach(of => {
+                    let total = 0;
+                    pubs.forEach(p => { total += dodData[of.id]?.[p.id]?.[i]?.imp || 0; });
+                    o[of.name] = Math.round(total / 1000);
+                  });
+                  return o;
+                })}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                  <XAxis dataKey="day" stroke={C.muted} tick={{ fontSize: 9 }} />
+                  <YAxis stroke={C.muted} tick={{ fontSize: 10 }} />
+                  <Tooltip content={<Tip />} />
+                  {offers.map(o => <Line key={o.id} type="monotone" dataKey={o.name} stroke={o.color} strokeWidth={1.8} dot={false} />)}
+                </LineChart>
+              </ResponsiveContainer>
+            </Card>
+          </>
+        )}
+
+        {view === "offer-dod" && (
+          <>
+            <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+              {offers.map(o => (
+                <button key={o.id} onClick={() => setSelOffer(o.id)} style={{
+                  padding: "5px 12px", fontSize: 11, fontFamily: "inherit", borderRadius: 16, cursor: "pointer",
+                  background: selOffer === o.id ? o.color : "transparent", color: selOffer === o.id ? C.bg : C.muted,
+                  border: `1px solid ${selOffer === o.id ? o.color : C.border}`, fontWeight: selOffer === o.id ? 600 : 400,
+                }}>{o.name}</button>
+              ))}
+            </div>
+            <div style={{ fontSize: 11, color: C.muted, marginBottom: 10 }}>Select publisher to view DOD:</div>
+            <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
+              {pubs.map(p => (
+                <button key={p.id} onClick={() => setSelPub(p.id)} style={{
+                  padding: "4px 10px", fontSize: 10, fontFamily: "inherit", borderRadius: 12, cursor: "pointer",
+                  background: selPub === p.id ? C.purple + "30" : "transparent", color: selPub === p.id ? C.purple : C.muted,
+                  border: `1px solid ${selPub === p.id ? C.purple : C.border}`,
+                }}>{p.name}</button>
+              ))}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+              <Card>
+                <Label>Impressions DOD</Label>
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart data={curDod}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                    <XAxis dataKey="day" stroke={C.muted} tick={{ fontSize: 9 }} />
+                    <YAxis stroke={C.muted} tick={{ fontSize: 10 }} tickFormatter={v => fmtN(v)} />
+                    <Tooltip content={<Tip />} />
+                    <Area type="monotone" dataKey="imp" stroke={C.teal} fill={C.teal + "18"} strokeWidth={2} name="Impressions" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </Card>
+              <Card>
+                <Label>Clicks & conversions DOD</Label>
+                <ResponsiveContainer width="100%" height={200}>
+                  <LineChart data={curDod}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                    <XAxis dataKey="day" stroke={C.muted} tick={{ fontSize: 9 }} />
+                    <YAxis stroke={C.muted} tick={{ fontSize: 10 }} />
+                    <Tooltip content={<Tip />} />
+                    <Line type="monotone" dataKey="clicks" stroke={C.purple} strokeWidth={2} dot={{ r: 2 }} name="Clicks" />
+                    <Line type="monotone" dataKey="conv" stroke={C.green} strokeWidth={2} dot={{ r: 2 }} name="Conversions" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Card>
+            </div>
+            <Card>
+              <Label>CTR & C2C DOD</Label>
+              <ResponsiveContainer width="100%" height={180}>
+                <LineChart data={curDod}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                  <XAxis dataKey="day" stroke={C.muted} tick={{ fontSize: 9 }} />
+                  <YAxis stroke={C.muted} tick={{ fontSize: 10 }} tickFormatter={v => v.toFixed(2) + "%"} />
+                  <Tooltip content={<Tip />} />
+                  <Line type="monotone" dataKey="ctr" stroke={C.amber} strokeWidth={2} dot={{ r: 2 }} name="CTR %" />
+                  <Line type="monotone" dataKey="c2c" stroke={C.pink} strokeWidth={2} dot={{ r: 2 }} name="C2C %" />
+                </LineChart>
+              </ResponsiveContainer>
+            </Card>
+          </>
+        )}
+
+        {view === "pub-dod" && (
+          <>
+            <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+              {pubs.map(p => (
+                <button key={p.id} onClick={() => setSelPub(p.id)} style={{
+                  padding: "5px 12px", fontSize: 11, fontFamily: "inherit", borderRadius: 16, cursor: "pointer",
+                  background: selPub === p.id ? C.purple : "transparent", color: selPub === p.id ? C.bg : C.muted,
+                  border: `1px solid ${selPub === p.id ? C.purple : C.border}`, fontWeight: selPub === p.id ? 600 : 400,
+                }}>{p.name}</button>
+              ))}
+            </div>
+            <div style={{ fontSize: 11, color: C.muted, marginBottom: 10 }}>Select offer to view DOD:</div>
+            <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
+              {offers.map(o => (
+                <button key={o.id} onClick={() => setSelOffer(o.id)} style={{
+                  padding: "4px 10px", fontSize: 10, fontFamily: "inherit", borderRadius: 12, cursor: "pointer",
+                  background: selOffer === o.id ? o.color + "30" : "transparent", color: selOffer === o.id ? o.color : C.muted,
+                  border: `1px solid ${selOffer === o.id ? o.color : C.border}`,
+                }}>{o.name}</button>
+              ))}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
+              <Card>
+                <Label>Revenue DOD</Label>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={curDod}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                    <XAxis dataKey="day" stroke={C.muted} tick={{ fontSize: 9 }} />
+                    <YAxis stroke={C.muted} tick={{ fontSize: 10 }} tickFormatter={v => "$" + fmtN(v)} />
+                    <Tooltip content={<Tip />} />
+                    <Bar dataKey="rev" radius={[3, 3, 0, 0]} name="Revenue">
+                      {curDod.map((d, i) => <Cell key={i} fill={d.rev > (curDod[i - 1]?.rev || d.rev) ? C.green : C.red} opacity={0.7} />)}
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
-              </div>
-
-              <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16, padding: 24 }}>
-                <SectionHeader title="Daily Conversions" subtitle="Adjusted conversions trend across the month" />
-                <ResponsiveContainer width="100%" height={220}>
-                  <LineChart data={dailyData} margin={{ top: 5, right: 5, left: 5, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} />
-                    <XAxis dataKey="d" tick={{ fill: COLORS.textDim, fontSize: 9 }} interval={3} axisLine={{ stroke: COLORS.border }} />
-                    <YAxis tick={{ fill: COLORS.textDim, fontSize: 9 }} axisLine={{ stroke: COLORS.border }} />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Line type="monotone" dataKey="conv" name="Conversions" stroke={COLORS.purple} strokeWidth={2.5} dot={false} />
-                  </LineChart>
+              </Card>
+              <Card>
+                <Label>Impressions & clicks DOD</Label>
+                <ResponsiveContainer width="100%" height={200}>
+                  <AreaChart data={curDod}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                    <XAxis dataKey="day" stroke={C.muted} tick={{ fontSize: 9 }} />
+                    <YAxis stroke={C.muted} tick={{ fontSize: 10 }} tickFormatter={v => fmtN(v)} />
+                    <Tooltip content={<Tip />} />
+                    <Area type="monotone" dataKey="imp" stroke={C.blue} fill={C.blue + "15"} strokeWidth={1.5} name="Impressions" />
+                  </AreaChart>
                 </ResponsiveContainer>
-              </div>
+              </Card>
             </div>
-
-            {/* Revenue by Offer Pie */}
-            <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16, padding: 24 }}>
-              <SectionHeader title="Revenue Split — Top 6 Products" subtitle="Product A dominates at ~24% of total revenue" />
-              <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
-                <ResponsiveContainer width="100%" height={280}>
-                  <PieChart>
-                    <Pie data={pieData} cx="50%" cy="50%" innerRadius={65} outerRadius={120} paddingAngle={3} dataKey="value" label={({ name, percent }) => `${name.split(' - ')[0]} ${(percent * 100).toFixed(0)}%`} labelLine={{ stroke: COLORS.textDim }} style={{ fontSize: 10, fill: COLORS.textMuted }}>
-                      {pieData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i]} />)}
-                    </Pie>
-                    <Tooltip formatter={(v) => fmt(v)} contentStyle={{ background: "#1E293B", border: `1px solid ${COLORS.border}`, borderRadius: 8, fontSize: 12 }} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+            <Card>
+              <Label>All offers on {pubs.find(p => p.id === selPub)?.name} — daily conversions</Label>
+              <ResponsiveContainer width="100%" height={200}>
+                <LineChart data={days.map((d, i) => {
+                  const o = { day: d };
+                  offers.forEach(of => { o[of.name] = dodData[of.id]?.[selPub]?.[i]?.conv || 0; });
+                  return o;
+                })}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
+                  <XAxis dataKey="day" stroke={C.muted} tick={{ fontSize: 9 }} />
+                  <YAxis stroke={C.muted} tick={{ fontSize: 10 }} />
+                  <Tooltip content={<Tip />} />
+                  {offers.map(o => <Line key={o.id} type="monotone" dataKey={o.name} stroke={o.color} strokeWidth={1.5} dot={false} />)}
+                </LineChart>
+              </ResponsiveContainer>
+            </Card>
           </>
         )}
 
-        {activeTab === "Publishers" && (
-          <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16, padding: 24 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
-              <SectionHeader title="Channel Performance" subtitle="Top 12 channels ranked by selected metric" />
-              <div style={{ display: "flex", gap: 6 }}>
-                {[["rev", "Revenue"], ["gpm", "GPM"], ["conv", "Conversions"], ["ecpa", "eCPA ↓"]].map(([k, l]) => (
-                  <button key={k} onClick={() => setPubSort(k)} style={{
-                    background: pubSort === k ? COLORS.accentDim : "transparent",
-                    border: `1px solid ${pubSort === k ? COLORS.accent : COLORS.border}`,
-                    borderRadius: 6, padding: "6px 14px", color: pubSort === k ? COLORS.accent : COLORS.textDim,
-                    fontSize: 12, fontWeight: 600, cursor: "pointer",
-                  }}>{l}</button>
+        {view === "qa" && (
+          <>
+            <Card style={{ marginBottom: 14 }}>
+              <Label>1st party vs. 3rd party data reconciliation</Label>
+              <div style={{ fontSize: 11, color: C.muted, marginBottom: 12, lineHeight: 1.6 }}>
+                Compares 1P (internal) click tracking against 3P (advertiser) reported clicks. Flags placements with {">"}15% variance for investigation. Mismatches indicate tracking discrepancies, pixel firing issues, or bot traffic.
+              </div>
+              <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+                {["ALL", "OK", "VARIANCE", "IGNORE"].map(f => (
+                  <button key={f} onClick={() => setQaFilter(f)} style={{
+                    padding: "4px 12px", fontSize: 10, fontFamily: "inherit", borderRadius: 10, cursor: "pointer",
+                    background: qaFilter === f ? (f === "VARIANCE" ? C.red : f === "OK" ? C.green : f === "IGNORE" ? C.muted : C.teal) + "20" : "transparent",
+                    color: qaFilter === f ? (f === "VARIANCE" ? C.red : f === "OK" ? C.green : f === "IGNORE" ? C.muted : C.teal) : C.muted,
+                    border: `1px solid ${C.border}`, fontWeight: qaFilter === f ? 600 : 400,
+                  }}>{f} {f !== "ALL" && `(${qaData.filter(q => f === "VARIANCE" ? q.status.includes("VARIANCE") : q.status === f).length})`}</button>
                 ))}
               </div>
-            </div>
-
-            <ResponsiveContainer width="100%" height={360}>
-              <BarChart data={sortedPubs} layout="vertical" margin={{ top: 0, right: 20, left: 10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} horizontal={false} />
-                <XAxis type="number" tick={{ fill: COLORS.textDim, fontSize: 10 }} tickFormatter={(v) => pubSort === "gpm" ? pct(v) : pubSort === "ecpa" ? `$${v}` : pubSort === "conv" ? fmtN(v) : fmt(v)} axisLine={{ stroke: COLORS.border }} />
-                <YAxis type="category" dataKey="name" width={160} tick={{ fill: COLORS.textMuted, fontSize: 11 }} axisLine={{ stroke: COLORS.border }} />
-                <Tooltip content={<CustomTooltip formatter={(v) => pubSort === "gpm" ? pct(v) : pubSort === "ecpa" ? `$${v.toFixed(0)}` : pubSort === "conv" ? fmtN(v) : fmt(v)} />} />
-                <Bar dataKey={pubSort} name={pubSort === "rev" ? "Revenue" : pubSort === "gpm" ? "GPM" : pubSort === "conv" ? "Conversions" : "eCPA"} radius={[0, 6, 6, 0]}>
-                  {sortedPubs.map((p, i) => (
-                    <Cell key={i} fill={pubSort === "gpm" ? (p.gpm >= 0 ? COLORS.green : COLORS.red) : CHART_COLORS[i % CHART_COLORS.length]} opacity={0.85} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-
-            <div style={{ marginTop: 24, overflowX: "auto" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-                <thead>
-                  <tr style={{ borderBottom: `1px solid ${COLORS.border}` }}>
-                    {["Channel", "Revenue", "Cost", "Profit", "GPM", "Conversions", "eCPA", "Clicks"].map((h) => (
-                      <th key={h} style={{ textAlign: h === "Channel" ? "left" : "right", padding: "10px 12px", color: COLORS.textDim, fontWeight: 600, fontSize: 10, textTransform: "uppercase", letterSpacing: 1 }}>{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedPubs.map((p, i) => (
-                    <tr key={i} style={{ borderBottom: `1px solid ${COLORS.border}22` }}>
-                      <td style={{ padding: "10px 12px", fontWeight: 600, color: COLORS.text }}>{p.name}</td>
-                      <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "'JetBrains Mono', monospace", color: COLORS.accent }}>{fmt(p.rev)}</td>
-                      <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "'JetBrains Mono', monospace", color: COLORS.textMuted }}>{fmt(p.cost)}</td>
-                      <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "'JetBrains Mono', monospace", color: p.rev - p.cost >= 0 ? COLORS.green : COLORS.red }}>{fmt(p.rev - p.cost)}</td>
-                      <td style={{ padding: "10px 12px", textAlign: "right" }}>
-                        <span style={{
-                          background: p.gpm >= 0.2 ? COLORS.greenDim : p.gpm >= 0 ? COLORS.amberDim : COLORS.redDim,
-                          color: p.gpm >= 0.2 ? COLORS.green : p.gpm >= 0 ? COLORS.amber : COLORS.red,
-                          padding: "3px 8px", borderRadius: 4, fontWeight: 700, fontSize: 11,
-                          fontFamily: "'JetBrains Mono', monospace",
-                        }}>{pct(p.gpm)}</span>
-                      </td>
-                      <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "'JetBrains Mono', monospace", color: COLORS.text }}>{fmtN(p.conv)}</td>
-                      <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "'JetBrains Mono', monospace", color: COLORS.textMuted }}>${p.ecpa.toFixed(0)}</td>
-                      <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "'JetBrains Mono', monospace", color: COLORS.textMuted }}>{fmtN(p.clicks)}</td>
+              <div style={{ maxHeight: 400, overflowY: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
+                  <thead>
+                    <tr style={{ borderBottom: `1px solid ${C.border}` }}>
+                      {["Offer", "Placement", "1P clicks", "3P clicks", "Δ%", "Status"].map(h => (
+                        <th key={h} style={{ padding: "6px 8px", textAlign: "left", color: C.muted, fontWeight: 500, position: "sticky", top: 0, background: C.card }}>{h}</th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "Offers" && (
-          <>
-            <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 16, padding: 24, marginBottom: 24 }}>
-              <SectionHeader title="Top 10 Products — Revenue vs. Cost" subtitle="Side-by-side comparison of revenue (cyan) and cost (rose) per product" />
-              <ResponsiveContainer width="100%" height={380}>
-                <BarChart data={offers} layout="vertical" margin={{ top: 0, right: 20, left: 10, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} horizontal={false} />
-                  <XAxis type="number" tick={{ fill: COLORS.textDim, fontSize: 10 }} tickFormatter={(v) => fmt(v)} axisLine={{ stroke: COLORS.border }} />
-                  <YAxis type="category" dataKey="name" width={190} tick={{ fill: COLORS.textMuted, fontSize: 11 }} axisLine={{ stroke: COLORS.border }} />
-                  <Tooltip content={<CustomTooltip formatter={(v) => fmt(v)} />} />
-                  <Legend wrapperStyle={{ fontSize: 11, color: COLORS.textMuted }} />
-                  <Bar dataKey="rev" name="Revenue" fill={COLORS.accent} opacity={0.8} radius={[0, 4, 4, 0]} />
-                  <Bar dataKey="cost" name="Cost" fill={COLORS.red} opacity={0.5} radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14 }}>
-              {offers.map((o, i) => {
-                const profit = o.rev - o.cost;
-                const gpm = o.rev > 0 ? profit / o.rev : 0;
-                return (
-                  <div key={i} style={{
-                    background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 14,
-                    padding: 20, position: "relative", overflow: "hidden",
-                  }}>
-                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: CHART_COLORS[i] }} />
-                    <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: COLORS.text, marginBottom: 12 }}>{o.name}</p>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                      <div>
-                        <p style={{ margin: 0, fontSize: 10, color: COLORS.textDim, textTransform: "uppercase", letterSpacing: .8 }}>Revenue</p>
-                        <p style={{ margin: "2px 0 0", fontSize: 16, fontWeight: 700, color: COLORS.accent, fontFamily: "'JetBrains Mono', monospace" }}>{fmt(o.rev)}</p>
-                      </div>
-                      <div>
-                        <p style={{ margin: 0, fontSize: 10, color: COLORS.textDim, textTransform: "uppercase", letterSpacing: .8 }}>GPM</p>
-                        <p style={{
-                          margin: "2px 0 0", fontSize: 16, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace",
-                          color: gpm >= 0.2 ? COLORS.green : gpm >= 0 ? COLORS.amber : COLORS.red,
-                        }}>{pct(gpm)}</p>
-                      </div>
-                      <div>
-                        <p style={{ margin: 0, fontSize: 10, color: COLORS.textDim, textTransform: "uppercase", letterSpacing: .8 }}>Conversions</p>
-                        <p style={{ margin: "2px 0 0", fontSize: 14, fontWeight: 600, color: COLORS.text }}>{fmtN(o.conv)}</p>
-                      </div>
-                      <div>
-                        <p style={{ margin: 0, fontSize: 10, color: COLORS.textDim, textTransform: "uppercase", letterSpacing: .8 }}>eCPA</p>
-                        <p style={{ margin: "2px 0 0", fontSize: 14, fontWeight: 600, color: COLORS.textMuted }}>{o.conv > 0 ? `$${(o.cost / o.conv).toFixed(0)}` : "—"}</p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+                  </thead>
+                  <tbody>
+                    {filteredQa.map((q, i) => (
+                      <tr key={i} style={{ borderBottom: `1px solid ${C.border}08` }}>
+                        <td style={{ padding: "5px 8px", color: C.subtle, maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{q.offer}</td>
+                        <td style={{ padding: "5px 8px", fontWeight: 500, fontSize: 10 }}>{q.placement}</td>
+                        <td style={{ padding: "5px 8px", color: C.teal }}>{q.p1Clicks}</td>
+                        <td style={{ padding: "5px 8px", color: C.purple }}>{q.p3Clicks}</td>
+                        <td style={{ padding: "5px 8px", color: q.diff > 15 ? C.red : C.subtle }}>{q.diff}%</td>
+                        <td style={{ padding: "5px 8px" }}><Badge val={q.status} type={q.status === "OK" ? "OK" : q.status === "IGNORE" ? "IGNORE" : "VARIANCE"} /></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+            <div style={{ padding: "10px 14px", background: `${C.amber}08`, borderRadius: 8, border: `1px solid ${C.amber}20`, fontSize: 11, color: C.subtle }}>
+              <span style={{ color: C.amber, fontWeight: 600 }}>Why this matters:</span> 1P/3P click variance above 15% typically signals pixel misfires, bot inflation, or redirect chain drops. This QA layer catches revenue leakage and tracking integrity issues before month-end reconciliation — saving an estimated 4–6 hours of manual investigation per reporting cycle.
             </div>
           </>
         )}
-
-        <p style={{ textAlign: "center", color: COLORS.textDim, fontSize: 11, marginTop: 32, paddingBottom: 20 }}>
-          Performance Marketing Dashboard • Anonymized Demo Data • All names and figures are fictional
-        </p>
       </div>
     </div>
   );

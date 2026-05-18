@@ -2,12 +2,12 @@
   display: flex;
   gap: 32px;
   font-size: 15px;
-  color: #666;
+  color: var(--text-body);
 }
 .pfm-stat-row strong {
   font-size: 22px;
   font-weight: 300;
-  color: #1a1a1a;
+  color: var(--accent);
   display: block;
 }
 .pfm-context {
@@ -16,7 +16,7 @@
   padding: 40px 32px 0;
   font-size: 17px;
   line-height: 1.85;
-  color: #555;
+  color: var(--text-body);
 }
 .pfm-bento {
   max-width: 1000px;
@@ -28,19 +28,20 @@
   gap: 16px;
 }
 .pfm-card {
-  background: #fff;
-  border: 1px solid #e5e5e5;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
   padding: 24px;
 }
 .pfm-card h2 {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 10px;
+  color: var(--text-heading);
 }
 .pfm-card p {
   font-size: 14px;
   line-height: 1.65;
-  color: #666;
+  color: var(--text-body);
 }
 .pfm-card--1 { grid-column: span 3; }
 .pfm-card--2 { grid-column: span 3; }
@@ -48,12 +49,13 @@
 .pfm-card--4 { grid-column: span 2; }
 .pfm-card--5 {
   grid-column: span 2;
-  background: #1a1a1a;
-  color: #fff;
-  border-color: #1a1a1a;
+  background: var(--bg-elevated-2);
+  color: var(--text-heading);
+  border-color: var(--accent);
+  border-left-width: 3px;
 }
-.pfm-card--5 h2 { color: #fff; }
-.pfm-card--5 p { color: rgba(255, 255, 255, 0.75); }
+.pfm-card--5 h2 { color: var(--accent); }
+.pfm-card--5 p { color: var(--text-body); }
 .pfm-daily {
   max-width: 720px;
   margin: 48px auto 32px;
@@ -63,11 +65,12 @@
   font-size: 20px;
   font-weight: 300;
   margin-bottom: 12px;
+  color: var(--text-heading);
 }
 .pfm-daily p {
   font-size: 16px;
   line-height: 1.8;
-  color: #555;
+  color: var(--text-body);
 }
 @media (max-width: 768px) {
   .project-intro,

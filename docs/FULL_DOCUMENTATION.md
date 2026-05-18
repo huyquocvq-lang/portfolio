@@ -125,16 +125,19 @@ portfolio/
 
 | File | Purpose |
 |------|---------|
-| `Hero.jsx` | Full-viewport banner, animations, scroll crossfade |
+| `Hero.jsx` | Full-viewport responsive `<picture>` background + left-anchored text panel + CTA |
 | `Nav.jsx` | Sticky nav, mobile hamburger |
 | `Impact.jsx` | Impact metrics grid |
 | `AboutSkills.jsx` | About column + skills grid |
 | `Skill.jsx` | Single skill cell with icon |
-| `Projects.jsx` | Featured + other projects section |
-| `FeaturedProject.jsx` | Large project card |
-| `OtherProject.jsx` | Grid project card |
+| `PersonalInterest.jsx` | Personal copy + Pinterest-style masonry image wall |
+| `Projects.jsx` | Featured + other projects section (auto-counts) |
+| `FeaturedProject.jsx` | Large project card; renders `<BannerEmbed>` when `banner` set |
+| `OtherProject.jsx` | Grid project card; ditto |
+| `BannerEmbed.jsx` | Sandboxed `<iframe>` wrapper for `public/banners/*.html` |
 | `Footer.jsx` | CTA + contact columns |
-| `project/ProjectShell.jsx` | Wrapper for all project detail pages |
+| `project/ProjectShell.jsx` | Wrapper for all project detail pages — hero banner + breadcrumbs + pager |
+| `project/EmbedSlot.jsx` | Lazy slot for dashboards; fullscreen toggle |
 
 ### `/src/projects`
 
@@ -148,13 +151,25 @@ portfolio/
 
 | File | Scope |
 |------|-------|
-| `global.css` | Reset, typography, homepage, nav, responsive breakpoints |
-| `project-shell.css` | Back link, prev/next pager |
-| `projects/*.css` | Scoped to one project page (`.wp-*`, `.pgm-*`, etc.) |
+| `global.css` | Reset, typography, `:root` theme tokens, homepage, nav, responsive breakpoints |
+| `project-shell.css` | Hero banner, breadcrumbs, prev/next pager |
+| `project-intro.css` | Shared project intro block |
+| `embed-slot.css` | Dashboard slot (canvas + fullscreen) |
+| `projects/*.css` | Scoped to one project page (`.wp-*`, `.pgm-*`, `.retro-*`, `.air-*`, etc.) |
+
+### `/src/embeds`
+
+Claude artifact dashboards as `.tsx` files. One file per detail page; lazy-loaded by `EmbedSlot`. See `src/embeds/README.md` for the full wiring guide.
 
 ### `/public`
 
-Files copied verbatim to build output root. Image URLs start with `/images/`.
+Files copied verbatim to build output root. Image URLs start with `/images/`. Banner URLs start with `/banners/`.
+
+| Subfolder | Purpose |
+|-----------|---------|
+| `public/hero-banners/` | 8 responsive hero variants (`hero_*.webp` + `.png`) consumed by `<picture>` in `Hero.jsx` |
+| `public/images/` | Project thumbnails, personal masonry photos, agent screenshots |
+| `public/banners/` | Self-contained animated HTML banner per project (canonical source, edit in place) |
 
 ---
 
@@ -178,8 +193,11 @@ User click     →  react-router Link    →  swap route component, no full relo
 
 | Component | State | Purpose |
 |-----------|-------|---------|
-| `Hero` | `ready`, `scrollProgress` | Entrance animation; scroll crossfade |
+| `Hero` | (none) | Pure presentation — `<picture>` handles art direction, CSS handles layout/hover |
 | `Nav` | `open` | Mobile drawer |
+| `EmbedSlot` | `fullscreen` | Toggle dashboard fullscreen view |
+| `AiRewriterProject` | `zoomed` | Screenshot lightbox overlay |
+| Banner iframe (inline JS) | `--scale` CSS var | Scale 560×510 canvas to iframe width |
 
 No Redux, Zustand, MobX, Context API (for app state), or React Query.
 
@@ -189,8 +207,8 @@ No Redux, Zustand, MobX, Context API (for app state), or React Query.
 
 ## Navigation structure
 
-- **Router-level:** 1 home + 6 project routes (`src/App.jsx`)
-- **Within home:** hash anchors `#impact`, `#about`, `#work`, `#top`
+- **Router-level:** 1 home + 7 project routes (`src/App.jsx`)
+- **Within home:** hash anchors `#impact`, `#about`, `#personal`, `#work`, `#top`
 - **Between projects:** `ProjectShell` prev/next uses `getAllProjects()` order
 
 ## Dependency relationships
@@ -248,10 +266,11 @@ npm run preview   # Preview production build locally
 
 ```
 /  (HomePage)
-├── #top      Hero
-├── #impact   Impact
-├── #about    About + Skills
-├── #work     Projects
+├── #top       Hero
+├── #impact    Impact
+├── #about     About + Skills
+├── #personal  Personal Interest + masonry
+├── #work      Projects
 └── (Footer)
 
 /projects/winterplace
@@ -260,6 +279,7 @@ npm run preview   # Preview production build locally
 /projects/pf-master
 /projects/glean-planner
 /projects/ai-rewriter
+/projects/media-ops-retro
 ```
 
 ## Stack navigation
@@ -369,30 +389,46 @@ Side effects limited to:
 | Component | Reusable? | Notes |
 |-----------|-----------|-------|
 | `Skill` | Yes | Props: `icon`, `title`, `desc` |
-| `FeaturedProject` | Yes | Props: `project` object |
-| `OtherProject` | Yes | Props: `project` object |
-| `ProjectShell` | Yes (project pages only) | Props: `slug`, `children` |
+| `FeaturedProject` | Yes | Props: `project` object; renders `<BannerEmbed>` if `project.banner` set |
+| `OtherProject` | Yes | Props: `project` object; ditto |
+| `BannerEmbed` | Yes | Props: `src`, `title`, `className`; sandboxed iframe |
+| `PersonalInterest` | No (singleton) | Reads `personal.js` |
+| `ProjectShell` | Yes (project pages only) | Props: `slug`, `children`; embeds banner + breadcrumbs + pager |
+| `EmbedSlot` | Yes (project pages only) | Props: `embedKey`, `title`; lazy-loads from `src/embeds/` |
 | Section components | Homepage-specific | Hero, Impact, etc. |
 
 ## Styling system
 
-- **Global CSS** with BEM-like section classes (`.hero`, `.impact`, `.projects`)
-- **Project-specific** class prefixes (`.wp-`, `.pgm-`, `.trend-`, etc.)
-- **CSS variables** in `:root` for fonts and base size
+- **Global CSS** with BEM-like section classes (`.hero`, `.impact`, `.projects`, `.personal`)
+- **Project-specific** class prefixes (`.wp-`, `.pgm-`, `.trend-`, `.retro-`, `.air-`, `.glean-`, `.pfm-`)
+- **CSS variables** in `:root` for theme tokens, fonts, and base size
 
 ## Theme system
 
-Minimal:
-- Accent: `#117a9b`
-- Text: `#1a1a1a`, `#555`, `#999`
-- Display font: Cormorant Garamond (`.author-name`)
-- Body: Source Sans Pro
+Charcoal + bronze gold dark theme. All tokens defined on `:root` of `src/styles/global.css`:
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--bg-primary` | `#1a1a1a` | Body + most sections |
+| `--bg-elevated` | `#222222` | Cards, panels |
+| `--bg-elevated-2` | `#2a2a2a` | Tiles, dashboard surrounds |
+| `--accent` | `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze) |
+| `--accent-hover` | `#d4b896` | Accent hover state |
+| `--text-heading` | `#ffffff` | Headings, big stat numbers |
+| `--text-body` | `#a0a0a0` | Paragraph copy |
+| `--text-muted` | `#808080` | Labels, captions, meta |
+| `--text-on-accent` | `#ffffff` | Text inside accent-filled buttons |
+| `--border-subtle` | `#2a2a2a` | Quiet section dividers |
+| `--border-accent` | `rgba(197,164,126,0.35)` | Accented separators |
+
+Display font: Cormorant Garamond (`.author-name`). Body: Source Sans Pro.
 
 ## Design conventions
 
-- Uppercase eyebrows with wide letter-spacing
-- Light font weights (300) for headings
+- Uppercase eyebrows with wide letter-spacing (bronze accent)
+- Light font weights (300) for headings on dark surfaces
 - Hover accent on project titles and CTAs
+- Hero overlays + embedded dashboards keep their own internal palettes — site shell theme applies around them
 - Mobile breakpoint: **768px** (primary), **960px**, **520px**
 
 ---
@@ -407,11 +443,12 @@ Minimal:
 | Impact | `#impact` | `impactHighlights` | `Impact.jsx` |
 | About | `#about` | `about` | `AboutSkills.jsx` |
 | Skills | `#about` | `skills`, `skillIcons` | `Skill.jsx` |
-| Projects | `#work` | `projects.js` | `Projects.jsx` |
+| Personal Interest | `#personal` | `personal.js` | `PersonalInterest.jsx` |
+| Projects | `#work` | `projects.js`, `public/banners/*.html` | `Projects.jsx`, `BannerEmbed.jsx` |
 
-## Project features (F7–F12)
+## Project features (F7–F13)
 
-Documented in [FEATURE_MAP.md](./FEATURE_MAP.md). Each project file contains its own static narrative — no shared business logic module.
+Documented in [FEATURE_MAP.md](./FEATURE_MAP.md). Each project file contains its own static narrative — no shared business logic module. Every detail page mounts one `<EmbedSlot {...projectEmbeds.<key>} />` (lazy `src/embeds/*Dashboard.tsx`).
 
 ---
 
@@ -621,16 +658,17 @@ See dedicated [AI_AGENT_GUIDE.md](./AI_AGENT_GUIDE.md).
 
 ```javascript
 {
-  name: string,
-  role: string,
+  name: string,         // "Jenny Tang" — split into lead + accent for hero title
+  role: string,         // ` · `-separated; hero subtitle replaces with ` | `
   tagline: string,
   intro: string,
-  heroImage: string,  // path from public root
   currentRole: { title, company },
   industries: string,
   contact: { linkedin, resume, github | null }
 }
 ```
+
+Hero background images live in `public/hero-banners/` and are not referenced from `profile.js` (the old `heroImage` field is gone).
 
 ## Appendix B — Project card schema (`projects.js`)
 
@@ -644,8 +682,39 @@ See dedicated [AI_AGENT_GUIDE.md](./AI_AGENT_GUIDE.md).
   description: string,
   tools?: string,         // featured only
   impact: string,
-  image: string,
+  image: string,          // fallback for ProjectShell hero when no banner
+  banner?: string,        // /banners/<slug>.html — enables BannerEmbed on home + detail
   link: string            // must match App.jsx path
+}
+```
+
+## Appendix B-bis — Personal interest schema (`personal.js`)
+
+```javascript
+{
+  eyebrow: string,
+  heading: string,
+  paragraphs: string[],
+  images: Array<{ src: string, alt: string }>
+}
+```
+
+## Appendix B-ter — Dashboard embed schema (`projectEmbeds.js`)
+
+```javascript
+{
+  [key: string]: {
+    embedKey: string,     // matches a key in EmbedSlot dashboards map
+    title: string         // shown above the slot
+  }
+}
+```
+
+The matching entry in `src/components/project/EmbedSlot.jsx`:
+
+```javascript
+const dashboards = {
+  [key]: lazy(() => import('../../embeds/MyDashboard'))
 }
 ```
 

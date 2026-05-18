@@ -3,6 +3,7 @@ import Hero from '../components/Hero'
 import Nav from '../components/Nav'
 import Impact from '../components/Impact'
 import AboutSkills from '../components/AboutSkills'
+import PersonalInterest from '../components/PersonalInterest'
 import Projects from '../components/Projects'
 import Footer from '../components/Footer'
 
@@ -22,6 +23,7 @@ export default function HomePage() {
       <Nav />
       <Impact />
       <AboutSkills />
+      <PersonalInterest />
       <Projects />
       <Footer />
     </>

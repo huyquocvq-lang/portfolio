@@ -1,5 +1,7 @@
 import ProjectShell from '../components/project/ProjectShell'
+import EmbedSlot from '../components/project/EmbedSlot'
 import { getProjectCard } from '../data/projects'
+import { projectEmbeds } from '../data/projectEmbeds'
 import '../styles/projects/glean-planner.css'
 
 const meta = getProjectCard('glean-planner')
@@ -60,6 +62,8 @@ export default function GleanPlannerProject() {
             high priority. Documentation tweaks sink below revenue-impacting work.
           </p>
         </aside>
+
+        <EmbedSlot {...projectEmbeds.gleanPlanner} />
       </article>
     </ProjectShell>
   )

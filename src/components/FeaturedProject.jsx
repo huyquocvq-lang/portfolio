@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import BannerEmbed from './BannerEmbed'
 
 export default function FeaturedProject({ project }) {
   const imgStyle = { backgroundImage: `url(${project.image})` }
@@ -6,8 +7,16 @@ export default function FeaturedProject({ project }) {
   return (
     <article className="featured-project">
       <div className="featured-tag">01 / Featured</div>
-      <Link to={project.link} className="featured-img">
-        <div className="featured-img-inner" style={imgStyle} aria-hidden="true" />
+      <Link
+        to={project.link}
+        className={`featured-img${project.banner ? ' featured-img--banner' : ''}`}
+        aria-label={project.title}
+      >
+        {project.banner ? (
+          <BannerEmbed src={project.banner} title={`${project.title} banner`} className="featured-img-inner" />
+        ) : (
+          <div className="featured-img-inner" style={imgStyle} aria-hidden="true" />
+        )}
       </Link>
       <div className="featured-content">
         <div className="ftype">{project.type}</div>

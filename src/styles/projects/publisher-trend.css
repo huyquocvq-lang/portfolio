@@ -1,5 +1,5 @@
 .project-intro--trend {
-  border-bottom: 3px solid #1a1a1a;
+  border-bottom: 3px solid var(--accent);
   padding-bottom: 36px;
 }
 .trend-metrics {
@@ -11,7 +11,7 @@
   font-size: 11px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #999;
+  color: var(--accent);
   margin-bottom: 16px;
 }
 .trend-chips {
@@ -22,9 +22,10 @@
 .trend-chip {
   font-size: 13px;
   padding: 8px 14px;
-  background: #f5f5f5;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
   border-radius: 999px;
-  color: #444;
+  color: var(--text-body);
 }
 .trend-narrative {
   max-width: 900px;
@@ -38,32 +39,34 @@
   font-size: 13px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #117a9b;
+  color: var(--accent);
   margin-bottom: 12px;
 }
 .trend-col p {
   font-size: 16px;
   line-height: 1.8;
-  color: #555;
+  color: var(--text-body);
 }
 .trend-recs {
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 32px;
-  background: #fafafa;
+  background: var(--bg-elevated);
 }
 .trend-recs h2 {
   font-size: 20px;
   font-weight: 300;
   margin-bottom: 20px;
+  color: var(--text-heading);
 }
 .trend-recs ol {
   padding-left: 20px;
+  color: var(--accent);
 }
 .trend-recs li {
   font-size: 17px;
   line-height: 1.7;
-  color: #444;
+  color: var(--text-body);
   margin-bottom: 10px;
 }
 .trend-impact {
@@ -73,8 +76,8 @@
   font-size: 18px;
   font-weight: 600;
   text-align: center;
-  color: #1a1a1a;
-  border-top: 1px solid #eee;
+  color: var(--text-heading);
+  border-top: 1px solid var(--border-subtle);
 }
 @media (max-width: 768px) {
   .project-intro--trend,

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project banner</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Native 560×510 — scale set via JS to fill iframe width exactly. */
+  .banner-fit {
+    width: 560px;
+    height: 510px;
+    flex-shrink: 0;
+    transform-origin: center center;
+    transform: scale(var(--scale, 1));
+  }
+</style>
+<script>
+  function setScale() {
+    var s = window.innerWidth / 560;
+    document.documentElement.style.setProperty('--scale', s);
+  }
+  setScale();
+  window.addEventListener('resize', setScale);
+</script>
+</head>
+<body>
+<div class="banner-fit">
+
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scanH{from{left:-80px}to{left:580px}}
+@keyframes drift{0%{opacity:0;transform:translate(0,0)}20%{opacity:.3}80%{opacity:.15}100%{opacity:0;transform:translate(10px,-35px)}}
+.fu{animation:fadeUp .5s ease both}
+</style>
+<div style="width:560px;height:510px;background:linear-gradient(155deg,#0C0F16 0%,#1a1308 40%,#0c1520 100%);border-radius:12px;overflow:hidden;position:relative;font-family:'Inter','Anthropic Sans',-apple-system,sans-serif;">
+  <div style="position:absolute;top:0;left:0;width:100%;height:1px;overflow:hidden;pointer-events:none;">
+    <div style="position:absolute;width:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,.5),transparent);animation:scanH 4s linear infinite;"></div>
+  </div>
+  <div id="pts" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;"></div>
+
+  <svg width="560" height="260" style="position:absolute;top:5px;left:0;pointer-events:none;">
+    <g opacity=".03" stroke="#fff" stroke-width="0.5">
+      <line x1="0" y1="65" x2="560" y2="65"/><line x1="0" y1="130" x2="560" y2="130"/><line x1="0" y1="195" x2="560" y2="195"/>
+    </g>
+
+    <g opacity=".45" transform="translate(35,35)">
+      <rect x="0" y="105" width="18" height="50" rx="2" fill="#2DD4BF" opacity=".4"/>
+      <rect x="24" y="85" width="18" height="70" rx="2" fill="#2DD4BF" opacity=".5"/>
+      <rect x="48" y="110" width="18" height="45" rx="2" fill="#2DD4BF" opacity=".4"/>
+      <rect x="72" y="60" width="18" height="95" rx="2" fill="#2DD4BF" opacity=".6"/>
+      <rect x="96" y="90" width="18" height="65" rx="2" fill="#2DD4BF" opacity=".5"/>
+      <rect x="120" y="70" width="18" height="85" rx="2" fill="#2DD4BF" opacity=".55"/>
+      <rect x="144" y="50" width="18" height="105" rx="2" fill="#2DD4BF" opacity=".65"/>
+      <rect x="168" y="95" width="18" height="60" rx="2" fill="#2DD4BF" opacity=".45"/>
+      <rect x="192" y="80" width="18" height="75" rx="2" fill="#2DD4BF" opacity=".5"/>
+      <rect x="216" y="100" width="18" height="55" rx="2" fill="#2DD4BF" opacity=".4"/>
+      <rect x="240" y="65" width="18" height="90" rx="2" fill="#2DD4BF" opacity=".6"/>
+      <rect x="264" y="30" width="18" height="125" rx="2" fill="#FBBF24" opacity=".8"/>
+      <text x="273" y="25" text-anchor="middle" font-size="7" fill="#FBBF24" opacity=".6">Apr</text>
+    </g>
+
+    <g opacity=".4" transform="translate(330,40)">
+      <polyline points="0,120 20,105 40,110 60,95 80,100 100,85 120,75 140,90 160,80 180,70 200,85 220,45" fill="none" stroke="#34D399" stroke-width="1.5"/>
+      <circle cx="220" cy="45" r="4" fill="#34D399" opacity=".7"/>
+      <text x="220" y="38" text-anchor="middle" font-size="7" fill="#34D399" opacity=".6">$485K</text>
+      <polyline points="0,100 20,130 40,90 60,110 80,140 100,95 120,115 140,88 160,105 180,145 200,98 220,108" fill="none" stroke="#60A5FA" stroke-width="1.2" stroke-dasharray="3 2"/>
+      <circle cx="220" cy="108" r="3" fill="#60A5FA" opacity=".6"/>
+    </g>
+
+    <g opacity=".35" transform="translate(50,175)">
+      <rect width="460" height="72" rx="6" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.04)" stroke-width="0.5"/>
+      <text x="10" y="16" font-size="8" fill="#64748B" font-weight="500">Publisher</text>
+      <text x="140" y="16" font-size="8" fill="#34D399" font-weight="500">Win</text>
+      <text x="270" y="16" font-size="8" fill="#F87171" font-weight="500">Miss</text>
+      <text x="370" y="16" font-size="8" fill="#94A3B8" font-weight="500">Action</text>
+      <line x1="0" y1="22" x2="460" y2="22" stroke="rgba(255,255,255,.05)" stroke-width="0.5"/>
+
+      <text x="10" y="36" font-size="7.5" fill="#2DD4BF">CNNMoney</text>
+      <text x="140" y="36" font-size="7" fill="#34D399" opacity=".7">$352K, 1st YTD, GPM 100%</text>
+      <text x="370" y="36" font-size="7" fill="#94A3B8" opacity=".5">Scale current mix</text>
+
+      <text x="10" y="50" font-size="7.5" fill="#60A5FA">Facebook</text>
+      <text x="140" y="50" font-size="7" fill="#34D399" opacity=".7">GPM +13pp from Feb</text>
+      <text x="270" y="50" font-size="7" fill="#F87171" opacity=".7">eCPA $500, still weakest</text>
+      <text x="370" y="50" font-size="7" fill="#94A3B8" opacity=".5">Test creative</text>
+
+      <text x="10" y="64" font-size="7.5" fill="#F87171">NAF Digital</text>
+      <text x="270" y="64" font-size="7" fill="#F87171" opacity=".7">$18K, under flag, GPM -5%</text>
+      <text x="370" y="64" font-size="7" fill="#94A3B8" opacity=".5">Deprioritize</text>
+    </g>
+  </svg>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:0 28px 22px;">
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+        <span style="font-size:15px;">📊</span>
+        <span style="font-size:10px;color:#FBBF24;letter-spacing:2.5px;font-weight:600;">AI RETRO ANALYST AGENT</span>
+      </div>
+      <div style="font-size:22px;font-weight:600;color:#E2E8F0;font-family:Georgia,serif;line-height:1.3;margin-bottom:4px;">Monthly publisher cutover retro</div>
+      <div style="font-size:11px;color:#64748B;line-height:1.5;">AI agent ingests 12 months of publisher history + offer-by-publisher data, ranks YTD performance, and auto-generates a retro with wins, misses, action plans, under-$20K flags, and scalable offer-level callouts</div>
+    </div>
+
+    <div style="display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;">
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(251,191,36,.12);color:#FBBF24;border:1px solid rgba(251,191,36,.2);">YTD ranking</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(52,211,153,.1);color:#34D399;border:1px solid rgba(52,211,153,.2);">Win / miss / action</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(248,113,113,.1);color:#F87171;border:1px solid rgba(248,113,113,.2);">Under $20K flags</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(167,139,250,.1);color:#A78BFA;border:1px solid rgba(167,139,250,.2);">Offer callouts</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
+      <div class="fu" style="animation-delay:.15s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#2DD4BF;font-family:Georgia,serif;">10</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">PUBLISHERS</div>
+      </div>
+      <div class="fu" style="animation-delay:.3s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#FBBF24;font-family:Georgia,serif;">12mo</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">HISTORY</div>
+      </div>
+      <div class="fu" style="animation-delay:.45s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#34D399;font-family:Georgia,serif;">~2hr</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">SAVED / RETRO</div>
+      </div>
+      <div class="fu" style="animation-delay:.6s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#F87171;font-family:Georgia,serif;">Auto</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">FLAG & RANK</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);">
+      <div style="font-size:10px;color:#334155;letter-spacing:1.5px;">GLEAN AI · EXCEL · PUBLISHER DATA</div>
+      <div style="font-size:10px;color:#475569;">Media ops</div>
+    </div>
+  </div>
+</div>
+<script>
+const p=document.getElementById('pts');
+function s(){const d=document.createElement('div');const x=30+Math.random()*500;const y=30+Math.random()*200;const sz=1.5+Math.random()*2;const c=['#FBBF24','#2DD4BF','#A78BFA','#34D399','#F87171'];d.style.cssText=`position:absolute;left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;border-radius:50%;background:${c[Math.floor(Math.random()*5)]};animation:drift ${2+Math.random()*2}s ease-out forwards;`;p.appendChild(d);setTimeout(()=>d.remove(),4000);}
+setInterval(s,700);
+</script>
+</div>
+</body>
+</html>

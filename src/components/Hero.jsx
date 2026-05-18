@@ -1,7 +1,29 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { FaChevronDown } from 'react-icons/fa'
 import { profile } from '../data/profile'
 import { heroStats } from '../data/stats'
+
+const HERO_BASE = '/hero-banners'
+const HERO_FALLBACK = 'hero_desktop_fhd'
+
+// Order matters: <picture> picks the first <source> whose media matches AND
+// whose format is supported. Most specific first; ultrawide before generic
+// landscape; width caps (4K, QHD) before aspect-ratio buckets.
+//
+// NOTE: WebP variants are commented out — only `.png` files exist in
+// public/hero-banners/ today. To enable WebP delivery, generate `.webp`
+// next to each `.png` (e.g. `cwebp -q 85 file.png -o file.webp`) and
+// uncomment the WebP <source> lines below.
+const HERO_SOURCES = [
+  ['(max-aspect-ratio: 3/4)', 'hero_mobile_portrait'],
+  ['(min-aspect-ratio: 21/10)', 'hero_ultrawide'],
+  ['(min-width: 3000px)', 'hero_desktop_4k'],
+  ['(min-width: 2200px)', 'hero_desktop_qhd'],
+  ['(min-aspect-ratio: 14/10) and (max-aspect-ratio: 17/10)', 'hero_macbook_13'],
+  ['(max-aspect-ratio: 14/10)', 'hero_tablet']
+]
+
+const WEBP_ENABLED = false
 
 export default function Hero() {
   const [ready, setReady] = useState(false)
@@ -39,7 +61,6 @@ export default function Hero() {
     document.getElementById('impact')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const bgStyle = { backgroundImage: `url(${profile.heroImage})` }
   const mainOpacity = 1 - scrollProgress
   const mainShift = scrollProgress * 32
   const nameOpacity = scrollProgress
@@ -51,7 +72,28 @@ export default function Hero() {
       className={`hero ${ready ? 'hero--ready' : 'hero--preload'}${scrollProgress > 0.02 ? ' hero--scrolling' : ''}`}
       id="top"
     >
-      <div className="hero-bg" style={bgStyle} aria-hidden="true" />
+      <picture className="hero-bg" aria-hidden="true">
+        {HERO_SOURCES.map(([media, slug]) => (
+          <Fragment key={slug}>
+            {WEBP_ENABLED && (
+              <source media={media} srcSet={`${HERO_BASE}/${slug}.webp`} type="image/webp" />
+            )}
+            <source media={media} srcSet={`${HERO_BASE}/${slug}.png`} type="image/png" />
+          </Fragment>
+        ))}
+        {WEBP_ENABLED && (
+          <source srcSet={`${HERO_BASE}/${HERO_FALLBACK}.webp`} type="image/webp" />
+        )}
+        <img
+          src={`${HERO_BASE}/${HERO_FALLBACK}.png`}
+          alt=""
+          className="hero-bg-img"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
+
       <div className="hero-shade" aria-hidden="true" />
       <div className="hero-curtain" aria-hidden="true" />
 

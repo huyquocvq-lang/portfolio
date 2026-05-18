@@ -24,11 +24,14 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 
 | Area | Files | Risk |
 |------|-------|------|
-| Copy / metrics | `src/data/profile.js`, `stats.js`, `about.js`, `skills.js` | Low |
-| Project card blurbs | `src/data/projects.js` | Low — keep `slug` + `link` in sync |
+| Copy / metrics | `src/data/profile.js`, `stats.js`, `about.js`, `skills.js`, `personal.js` | Low |
+| Project card blurbs | `src/data/projects.js` | Low — keep `slug` + `link` + `banner` in sync |
 | Single project layout | `src/projects/<Name>Project.jsx` + matching `src/styles/projects/*.css` | Low if isolated |
-| Homepage section styles | `src/styles/global.css` | Medium — affects whole site |
+| Homepage section styles | `src/styles/global.css` | Medium — affects whole site (theme vars in `:root` are global) |
 | Footer / Impact text | `src/components/Footer.jsx`, `Impact.jsx` | Low |
+| Personal photos | `public/images/personal/personal_*.jpeg` | Low |
+| Banner HTML | `public/banners/<slug>.html` | Low — keep the `.banner-fit` wrapper + scale JS |
+| Dashboard embed body | `src/embeds/*Dashboard.tsx` (overwrite in place; keep default export) | Low |
 | Images | `public/images/**` | Low |
 | Content mapping reference | `docs/CONTENT_SOURCE.md` | Low (not bundled; user chat overrides) |
 
@@ -39,22 +42,74 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 | `src/App.jsx` routes | Missing route = 404 on deploy; wrong component = broken page |
 | `projects.js` slug/link order | Breaks prev/next pager in `ProjectShell` |
 | `getAllProjects()` order | Featured is always index 0 for pager |
-| `Hero.jsx` scroll math | Easy to break crossfade / mobile layout |
+| `Hero.jsx` `<picture>` source order | Most-specific media first; WebP before PNG within each art-direction. Reordering can pick the wrong image (or none) |
+| `public/hero-banners/*` filenames | Hard-coded slugs (`hero_mobile_portrait`, `hero_ultrawide`, …) — renaming breaks `Hero.jsx` |
 | `Nav.jsx` body scroll lock | Regressions trap scroll on mobile |
 | `skillIcons.js` keys | Unknown `icon` key in `skills.js` → blank icon |
-| `ProjectShell.jsx` | Shared by all 6 project pages |
+| `ProjectShell.jsx` | Shared by all 7 project pages |
+| `BannerEmbed.jsx` + `public/banners/*.html` | Banner HTML must keep `.banner-fit` 560×510 + inline JS that sets `--scale` |
+| `EmbedSlot.jsx` `dashboards` map | Missing entry for an embed key in `projectEmbeds.js` → silently renders nothing |
+| Theme tokens in `:root` (`global.css`) | Renaming a `--*` variable breaks every file that consumes it — refactor with care |
 
 ## Project dashboard embeds (F8–F10)
 
-TSX exports in `src/embeds/`, lazy-loaded by `EmbedSlot.jsx` + `projectEmbeds.js`.
+TSX exports in `src/embeds/`, lazy-loaded by `EmbedSlot.jsx` + `projectEmbeds.js`. All 7 projects now have a live embed.
 
-| File | Route |
-|------|-------|
-| `PfMasterDashboard.tsx` | `/projects/pf-master` |
-| `MomTrendDashboard.tsx` | `/projects/publisher-trend-analysis` |
-| `CutoverDashboard.tsx` | `/projects/programmatic-cutover` |
+| File | Embed key | Route |
+|------|-----------|-------|
+| `WinterplaceDashboard.tsx`    | `winterplace`    | `/projects/winterplace` |
+| `CutoverDashboard.tsx`        | `cutover`        | `/projects/programmatic-cutover` |
+| `MomTrendDashboard.tsx`       | `momTrend`       | `/projects/publisher-trend-analysis` |
+| `PfMasterDashboard.tsx`       | `pfMaster`       | `/projects/pf-master` |
+| `GleanPlannerDashboard.tsx`   | `gleanPlanner`   | `/projects/glean-planner` |
+| `AiRewriterDashboard.tsx`     | `aiRewriter`     | `/projects/ai-rewriter` |
+| `MediaOpsRetroDashboard.tsx`  | `mediaOpsRetro`  | `/projects/media-ops-retro` |
 
-Requires `recharts`. `EmbedSlot` — inline preview + **Fullscreen ↗** text control (same style as former external link).
+Requires `recharts`. `EmbedSlot` — inline preview + **Fullscreen ↗** text control (same style as former external link). To add a new embed: see `src/embeds/README.md`.
+
+## Banner system (home thumbs + detail hero)
+
+Each project ships an animated/interactive HTML banner used both as the home-card thumbnail and the detail-page hero.
+
+| Piece | Detail |
+|-------|--------|
+| Files | `public/banners/<slug>.html` (one per project) — canonical source, edit in place |
+| Native canvas | 560 × 510 inside `.banner-fit` |
+| Scaling | Inline `<script>` sets `--scale = window.innerWidth / 560` on `<html>`; CSS uses `transform: scale(var(--scale))`. **Do not** revert to `transform: scale(calc(100vw/560))` — that's invalid CSS (length where a number is required) and silently leaves scale at 1 |
+| Wrapper | `src/components/BannerEmbed.jsx` — sandboxed iframe (`allow-scripts allow-same-origin`), `loading="lazy"` |
+| Mount | Home: `FeaturedProject` / `OtherProject`; Detail: `ProjectShell` when `project.banner` ends in `.html`/`.svg` |
+| Detail overlay | `radial-gradient` + `linear-gradient` dim on `.project-shell-banner--embed::after` |
+
+## Theme tokens
+
+CSS variables defined on `:root` in `src/styles/global.css`. Use `var(--*)`, never hardcode the swatch.
+
+| Token | Purpose |
+|-------|---------|
+| `--bg-primary` `#1a1a1a` | Body / most sections |
+| `--bg-elevated` `#222222` | Cards, panels |
+| `--bg-elevated-2` `#2a2a2a` | Tiles, dashboard surrounds |
+| `--accent` `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze) |
+| `--accent-hover` `#d4b896` | Accent hover |
+| `--text-heading` `#ffffff` | Headings, big numbers |
+| `--text-body` `#a0a0a0` | Paragraph copy |
+| `--text-muted` `#808080` | Labels, captions |
+| `--text-on-accent` `#ffffff` | Text on accent-filled buttons |
+| `--border-subtle` `#2a2a2a` | Section dividers |
+| `--border-accent` `rgba(197,164,126,0.35)` | Featured / Impact separators |
+
+Hero overlays (black gradients) and dashboard internal palettes stay as-is — they're already dark and visually separate.
+
+## Personal interest section (F4b)
+
+- Component: `src/components/PersonalInterest.jsx` · anchor `#personal`
+- Data: `src/data/personal.js` (eyebrow, heading, paragraphs, images)
+- Layout: Pinterest-style CSS-columns masonry (3 / 2 / 1 cols responsive)
+- Photos: `public/images/personal/personal_1.jpeg` … `personal_6.jpeg`
+
+## AI rewriter lightbox (F12)
+
+Click a screenshot in `/projects/ai-rewriter` → fullscreen overlay (`.air-lightbox`). Local component state in `AiRewriterProject.jsx`; close via overlay click, × button, or Escape. Body scroll is locked while open.
 
 ---
 
@@ -76,7 +131,7 @@ Requires `recharts`. `EmbedSlot` — inline preview + **Fullscreen ↗** text co
 5. Update `docs/FEATURE_MAP.md` if feature scope changed.
 6. Check mobile (`≤768px`) in DevTools.
 
-## Workflow: add a new project (7th)
+## Workflow: add a new project (8th)
 
 1. **Data** — Add object to `otherProjects` (or swap featured) in `src/data/projects.js`:
 
@@ -89,6 +144,7 @@ Requires `recharts`. `EmbedSlot` — inline preview + **Fullscreen ↗** text co
   description: 'Card teaser for homepage grid',
   impact: 'One line impact',
   image: '/images/projects/my-new-project.jpg',
+  banner: '/banners/my-new-project.html', // optional animated banner
   link: '/projects/my-new-project'
 }
 ```
@@ -124,11 +180,13 @@ import MyNewProject from './projects/MyNewProject'
 <Route path="/projects/my-new-project" element={<MyNewProject />} />
 ```
 
-5. **Asset** — `public/images/projects/my-new-project.jpg`
+5. **Assets** — `public/images/projects/my-new-project.jpg` (fallback) + optionally `public/banners/my-new-project.html` (use any existing banner file as a template — keep the `.banner-fit` 560×510 wrapper and inline `--scale` script).
 
-6. **Verify** — Homepage card links, project page, prev/next pager order.
+6. **Dashboard (optional)** — Drop `MyNewDashboard.tsx` in `src/embeds/`; register in `src/components/project/EmbedSlot.jsx` `dashboards` map; add `myNew: { embedKey: 'myNew', title: '…' }` to `src/data/projectEmbeds.js`; mount `<EmbedSlot {...projectEmbeds.myNew} />` on the page.
 
-7. **Docs** — Update `FEATURE_MAP.md`, `ARCHITECTURE_OVERVIEW.md`, `FULL_DOCUMENTATION.md`, `API_FLOW.md`, and `AGENTS.md` if routes changed.
+7. **Verify** — Homepage card links, project page, prev/next pager order, banner fits at any width.
+
+8. **Docs** — Update `FEATURE_MAP.md`, `ARCHITECTURE_OVERVIEW.md`, `FULL_DOCUMENTATION.md`, `API_FLOW.md`, `src/embeds/README.md` (if you added an embed), and `AGENTS.md` if routes changed.
 
 ## Workflow: add homepage section
 
@@ -183,11 +241,24 @@ src/App.jsx               Routes
 src/pages/HomePage.jsx    Landing composition
 src/components/Hero.jsx   Banner + scroll effects
 src/components/Nav.jsx    Header + mobile menu
-src/data/projects.js      Cards + slugs + helpers
-src/projects/*Project.jsx Individual case studies
-src/components/project/ProjectShell.jsx  Shared project wrapper
-src/styles/global.css     Global + homepage responsive
-docs/CONTENT_SOURCE.md      Authoring reference for mapping (not runtime)
+src/components/PersonalInterest.jsx  Interest copy + masonry wall
+src/components/BannerEmbed.jsx       Sandboxed iframe for project banners
+src/data/profile.js       Name, role, tagline, intro, contact
+src/data/projects.js      Cards + slugs + helpers + banner paths
+src/data/personal.js      Personal interest copy + image list
+src/data/projectEmbeds.js Embed keys → titles
+src/embeds/*Dashboard.tsx Lazy-loaded Claude artifact exports
+src/components/project/EmbedSlot.jsx    Dashboard slot + fullscreen
+src/components/project/ProjectShell.jsx Shared project wrapper (hero banner + breadcrumbs + pager)
+src/projects/*Project.jsx               Individual case studies
+src/styles/global.css                   Theme vars (:root) + homepage responsive
+src/styles/project-shell.css            Shell chrome
+src/styles/projects/*.css               Per-project page styles
+public/hero-banners/hero_*.{webp,png}   Art-directed hero variants (8 sizes × 2 formats)
+public/banners/<slug>.html              Canonical animated banner per project
+public/images/personal/*.jpeg           Personal interest masonry photos
+public/images/agents/*.png              AI rewriter demo screenshots
+docs/CONTENT_SOURCE.md                  Authoring reference for mapping (not runtime)
 ```
 
 ## When to ask the human

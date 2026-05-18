@@ -20,7 +20,7 @@
 .embed-slot__title {
   font-size: 18px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-heading);
 }
 
 .embed-slot__fs-btn {
@@ -28,7 +28,7 @@
   font-size: 14px;
   font-weight: 600;
   font-family: inherit;
-  color: #117a9b;
+  color: var(--accent);
   background: none;
   border: none;
   cursor: pointer;
@@ -43,15 +43,15 @@
 .embed-slot__loading {
   padding: 48px;
   text-align: center;
-  color: #666;
-  background: #f4f6f8;
+  color: var(--text-body);
+  background: var(--bg-elevated);
   border-radius: 10px;
 }
 
 .embed-slot__canvas {
   border-radius: 10px;
   overflow: auto;
-  border: 1px solid #1e293b;
+  border: 1px solid var(--border-subtle);
   max-height: min(520px, 70vh);
   -webkit-overflow-scrolling: touch;
 }
@@ -65,7 +65,7 @@
   inset: 0;
   z-index: 10000;
   margin: 0;
-  background: #0a0c10;
+  background: var(--bg-primary);
 }
 
 .embed-slot--fullscreen .embed-slot__inner {
@@ -80,20 +80,20 @@
   flex-shrink: 0;
   margin: 0;
   padding: 14px 20px;
-  background: #111827;
-  border-bottom: 1px solid #1e293b;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .embed-slot--fullscreen .embed-slot__title {
-  color: #f1f5f9;
+  color: var(--text-heading);
 }
 
 .embed-slot--fullscreen .embed-slot__fs-btn {
-  color: #5eb8d4;
+  color: var(--accent);
 }
 
 .embed-slot--fullscreen .embed-slot__fs-btn:hover {
-  color: #7dd3ed;
+  color: var(--accent-hover);
 }
 
 .embed-slot--fullscreen .embed-slot__canvas {

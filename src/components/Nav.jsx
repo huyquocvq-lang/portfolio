@@ -41,6 +41,7 @@ export default function Nav() {
         <ul className="nav-links" id="nav-menu">
           <li><a href="/#impact" onClick={close}>Impact</a></li>
           <li><a href="/#about" onClick={close}>About</a></li>
+          <li><a href="/#personal" onClick={close}>Interests</a></li>
           <li><a href="/#work" onClick={close}>Projects</a></li>
           {contact.linkedin && (
             <li><a href={contact.linkedin} target="_blank" rel="noreferrer" onClick={close}>LinkedIn</a></li>

@@ -12,7 +12,18 @@
 
 # **Portfolio Homepage**
 
-## **Hero Section**
+## **Hero Section** (new — 2026 redesign)
+
+**Component:** `src/components/Hero.jsx` · **Background:** `<picture>` element with 8 responsive variants from `public/hero-banners/` · **Theme:** charcoal `#1a1a1a` + bronze gold `#c5a47e`
+
+**Kicker:** `Portfolio · 2026` (monospace, bronze, wide letter-spacing)
+**Heading:** `Jenny` / `Tang.` (the second word italic + bronze accent — Cormorant Garamond display font)
+**Subtitle:** Derived from `profile.role`, with ` · ` separators rendered as ` | ` — i.e. *Media Operations Analyst | Marketing Analytics | Programmatic Optimization | AI Workflow Automation*
+**CTA:** `View Projects →` (outline → fills bronze on hover; scrolls to `#work`)
+
+---
+
+## **Hero Section** (legacy mapping)
 
 **Jenny Tang**  
 **Media Operations Analyst | Marketing Analytics | Programmatic Optimization | AI Workflow Automation**
@@ -351,6 +362,71 @@ Then it rewrites the content into a clearer format.
 
 This agent improves communication speed and clarity. It helps convert messy notes into clean business updates, reduces back-and-forth, and ensures each stakeholder receives the right level of information.
 
+**Detail page extras (post-launch):** click-to-zoom lightbox on the two demo screenshots (`public/images/agents/ai-rewriter-input.png` & `…-output.png`); live `AiRewriterDashboard.tsx` embedded via `EmbedSlot`.
+
+---
+
+# **Project 7: Monthly Media Ops Retro Analyst**
+
+## **Auto-generated Monthly Publisher Retro with Wins, Misses & Actions**
+
+**Project Type:** AI Agent, Reporting Automation, Senior-Analyst-Grade Writeup
+**Tools / Skills:** AI Agent Design, Performance Analysis, YTD Ranking Logic, Action Planning
+
+### **The Problem**
+
+Writing a monthly publisher cutover retro manually takes ~2 hours of pulling data across spreadsheets, ranking performance, and writing up insights — and the quality varies depending on who does it.
+
+### **What the Agent Does**
+
+The agent ingests two files (12-month publisher history + offer-by-publisher data for the target month), then automatically ranks each publisher's revenue against their YTD history, computes GPM / eCPA / funding / bank CPM trends, flags anyone under $20K as sub-scale, and produces a structured retro table with wins, misses, and action plans that logically follow from the data. It also surfaces scalable offer-level callouts — the kind of insight that usually gets buried in a pivot table.
+
+### **Rules Baked In**
+
+* Revenue is only a "win" if it's top-3 YTD for that publisher.
+* eCPA isn't over-indexed for obvious CPA offers.
+* High bank CPM → placement cleanup; strong funding + healthy GPM → scale; negative margin → pause.
+* Sub-$20K rows are flagged separately so they don't pollute the headline retro.
+
+### **Pipeline (5 Steps)**
+
+1. Load publisher history (12-month revenue, GPM, eCPA, funding, bank CPM).
+2. Load offer data (offer-by-publisher table for the target month).
+3. Compute YTD rankings (each publisher's month vs. its own YTD history).
+4. Generate retro (auto-write wins, misses & action plans from the data).
+5. Flag sub-$20K rows separately.
+
+### **Three Tabs of Output**
+
+* **Retro Output** — publisher-by-publisher table with auto-generated wins, misses, action plans; sub-$20K flags; 8 offer-level callouts.
+* **Publisher Trends** — 12-month revenue bars + GPM line per publisher; all-publishers overlay.
+* **MoM Compare** — March → April comparison table with deltas + color-coded badges.
+
+### **Impact**
+
+Replaces ~2 hours of manual monthly retro work with a senior-analyst-grade write-up produced in seconds. Logic, ranking, and write-up structure mirror what runs against real media ops retros.
+
+**Note:** All data shown in the demo is sample / mock data created for testing the agent.
+
+---
+
+# **Personal Interest** (section between About and Projects)
+
+**Anchor:** `#personal` · **Component:** `src/components/PersonalInterest.jsx` · **Data:** `src/data/personal.js`
+
+**Eyebrow:** Personal Interest  
+**Heading:** A little more about me — outside of work.
+
+**Paragraph 1:**
+
+Something fun about me is I love exploring new places and new cultures. I've traveled to more than 10 countries and over 12 states in the U.S., and every trip makes me more curious about people, food, and how different cultures work. I speak Vietnamese, English, and basic Chinese, and I think that helps me connect with people from different backgrounds more easily.
+
+**Paragraph 2:**
+
+Outside of work, I love cooking, traveling, designing things, and making handmade crafts. I think that creative side helps balance my analytical side because I enjoy both working with data and creating something from scratch.
+
+**Images:** Pinterest-style masonry wall built from `public/images/personal/personal_1.jpeg` … `personal_6.jpeg`. CSS `column-count: 3 / 2 / 1` responsive; hover scales image to 1.05.
+
 ---
 
 # **Suggested Website Layout**
@@ -361,11 +437,13 @@ This agent improves communication speed and clarity. It helps convert messy note
    Short intro, role, and value proposition.  
 2. **Impact Metrics**  
    Use numbers like $10M Q1 revenue, 58–60% GPM, $400K revenue lift, 30+ publishers, 60% reporting-time reduction.  
-3. **Featured Projects**  
-   Show 4–6 project cards.  
-4. **Skills**  
-   Group by Analytics, BI Tools, Media Platforms, AI Automation, Business Strategy.  
-5. **Contact / Resume**  
+3. **About + Skills**  
+   Group skills by Analytics, BI Tools, Media Platforms, AI Automation, Business Strategy.  
+4. **Personal Interest**  
+   Personal copy + Pinterest-style masonry of 6 photos (see `Personal Interest` block below).  
+5. **Featured Projects**  
+   Show 1 featured + 6 grid cards (7 total). Each card uses an animated banner from `public/banners/<slug>.html`.  
+6. **Contact / Resume**  
    Add resume download and LinkedIn link.
 
 ---

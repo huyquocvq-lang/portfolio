@@ -39,16 +39,23 @@ Do not merge if docs are out of sync with the code.
 | Impact / hero stats | `src/data/stats.js` |
 | About | `src/data/about.js` |
 | Skills | `src/data/skills.js` + `src/data/skillIcons.js` |
+| Personal Interest (copy + photos) | `src/data/personal.js` (+ `public/images/personal/*.jpeg`) |
 | Project card (homepage) | `src/data/projects.js` |
 | Project page (layout + copy) | `src/projects/<Name>Project.jsx` + `src/styles/projects/<name>.css` |
+| Animated banner (home thumb + detail hero) | `public/banners/<slug>.html` (edit in place) |
+| Dashboard embed | `src/embeds/<Name>Dashboard.tsx` + register in `EmbedSlot.jsx` + `projectEmbeds.js` |
+| Theme tokens | `src/styles/global.css` `:root` (`--bg-primary`, `--accent`, etc.) |
 | New route | `src/App.jsx` + `projects.js` slug/link |
 
 ## Architecture summary
 
-- **Home:** `src/pages/HomePage.jsx` → Hero, Nav, Impact, AboutSkills, Projects, Footer
-- **Projects:** 6 separate files in `src/projects/` — **no** shared generic template
-- **Shell:** `src/components/project/ProjectShell.jsx` — Nav, back link, prev/next, Footer
-- **State:** local only (`Hero`, `Nav`) — no Redux or API
+- **Home:** `src/pages/HomePage.jsx` → Hero, Nav, Impact, AboutSkills, **PersonalInterest**, Projects, Footer
+- **Projects:** 7 separate files in `src/projects/` — **no** shared generic template
+- **Shell:** `src/components/project/ProjectShell.jsx` — Nav, hero banner (iframe or image) + dim overlay, breadcrumbs, prev/next, Footer
+- **Banners:** `BannerEmbed.jsx` renders `public/banners/<slug>.html` as a sandboxed iframe (home cards + detail hero)
+- **Dashboards:** `EmbedSlot.jsx` lazy-loads `src/embeds/*Dashboard.tsx` (1 per project)
+- **Theme:** charcoal + bronze gold; tokens on `:root` of `global.css`, referenced via `var(--*)`
+- **State:** local only (`Hero`, `Nav`, `EmbedSlot` fullscreen, `AiRewriterProject` lightbox) — no Redux or API
 
 ## AI tooling
 

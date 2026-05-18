@@ -35,12 +35,14 @@ Open http://localhost:5173
 ## 3. Folder structure (quick reference)
 
 ```
-src/data/          ← Homepage copy (edit here)
-src/components/    ← Homepage UI
+src/data/          ← Homepage + project copy (edit here)
+src/components/    ← Homepage UI (Nav, Hero, Impact, AboutSkills, PersonalInterest, Projects, Footer, BannerEmbed)
 src/pages/         ← HomePage
 src/projects/      ← One JSX file per project (unique layout)
-src/styles/        ← CSS
+src/embeds/        ← TSX dashboard exports (lazy-loaded by EmbedSlot)
+src/styles/        ← CSS (theme vars live in :root of global.css)
 public/images/     ← Images (paths like /images/...)
+public/banners/    ← Self-contained HTML banner files for each project (one per slug)
 docs/              ← Technical docs (MUST update when code changes)
 docs/CONTENT_SOURCE.md  ← Authoring reference (mapping only, not bundled)
 ```
@@ -75,11 +77,18 @@ Do not leave docs describing old behavior.
 | `src/data/profile.js` | `FEATURE_MAP` (F2, F6), `FULL_DOCUMENTATION` §10 | `CONTENT_SOURCE.md` (if narrative changes; user instructions override) |
 | `src/data/stats.js` | `FEATURE_MAP` (F1, F3), `FULL_DOCUMENTATION` | `CONTENT_SOURCE.md` |
 | `src/data/about.js`, `skills.js`, `skillIcons.js` | `FEATURE_MAP` (F4) | |
-| `src/data/projects.js` (card/slug/link) | `FEATURE_MAP`, `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE`, `API_FLOW` | `FULL_DOCUMENTATION` Appendix B |
+| `src/data/personal.js` (interest copy + images) | `FEATURE_MAP` (F4b), `CONTENT_SOURCE.md` | |
+| `src/data/projects.js` (card/slug/link/banner) | `FEATURE_MAP`, `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE`, `API_FLOW` | `FULL_DOCUMENTATION` Appendix B |
+| `src/data/projectEmbeds.js` (embed keys) | `AI_AGENT_GUIDE` embed table, `src/embeds/README.md` | `FEATURE_MAP` |
 | `src/App.jsx` (routes) | `ARCHITECTURE_OVERVIEW`, `FEATURE_MAP`, `AI_AGENT_GUIDE`, `FULL_DOCUMENTATION` §5 | `USAGE_GUIDE` §3 |
 | `src/components/Hero.jsx` or hero CSS | `FEATURE_MAP` F1, `FULL_DOCUMENTATION` | |
 | `src/components/Nav.jsx` | `FEATURE_MAP` F2 | |
+| `src/components/PersonalInterest.jsx` / `BannerEmbed.jsx` | `FEATURE_MAP` (F4b / banner system), `AI_AGENT_GUIDE` | |
+| `src/components/project/EmbedSlot.jsx` | `AI_AGENT_GUIDE` embed table, `src/embeds/README.md` | `ARCHITECTURE_OVERVIEW` |
+| `src/embeds/*Dashboard.tsx` | `src/embeds/README.md`, `AI_AGENT_GUIDE` embed table, `FEATURE_MAP` (matching Fx) | |
+| `public/banners/*.html` | `FEATURE_MAP` banner section, `AI_AGENT_GUIDE` banner notes | `API_FLOW` |
 | `src/projects/*Project.jsx` | `FEATURE_MAP` (matching Fx), layout notes in FEATURE_MAP | `CONTENT_SOURCE.md` (matching project section) |
+| Theme tokens in `src/styles/global.css :root` | `FEATURE_MAP` theme section, `AI_AGENT_GUIDE` theme notes | `FULL_DOCUMENTATION` |
 | `docs/CONTENT_SOURCE.md` | `USAGE_GUIDE` §3.1 if policy changes | `FEATURE_MAP` content-source section |
 | `src/styles/projects/*.css` | Note in FEATURE_MAP if layout changes significantly | |
 | `src/components/project/ProjectShell.jsx` | `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE` (dangerous) | `FULL_DOCUMENTATION` |
@@ -118,14 +127,16 @@ Do not leave docs describing old behavior.
 4. Update `docs/FEATURE_MAP.md` (section Fx)
 5. **Do not** merge into a shared template — each project keeps its own files
 
-### Add a 7th project
+### Add a new project (e.g. 8th)
 
-1. `src/data/projects.js` — add object with `slug` and `link`
+1. `src/data/projects.js` — add object with `slug`, `link`, `image`, optional `banner` (`/banners/<slug>.html`)
 2. `src/projects/MyProject.jsx` + `src/styles/projects/my-project.css`
-3. `src/App.jsx` — add `<Route>`
-4. `public/images/projects/my-project.jpg`
-5. Update docs: `FEATURE_MAP`, `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE`, `FULL_DOCUMENTATION`, `API_FLOW`
-6. Verify prev/next on `ProjectShell`
+3. `src/App.jsx` — add `<Route path="/projects/<slug>" element={<MyProject />} />`
+4. `public/images/projects/my-project.jpg` (still useful as ProjectShell fallback)
+5. `public/banners/<slug>.html` (optional — animated hero banner, see existing files for wrapper CSS / JS scale pattern)
+6. Optional dashboard: drop `MyDashboard.tsx` in `src/embeds/`, register in `EmbedSlot.jsx` + `projectEmbeds.js`, mount `<EmbedSlot {...projectEmbeds.myKey} />` on the page
+7. Update docs: `FEATURE_MAP`, `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE`, `FULL_DOCUMENTATION`, `API_FLOW`
+8. Verify prev/next on `ProjectShell`
 
 ### Deploy
 
@@ -147,6 +158,7 @@ npm run build
 | `/projects/pf-master` | PfMasterProject |
 | `/projects/glean-planner` | GleanPlannerProject |
 | `/projects/ai-rewriter` | AiRewriterProject |
+| `/projects/media-ops-retro` | MediaOpsRetroProject |
 
 ---
 

@@ -6,6 +6,7 @@ import PublisherTrendProject from './projects/PublisherTrendProject'
 import PfMasterProject from './projects/PfMasterProject'
 import GleanPlannerProject from './projects/GleanPlannerProject'
 import AiRewriterProject from './projects/AiRewriterProject'
+import MediaOpsRetroProject from './projects/MediaOpsRetroProject'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/projects/pf-master" element={<PfMasterProject />} />
         <Route path="/projects/glean-planner" element={<GleanPlannerProject />} />
         <Route path="/projects/ai-rewriter" element={<AiRewriterProject />} />
+        <Route path="/projects/media-ops-retro" element={<MediaOpsRetroProject />} />
       </Routes>
     </BrowserRouter>
   )

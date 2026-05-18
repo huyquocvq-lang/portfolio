@@ -1,5 +1,5 @@
 .project-shell {
-  background: #fff;
+  background: var(--bg-primary);
 }
 
 .project-shell-banner {
@@ -13,17 +13,44 @@
 .project-shell-banner--fallback {
   background-image: linear-gradient(
     125deg,
-    #0f1720 0%,
-    #1e3a4f 42%,
-    #163040 70%,
-    #0d1218 100%
+    #1a1a1a 0%,
+    #2a2a2a 42%,
+    #222222 70%,
+    #1a1a1a 100%
   );
+}
+
+.project-shell-banner--embed {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 38vw, 420px);
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+.project-shell-banner-frame {
+  display: block;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 0;
+}
+/* Dim overlay on top of the live banner, so it reads as a hero image. */
+.project-shell-banner--embed::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.4) 100%);
 }
 
 .project-shell-breadcrumbs-bar {
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .project-shell-breadcrumbs-wrap {
@@ -42,22 +69,22 @@
 }
 
 .project-shell-breadcrumbs a {
-  color: #888;
+  color: var(--text-muted);
   transition: color 0.2s;
 }
 
 .project-shell-breadcrumbs a:hover {
-  color: #117a9b;
+  color: var(--accent);
 }
 
 .project-shell-breadcrumbs__sep {
-  color: #c8c8c8;
+  color: var(--text-muted);
   user-select: none;
 }
 
 .project-shell-breadcrumbs__current {
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--text-heading);
 }
 
 .project-shell-pager {
@@ -74,13 +101,13 @@
   flex-direction: column;
   gap: 8px;
   padding: 24px 28px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-subtle);
   transition: border-color 0.2s, background 0.2s;
 }
 
 .project-shell-pager-link:hover {
-  border-color: #117a9b;
-  background: #f7fafb;
+  border-color: var(--accent);
+  background: var(--bg-elevated);
 }
 
 .project-shell-pager-link--next {
@@ -93,12 +120,12 @@
   letter-spacing: 0.28em;
   text-transform: uppercase;
   font-weight: 700;
-  color: #999;
+  color: var(--accent);
 }
 
 .project-shell-pager-link .name {
   font-size: 17px;
-  color: #1a1a1a;
+  color: var(--text-heading);
   line-height: 1.35;
 }
 

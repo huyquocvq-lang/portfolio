@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project banner</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Native 560×510 — scale set via JS to fill iframe width exactly. */
+  .banner-fit {
+    width: 560px;
+    height: 510px;
+    flex-shrink: 0;
+    transform-origin: center center;
+    transform: scale(var(--scale, 1));
+  }
+</style>
+<script>
+  function setScale() {
+    var s = window.innerWidth / 560;
+    document.documentElement.style.setProperty('--scale', s);
+  }
+  setScale();
+  window.addEventListener('resize', setScale);
+</script>
+</head>
+<body>
+<div class="banner-fit">
+
+<style>
+@keyframes nodePulse{0%,100%{r:5;opacity:.7}50%{r:7;opacity:1}}
+@keyframes flowDot{0%{offset-distance:0%}100%{offset-distance:100%}}
+@keyframes scanLine{from{left:-80px}to{left:580px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes drift{0%{opacity:0;transform:translate(0,0)}20%{opacity:.35}80%{opacity:.15}100%{opacity:0;transform:translate(12px,-40px)}}
+.fu{animation:fadeUp .5s ease both}
+</style>
+<div style="width:560px;height:510px;background:linear-gradient(155deg,#0C0F16 0%,#120f24 40%,#0c1520 100%);border-radius:12px;overflow:hidden;position:relative;font-family:'Inter','Anthropic Sans',-apple-system,sans-serif;">
+
+  <div style="position:absolute;top:0;left:0;width:100%;height:1px;overflow:hidden;pointer-events:none;">
+    <div style="position:absolute;width:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(132,204,22,.5),transparent);animation:scanLine 4s linear infinite;"></div>
+  </div>
+
+  <div id="parts" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;"></div>
+
+  <svg width="560" height="280" style="position:absolute;top:10px;left:0;pointer-events:none;">
+    <g opacity=".03" stroke="#fff" stroke-width="0.5">
+      <line x1="0" y1="70" x2="560" y2="70"/><line x1="0" y1="140" x2="560" y2="140"/><line x1="0" y1="210" x2="560" y2="210"/>
+      <line x1="112" y1="0" x2="112" y2="280"/><line x1="224" y1="0" x2="224" y2="280"/><line x1="336" y1="0" x2="336" y2="280"/><line x1="448" y1="0" x2="448" y2="280"/>
+    </g>
+
+    <circle cx="80" cy="60" r="5" fill="#4A154B" opacity=".6"><animate attributeName="r" values="5;7;5" dur="3s" repeatCount="indefinite"/></circle>
+    <text x="80" y="82" text-anchor="middle" font-size="8" fill="#94A3B8" opacity=".5">Slack</text>
+
+    <circle cx="180" cy="45" r="5" fill="#0052CC" opacity=".6"><animate attributeName="r" values="5;7;5" dur="3.2s" repeatCount="indefinite"/></circle>
+    <text x="180" y="67" text-anchor="middle" font-size="8" fill="#94A3B8" opacity=".5">Jira</text>
+
+    <circle cx="280" cy="55" r="5" fill="#EA4335" opacity=".6"><animate attributeName="r" values="5;7;5" dur="2.8s" repeatCount="indefinite"/></circle>
+    <text x="280" y="77" text-anchor="middle" font-size="8" fill="#94A3B8" opacity=".5">Email</text>
+
+    <circle cx="380" cy="45" r="5" fill="#18BFFF" opacity=".6"><animate attributeName="r" values="5;7;5" dur="3.5s" repeatCount="indefinite"/></circle>
+    <text x="380" y="67" text-anchor="middle" font-size="8" fill="#94A3B8" opacity=".5">Airtable</text>
+
+    <circle cx="480" cy="60" r="5" fill="#1868DB" opacity=".6"><animate attributeName="r" values="5;7;5" dur="3.1s" repeatCount="indefinite"/></circle>
+    <text x="480" y="82" text-anchor="middle" font-size="8" fill="#94A3B8" opacity=".5">Confluence</text>
+
+    <line x1="80" y1="60" x2="280" y2="140" stroke="#4A154B" stroke-width="0.8" opacity=".2" stroke-dasharray="3 3"/>
+    <line x1="180" y1="45" x2="280" y2="140" stroke="#0052CC" stroke-width="0.8" opacity=".2" stroke-dasharray="3 3"/>
+    <line x1="280" y1="55" x2="280" y2="140" stroke="#EA4335" stroke-width="0.8" opacity=".2" stroke-dasharray="3 3"/>
+    <line x1="380" y1="45" x2="280" y2="140" stroke="#18BFFF" stroke-width="0.8" opacity=".2" stroke-dasharray="3 3"/>
+    <line x1="480" y1="60" x2="280" y2="140" stroke="#1868DB" stroke-width="0.8" opacity=".2" stroke-dasharray="3 3"/>
+
+    <circle cx="280" cy="140" r="14" fill="rgba(132,204,22,.1)" stroke="#84CC16" stroke-width="1" opacity=".6"/>
+    <text x="280" y="144" text-anchor="middle" font-size="11" fill="#84CC16" opacity=".8">🧠</text>
+    <text x="280" y="168" text-anchor="middle" font-size="9" fill="#84CC16" opacity=".5" font-weight="500">AI Agent</text>
+
+    <line x1="280" y1="155" x2="280" y2="205" stroke="#84CC16" stroke-width="1" opacity=".25" stroke-dasharray="3 3"/>
+
+    <g transform="translate(190,205)">
+      <rect width="180" height="60" rx="8" fill="rgba(132,204,22,.06)" stroke="rgba(132,204,22,.15)" stroke-width="0.8"/>
+      <rect x="10" y="10" width="8" height="8" rx="2" fill="#F87171" opacity=".6"/><text x="24" y="17" font-size="7.5" fill="#F87171" opacity=".7">P0 — Offer overpacing</text>
+      <rect x="10" y="23" width="8" height="8" rx="2" fill="#FBBF24" opacity=".5"/><text x="24" y="30" font-size="7.5" fill="#FBBF24" opacity=".7">P1 — Invoice missing</text>
+      <rect x="10" y="36" width="8" height="8" rx="2" fill="#60A5FA" opacity=".4"/><text x="24" y="43" font-size="7.5" fill="#60A5FA" opacity=".7">P2 — Creative specs due</text>
+      <rect x="10" y="49" width="8" height="8" rx="2" fill="#64748B" opacity=".3"/><text x="24" y="56" font-size="7.5" fill="#64748B" opacity=".6">P3 — Template update</text>
+      <text x="125" y="18" font-size="8" fill="#94A3B8" opacity=".4" font-family="monospace">→ Slack DM</text>
+    </g>
+  </svg>
+
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:0 28px 22px;">
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+        <span style="font-size:16px;">🤖</span>
+        <span style="font-size:10px;color:#84CC16;letter-spacing:2.5px;font-weight:600;">AI WORKFLOW AUTOMATION</span>
+      </div>
+      <div style="font-size:22px;font-weight:600;color:#E2E8F0;font-family:Georgia,serif;line-height:1.3;margin-bottom:4px;">Daily action planner</div>
+      <div style="font-size:11px;color:#64748B;line-height:1.5;">AI agent that searches Slack, Jira, Email, Airtable & Confluence overnight, scores tasks by revenue impact and urgency, and delivers a prioritized action list via Slack DM every morning</div>
+    </div>
+
+    <div style="display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap;">
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(132,204,22,.12);color:#84CC16;border:1px solid rgba(132,204,22,.2);">Glean AI</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(74,21,75,.2);color:#C084FC;border:1px solid rgba(74,21,75,.3);">Slack</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(0,82,204,.15);color:#60A5FA;border:1px solid rgba(0,82,204,.25);">Jira</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(24,191,255,.12);color:#2DD4BF;border:1px solid rgba(24,191,255,.2);">Airtable</span>
+      <span style="font-size:10px;padding:2px 9px;border-radius:10px;background:rgba(251,191,36,.1);color:#FBBF24;border:1px solid rgba(251,191,36,.2);">Workflow design</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
+      <div class="fu" style="animation-delay:.15s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#84CC16;font-family:Georgia,serif;">6</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">PLATFORMS</div>
+      </div>
+      <div class="fu" style="animation-delay:.3s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#F87171;font-family:Georgia,serif;">P0–P3</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">PRIORITY TIERS</div>
+      </div>
+      <div class="fu" style="animation-delay:.45s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#FBBF24;font-family:Georgia,serif;">4-6hr</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">SAVED / DAY</div>
+      </div>
+      <div class="fu" style="animation-delay:.6s;text-align:center;">
+        <div style="font-size:22px;font-weight:600;color:#A78BFA;font-family:Georgia,serif;">Auto</div>
+        <div style="font-size:8px;color:#64748B;letter-spacing:1px;">DAILY SLACK DM</div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,.05);">
+      <div style="font-size:10px;color:#334155;letter-spacing:1.5px;">GLEAN AI · SLACK · JIRA · AIRTABLE · CONFLUENCE</div>
+      <div style="font-size:10px;color:#475569;">Media ops</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const p=document.getElementById('parts');
+function s(){const d=document.createElement('div');const x=60+Math.random()*440;const y=30+Math.random()*200;const sz=1.5+Math.random()*2;const c=['#84CC16','#A78BFA','#4A154B','#FBBF24','#F87171','#60A5FA'];d.style.cssText=`position:absolute;left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;border-radius:50%;background:${c[Math.floor(Math.random()*6)]};animation:drift ${2+Math.random()*2}s ease-out forwards;`;p.appendChild(d);setTimeout(()=>d.remove(),4000);}
+setInterval(s,600);
+</script>
+</div>
+</body>
+</html>

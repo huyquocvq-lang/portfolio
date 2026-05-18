@@ -1,5 +1,7 @@
 import ProjectShell from '../components/project/ProjectShell'
+import EmbedSlot from '../components/project/EmbedSlot'
 import { featuredProject as meta } from '../data/projects'
+import { projectEmbeds } from '../data/projectEmbeds'
 import '../styles/projects/winterplace.css'
 
 export default function WinterplaceProject() {
@@ -19,6 +21,8 @@ export default function WinterplaceProject() {
             <strong>lowest budget allocation</strong>.
           </p>
         </div>
+
+        <EmbedSlot {...projectEmbeds.winterplace} />
 
         <div className="wp-body">
           <div className="wp-split">

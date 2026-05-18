@@ -1,0 +1,154 @@
+.retro section,
+.retro aside {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 32px 40px;
+}
+.retro h2 {
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  color: var(--text-heading);
+  letter-spacing: 0.005em;
+}
+.retro p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--text-body);
+}
+.retro-why {
+  text-align: center;
+}
+.retro-rules ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.retro-rules li {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-body);
+  padding: 14px 18px;
+  background: var(--bg-elevated);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+}
+.retro-flow-lead {
+  margin-bottom: 24px;
+}
+.retro-steps {
+  display: flex;
+  flex-direction: column;
+}
+.retro-step {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 22px 0 22px 30px;
+  border-left: 2px solid var(--accent);
+  margin-left: 16px;
+  position: relative;
+}
+.retro-step-n {
+  position: absolute;
+  left: -16px;
+  top: 22px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.retro-step h3 {
+  font-size: 17px;
+  margin-bottom: 4px;
+  color: var(--text-heading);
+}
+.retro-step p {
+  font-size: 15px;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+.retro-tabs {
+  max-width: 1100px;
+}
+.retro-tab-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.retro-tab-card {
+  padding: 22px 22px 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+}
+.retro-tab-name {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.retro-tab-card p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-body);
+}
+.retro-dashboard {
+  max-width: 1100px;
+  text-align: center;
+}
+.retro-dashboard-frame {
+  margin-top: 18px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-elevated-2);
+  aspect-ratio: 16 / 11;
+}
+.retro-dashboard-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.retro-dashboard-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.retro-note {
+  margin-top: 8px;
+  padding: 18px 22px;
+  background: var(--bg-elevated);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+.retro-note p {
+  font-size: 14px;
+  color: var(--text-body);
+}
+@media (max-width: 768px) {
+  .retro section,
+  .retro aside {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .retro-tab-grid { grid-template-columns: 1fr; }
+}

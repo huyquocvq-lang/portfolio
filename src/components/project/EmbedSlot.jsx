@@ -2,9 +2,13 @@ import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import '../../styles/embed-slot.css'
 
 const dashboards = {
-  pfMaster: lazy(() => import('../../embeds/PfMasterDashboard')),
+  winterplace: lazy(() => import('../../embeds/WinterplaceDashboard')),
+  cutover: lazy(() => import('../../embeds/CutoverDashboard')),
   momTrend: lazy(() => import('../../embeds/MomTrendDashboard')),
-  cutover: lazy(() => import('../../embeds/CutoverDashboard'))
+  pfMaster: lazy(() => import('../../embeds/PfMasterDashboard')),
+  gleanPlanner: lazy(() => import('../../embeds/GleanPlannerDashboard')),
+  aiRewriter: lazy(() => import('../../embeds/AiRewriterDashboard')),
+  mediaOpsRetro: lazy(() => import('../../embeds/MediaOpsRetroDashboard'))
 }
 
 export default function EmbedSlot({ embedKey, title }) {

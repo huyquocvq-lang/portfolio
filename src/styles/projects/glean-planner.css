@@ -5,20 +5,20 @@
   text-align: center;
   font-size: 17px;
   line-height: 1.8;
-  color: #555;
+  color: var(--text-body);
 }
 .glean-sources {
   max-width: 560px;
   margin: 0 auto 48px;
   padding: 32px;
-  background: #f7f7f7;
+  background: var(--bg-elevated);
   border-radius: 8px;
 }
 .glean-sources h2 {
   font-size: 13px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #999;
+  color: var(--accent);
   margin-bottom: 16px;
   text-align: center;
 }
@@ -33,9 +33,10 @@
 .glean-sources li {
   font-size: 14px;
   padding: 8px 16px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--bg-elevated-2);
+  border: 1px solid var(--border-subtle);
   border-radius: 6px;
+  color: var(--text-body);
 }
 .glean-flow {
   max-width: 560px;
@@ -47,6 +48,7 @@
   font-weight: 300;
   margin-bottom: 28px;
   text-align: center;
+  color: var(--text-heading);
 }
 .glean-steps {
   display: flex;
@@ -58,7 +60,7 @@
   grid-template-columns: 48px 1fr;
   gap: 20px;
   padding: 24px 0;
-  border-left: 2px solid #117a9b;
+  border-left: 2px solid var(--accent);
   margin-left: 23px;
   padding-left: 28px;
   position: relative;
@@ -70,8 +72,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #117a9b;
-  color: #fff;
+  background: var(--accent);
+  color: var(--text-on-accent);
   font-size: 14px;
   font-weight: 700;
   display: flex;
@@ -81,17 +83,18 @@
 .glean-step h3 {
   font-size: 17px;
   margin-bottom: 6px;
+  color: var(--text-heading);
 }
 .glean-step p {
   font-size: 15px;
-  color: #666;
+  color: var(--text-body);
   line-height: 1.6;
 }
 .glean-example {
   max-width: 560px;
   margin: 40px auto 32px;
   padding: 28px 32px;
-  border: 1px dashed #ccc;
+  border: 1px dashed var(--border-accent);
   text-align: center;
 }
 .glean-example h2 {
@@ -99,12 +102,12 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   margin-bottom: 10px;
-  color: #888;
+  color: var(--accent);
 }
 .glean-example p {
   font-size: 16px;
   line-height: 1.7;
-  color: #555;
+  color: var(--text-body);
 }
 @media (max-width: 768px) {
   .project-intro,
