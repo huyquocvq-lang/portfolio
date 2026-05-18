@@ -3,7 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Production URL is hard-coded into og:url / og:image / canonical because
+      social crawlers (LinkedIn, Facebook, Slack, iMessage, WhatsApp) DO NOT run
+      JavaScript and DO NOT respect relative paths.
+
+      After the first deploy, search-and-replace EVERY occurrence of
+      https://jenny-tang.vercel.app  with your real production origin, e.g.:
+
+        sed -i '' 's|https://jenny-tang.vercel.app|https://YOUR-DOMAIN|g' index.html
+
+      Then re-build and re-scrape via:
+        - LinkedIn Post Inspector: https://www.linkedin.com/post-inspector/
+        - Facebook Sharing Debugger: https://developers.facebook.com/tools/debug/
+        - Twitter/X Card Validator: https://cards-dev.twitter.com/validator
+        - Slack: post in any channel → use the "..." menu → "Remove link preview" → repost
+    -->
+
     <title>Jenny Tang — Portfolio</title>
+    <meta
+      name="description"
+      content="Jenny Tang — Media Operations Analyst building data tools, programmatic optimization workflows, and AI automation that help teams grow revenue faster."
+    />
+    <meta name="author" content="Jenny Tang" />
+    <meta name="theme-color" content="#1a1a1a" />
+
+    <link rel="canonical" href="https://jenny-tang.vercel.app/" />
+
+    <!-- Open Graph (LinkedIn, Facebook, iMessage, Slack, WhatsApp) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Jenny Tang Portfolio" />
+    <meta property="og:url" content="https://jenny-tang.vercel.app/" />
+    <meta property="og:title" content="Jenny Tang — Portfolio" />
+    <meta
+      property="og:description"
+      content="Media Operations Analyst building data tools, programmatic optimization workflows, and AI automation that help teams grow revenue faster."
+    />
+    <meta property="og:image" content="https://jenny-tang.vercel.app/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://jenny-tang.vercel.app/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Jenny Tang — Media Operations Analyst portfolio cover"
+    />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jenny Tang — Portfolio" />
+    <meta
+      name="twitter:description"
+      content="Media Operations Analyst building data tools, programmatic optimization workflows, and AI automation that help teams grow revenue faster."
+    />
+    <meta name="twitter:image" content="https://jenny-tang.vercel.app/og-image.jpg" />
+    <meta
+      name="twitter:image:alt"
+      content="Jenny Tang — Media Operations Analyst portfolio cover"
+    />
+
+    <link rel="icon" type="image/jpeg" href="/og-image.jpg" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Source+Sans+Pro:wght@300;400;600;700&display=swap"
       rel="stylesheet"
