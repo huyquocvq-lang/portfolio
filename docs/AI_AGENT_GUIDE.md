@@ -1,4 +1,4 @@
-# AI Agent Guide — Jenny Tang Portfolio
+# AI Agent Guide - Jenny Tang Portfolio
 
 > **Read this first.** This repo is a **React 18 + Vite 5** marketing portfolio website, **not React Native**. Do not add `react-native`, `expo`, or mobile native folders unless explicitly requested.
 
@@ -25,12 +25,12 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 | Area | Files | Risk |
 |------|-------|------|
 | Copy / metrics | `src/data/profile.js`, `stats.js`, `about.js`, `skills.js`, `personal.js`, `education.js`, `experience.js` | Low |
-| Project card blurbs | `src/data/projects.js` | Low — keep `slug` + `link` + `banner` in sync |
+| Project card blurbs | `src/data/projects.js` | Low - keep `slug` + `link` + `banner` in sync |
 | Single project layout | `src/projects/<Name>Project.jsx` + matching `src/styles/projects/*.css` | Low if isolated |
-| Homepage section styles | `src/styles/global.css` | Medium — affects whole site (theme vars in `:root` are global) |
+| Homepage section styles | `src/styles/global.css` | Medium - affects whole site (theme vars in `:root` are global) |
 | Footer / Impact text | `src/components/Footer.jsx`, `Impact.jsx` | Low |
 | Personal photos | `public/images/personal/personal_*.jpeg` | Low |
-| Banner HTML | `public/banners/<slug>.html` | Low — keep the `.banner-fit` wrapper + scale JS |
+| Banner HTML | `public/banners/<slug>.html` | Low - keep the `.banner-fit` wrapper + scale JS |
 | Dashboard embed body | `src/embeds/*Dashboard.tsx` (overwrite in place; keep default export) | Low |
 | Images | `public/images/**` | Low |
 | Content mapping reference | `docs/CONTENT_SOURCE.md` | Low (not bundled; user chat overrides) |
@@ -43,13 +43,13 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 | `projects.js` slug/link order | Breaks prev/next pager in `ProjectShell` |
 | `getAllProjects()` order | Featured is always index 0 for pager |
 | `Hero.jsx` `<picture>` source order | Most-specific media first; WebP before PNG within each art-direction. Reordering can pick the wrong image (or none) |
-| `public/hero-banners/*` filenames | Hard-coded slugs (`hero_mobile_portrait`, `hero_ultrawide`, …) — renaming breaks `Hero.jsx` |
+| `public/hero-banners/*` filenames | Hard-coded slugs (`hero_mobile_portrait`, `hero_ultrawide`, …) - renaming breaks `Hero.jsx` |
 | `Nav.jsx` body scroll lock | Regressions trap scroll on mobile |
 | `skillIcons.js` keys | Unknown `icon` key in `skills.js` → blank icon |
 | `ProjectShell.jsx` | Shared by all 7 project pages |
 | `BannerEmbed.jsx` + `public/banners/*.html` | Banner HTML must keep `.banner-fit` 560×510 + inline JS that sets `--scale` |
 | `EmbedSlot.jsx` `dashboards` map | Missing entry for an embed key in `projectEmbeds.js` → silently renders nothing |
-| Theme tokens in `:root` (`global.css`) | Renaming a `--*` variable breaks every file that consumes it — refactor with care |
+| Theme tokens in `:root` (`global.css`) | Renaming a `--*` variable breaks every file that consumes it - refactor with care |
 
 ## Project dashboard embeds (F8–F10)
 
@@ -65,7 +65,7 @@ TSX exports in `src/embeds/`, lazy-loaded by `EmbedSlot.jsx` + `projectEmbeds.js
 | `AiRewriterDashboard.tsx`     | `aiRewriter`     | `/projects/ai-rewriter` |
 | `MediaOpsRetroDashboard.tsx`  | `mediaOpsRetro`  | `/projects/media-ops-retro` |
 
-Requires `recharts`. `EmbedSlot` — inline preview + **Fullscreen ↗** text control (same style as former external link). To add a new embed: see `src/embeds/README.md`.
+Requires `recharts`. `EmbedSlot` - inline preview + **Fullscreen ↗** text control (same style as former external link). To add a new embed: see `src/embeds/README.md`.
 
 ## Banner system (home thumbs + detail hero)
 
@@ -73,10 +73,10 @@ Each project ships an animated/interactive HTML banner used both as the home-car
 
 | Piece | Detail |
 |-------|--------|
-| Files | `public/banners/<slug>.html` (one per project) — canonical source, edit in place |
+| Files | `public/banners/<slug>.html` (one per project) - canonical source, edit in place |
 | Native canvas | 560 × 510 inside `.banner-fit` |
-| Scaling | Inline `<script>` sets `--scale = window.innerWidth / 560` on `<html>`; CSS uses `transform: scale(var(--scale))`. **Do not** revert to `transform: scale(calc(100vw/560))` — that's invalid CSS (length where a number is required) and silently leaves scale at 1 |
-| Wrapper | `src/components/BannerEmbed.jsx` — sandboxed iframe (`allow-scripts allow-same-origin`), `loading="lazy"` |
+| Scaling | Inline `<script>` sets `--scale = window.innerWidth / 560` on `<html>`; CSS uses `transform: scale(var(--scale))`. **Do not** revert to `transform: scale(calc(100vw/560))` - that's invalid CSS (length where a number is required) and silently leaves scale at 1 |
+| Wrapper | `src/components/BannerEmbed.jsx` - sandboxed iframe (`allow-scripts allow-same-origin`), `loading="lazy"` |
 | Mount | Home: `FeaturedProject` / `OtherProject`; Detail: `ProjectShell` when `project.banner` ends in `.html`/`.svg` |
 | Detail overlay | `radial-gradient` + `linear-gradient` dim on `.project-shell-banner--embed::after` |
 
@@ -100,12 +100,12 @@ CSS variables on `:root` in `src/styles/global.css` define the **dark** defaults
 
 Theme switching:
 
-- `src/context/ThemeContext.jsx` — `ThemeProvider` wraps `<App />` in `main.jsx`. Hook: `useTheme()` → `{ theme, setTheme, toggleTheme }`.
-- `src/components/ThemeToggle.jsx` — sun/moon button mounted in `Nav.jsx` `.nav-actions` (visible on home + project pages, desktop + mobile).
+- `src/context/ThemeContext.jsx` - `ThemeProvider` wraps `<App />` in `main.jsx`. Hook: `useTheme()` → `{ theme, setTheme, toggleTheme }`.
+- `src/components/ThemeToggle.jsx` - sun/moon button mounted in `Nav.jsx` `.nav-actions` (visible on home + project pages, desktop + mobile).
 - Preference persisted to `localStorage` key `portfolio-theme`. First visit reads `prefers-color-scheme`.
 - `index.html` `<head>` runs an inline anti-FOUC script that sets `data-theme` and the `<meta name="theme-color">` before the React bundle loads.
 
-Always-dark surfaces (kept dark in both themes) — hero overlay copy, AI rewriter lightbox, banner iframes, dashboard internal palettes — use the `--text-on-dark*` / `--border-on-dark` family or are inherently isolated (sandboxed iframe, Claude artifact dashboards).
+Always-dark surfaces (kept dark in both themes) - hero overlay copy, AI rewriter lightbox, banner iframes, dashboard internal palettes - use the `--text-on-dark*` / `--border-on-dark` family or are inherently isolated (sandboxed iframe, Claude artifact dashboards).
 
 ## Personal interest section (F4b)
 
@@ -123,7 +123,7 @@ Click a screenshot in `/projects/ai-rewriter` → fullscreen overlay (`.air-ligh
 ## Do NOT assume exists
 
 - Redux / Zustand
-- Multiple Context providers (only `ThemeContext` exists — see `src/context/ThemeContext.jsx`)
+- Multiple Context providers (only `ThemeContext` exists - see `src/context/ThemeContext.jsx`)
 - `src/api/`, `src/services/`, `src/hooks/` (no custom hooks folder yet)
 - Environment variables (none configured)
 - Tests (`*.test.*` absent)
@@ -133,7 +133,7 @@ Click a screenshot in `/projects/ai-rewriter` → fullscreen overlay (`.air-ligh
 ## Workflow: edit homepage text
 
 1. Check `docs/CONTENT_SOURCE.md` for the intended copy (mapping only).
-2. Apply changes to `src/data/*` — **user chat instructions override** `CONTENT_SOURCE.md`.
+2. Apply changes to `src/data/*` - **user chat instructions override** `CONTENT_SOURCE.md`.
 3. If narrative changed, update the matching section in `docs/CONTENT_SOURCE.md` unless the user gave one-off copy.
 4. Run `npm run dev` and verify `/#impact`, `/#about`, `/#work`.
 5. Update `docs/FEATURE_MAP.md` if feature scope changed.
@@ -141,7 +141,7 @@ Click a screenshot in `/projects/ai-rewriter` → fullscreen overlay (`.air-ligh
 
 ## Workflow: add a new project (8th)
 
-1. **Data** — Add object to `otherProjects` (or swap featured) in `src/data/projects.js`:
+1. **Data** - Add object to `otherProjects` (or swap featured) in `src/data/projects.js`:
 
 ```javascript
 {
@@ -157,7 +157,7 @@ Click a screenshot in `/projects/ai-rewriter` → fullscreen overlay (`.air-ligh
 }
 ```
 
-2. **Page** — Create `src/projects/MyNewProject.jsx`:
+2. **Page** - Create `src/projects/MyNewProject.jsx`:
 
 ```javascript
 import ProjectShell from '../components/project/ProjectShell'
@@ -170,7 +170,7 @@ export default function MyNewProject() {
   return (
     <ProjectShell slug="my-new-project">
       <article className="myproj">
-        {/* Custom layout — do not copy generic template */}
+        {/* Custom layout - do not copy generic template */}
         <h1>{meta.title}</h1>
       </article>
     </ProjectShell>
@@ -178,9 +178,9 @@ export default function MyNewProject() {
 }
 ```
 
-3. **Styles** — `src/styles/projects/my-new-project.css` (unique class prefix).
+3. **Styles** - `src/styles/projects/my-new-project.css` (unique class prefix).
 
-4. **Route** — `src/App.jsx`:
+4. **Route** - `src/App.jsx`:
 
 ```javascript
 import MyNewProject from './projects/MyNewProject'
@@ -188,13 +188,13 @@ import MyNewProject from './projects/MyNewProject'
 <Route path="/projects/my-new-project" element={<MyNewProject />} />
 ```
 
-5. **Assets** — `public/images/projects/my-new-project.jpg` (fallback) + optionally `public/banners/my-new-project.html` (use any existing banner file as a template — keep the `.banner-fit` 560×510 wrapper and inline `--scale` script).
+5. **Assets** - `public/images/projects/my-new-project.jpg` (fallback) + optionally `public/banners/my-new-project.html` (use any existing banner file as a template - keep the `.banner-fit` 560×510 wrapper and inline `--scale` script).
 
-6. **Dashboard (optional)** — Drop `MyNewDashboard.tsx` in `src/embeds/`; register in `src/components/project/EmbedSlot.jsx` `dashboards` map; add `myNew: { embedKey: 'myNew', title: '…' }` to `src/data/projectEmbeds.js`; mount `<EmbedSlot {...projectEmbeds.myNew} />` on the page.
+6. **Dashboard (optional)** - Drop `MyNewDashboard.tsx` in `src/embeds/`; register in `src/components/project/EmbedSlot.jsx` `dashboards` map; add `myNew: { embedKey: 'myNew', title: '…' }` to `src/data/projectEmbeds.js`; mount `<EmbedSlot {...projectEmbeds.myNew} />` on the page.
 
-7. **Verify** — Homepage card links, project page, prev/next pager order, banner fits at any width.
+7. **Verify** - Homepage card links, project page, prev/next pager order, banner fits at any width.
 
-8. **Docs** — Update `FEATURE_MAP.md`, `ARCHITECTURE_OVERVIEW.md`, `FULL_DOCUMENTATION.md`, `API_FLOW.md`, `src/embeds/README.md` (if you added an embed), and `AGENTS.md` if routes changed.
+8. **Docs** - Update `FEATURE_MAP.md`, `ARCHITECTURE_OVERVIEW.md`, `FULL_DOCUMENTATION.md`, `API_FLOW.md`, `src/embeds/README.md` (if you added an embed), and `AGENTS.md` if routes changed.
 
 ## Workflow: add homepage section
 
@@ -236,7 +236,7 @@ After `npm run build`, deploy `dist/` with SPA fallback to `index.html` for `/pr
 | Mistake | Fix |
 |---------|-----|
 | `href="#work"` on project page | Use `href="/#work"` or `<Link to="/#work">` |
-| `motion.div` typo in JSX | Use `motion.div` — project has no framer-motion; use `div` |
+| `motion.div` typo in JSX | Use `motion.div` - project has no framer-motion; use `div` |
 | Shared generic project template | Each project must keep its own JSX/CSS file |
 | Huge images in repo | Optimize; reference paths under `public/images/` |
 | Editing only `projects.js` for case study body | Long-form content lives in `src/projects/*.jsx` |
@@ -281,8 +281,8 @@ docs/CONTENT_SOURCE.md                  Authoring reference for mapping (not run
 
 ## Related docs
 
-- [USAGE_GUIDE.md](./USAGE_GUIDE.md) — usage guide + doc sync table
-- [AGENTS.md](../AGENTS.md) — root entry for Cursor / Claude
+- [USAGE_GUIDE.md](./USAGE_GUIDE.md) - usage guide + doc sync table
+- [AGENTS.md](../AGENTS.md) - root entry for Cursor / Claude
 - [ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md)
 - [FEATURE_MAP.md](./FEATURE_MAP.md)
 - [API_FLOW.md](./API_FLOW.md)

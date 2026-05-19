@@ -21,11 +21,11 @@ const FEATURES = [
   },
   {
     title: 'Placement notes',
-    text: 'QL on/off, SS, backfill, row position, paused, testing, ramping — ops context beside metrics.'
+    text: 'QL on/off, SS, backfill, row position, paused, testing, ramping - ops context beside metrics.'
   },
   {
     title: 'Discrepancy checks',
-    text: 'Flag 1P vs 3P click mismatches — e.g. AOL bot-like spike on CPC offers before budget waste.'
+    text: 'Flag 1P vs 3P click mismatches - e.g. AOL bot-like spike on CPC offers before budget waste.'
   }
 ]
 
@@ -47,7 +47,7 @@ export default function PfMasterProject() {
 
         <section className="pfm-context">
           <p>
-            Before PF Master, the team pulled Tableau and maintained separate publisher files — manual,
+            Before PF Master, the team pulled Tableau and maintained separate publisher files - manual,
             slow, and hard to scale. Stakeholders needed one place for performance, lineups, cost, and
             operational notes.
           </p>
@@ -67,7 +67,7 @@ export default function PfMasterProject() {
         <section className="pfm-daily">
           <h2>Daily reference</h2>
           <p>
-            Became the team&apos;s go-to for ramp/pause/reallocate decisions — without jumping across
+            Became the team&apos;s go-to for ramp/pause/reallocate decisions - without jumping across
             Tableau, spreadsheets, and platform cost exports.
           </p>
         </section>

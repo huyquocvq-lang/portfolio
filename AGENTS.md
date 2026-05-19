@@ -1,4 +1,4 @@
-# AGENTS.md — Jenny Tang Portfolio
+# AGENTS.md - Jenny Tang Portfolio
 
 > **Read this file before changing code.** This repo is **React 18 + Vite 5** (web), **not React Native**.
 
@@ -51,8 +51,8 @@ Do not merge if docs are out of sync with the code.
 ## Architecture summary
 
 - **Home:** `src/pages/HomePage.jsx` → Hero, Nav, Impact, AboutSkills, **PersonalInterest**, Projects, Footer
-- **Projects:** 7 separate files in `src/projects/` — **no** shared generic template
-- **Shell:** `src/components/project/ProjectShell.jsx` — Nav, hero banner (iframe or image) + dim overlay, breadcrumbs, prev/next, Footer
+- **Projects:** 7 separate files in `src/projects/` - **no** shared generic template
+- **Shell:** `src/components/project/ProjectShell.jsx` - Nav, hero banner (iframe or image) + dim overlay, breadcrumbs, prev/next, Footer
 - **Banners:** `BannerEmbed.jsx` renders `public/banners/<slug>.html` as a sandboxed iframe (home cards + detail hero)
 - **Dashboards:** `EmbedSlot.jsx` lazy-loads `src/embeds/*Dashboard.tsx` (1 per project)
 - **Theme:** charcoal + bronze gold dark default; light theme via `:root[data-theme="light"]` override. Tokens on `:root` of `global.css`, referenced via `var(--*)`. Toggle in nav (`ThemeToggle`), state in `ThemeContext`, persisted to `localStorage`.

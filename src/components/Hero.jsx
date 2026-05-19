@@ -10,7 +10,7 @@ const HERO_FALLBACK = 'hero_desktop_fhd'
 // whose format is supported. Most specific first; ultrawide before generic
 // landscape; width caps (4K, QHD) before aspect-ratio buckets.
 //
-// NOTE: WebP variants are commented out — only `.png` files exist in
+// NOTE: WebP variants are commented out - only `.png` files exist in
 // public/hero-banners/ today. To enable WebP delivery, generate `.webp`
 // next to each `.png` (e.g. `cwebp -q 85 file.png -o file.webp`) and
 // uncomment the WebP <source> lines below.

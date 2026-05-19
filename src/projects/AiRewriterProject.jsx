@@ -29,12 +29,12 @@ const OUTPUTS = [
 const SHOTS = [
   {
     src: '/images/agents/ai-rewriter-input.png',
-    alt: 'AI rewriter agent — loading a media ops draft and choosing the Account Manager audience',
+    alt: 'AI rewriter agent - loading a media ops draft and choosing the Account Manager audience',
     caption: 'Load a sample draft, choose audience, run the agent.'
   },
   {
     src: '/images/agents/ai-rewriter-output.png',
-    alt: 'AI rewriter agent — final polished output rewritten for an Account Manager',
+    alt: 'AI rewriter agent - final polished output rewritten for an Account Manager',
     caption: 'Final polished output, tailored to the chosen audience.'
   }
 ]
@@ -109,7 +109,7 @@ export default function AiRewriterProject() {
             The interactive demo lets you experience the agent end-to-end. You can load two
             pre-built sample drafts (a media ops weekly update and a performance review), pick your
             audience (<strong>Executive</strong> or <strong>Account Manager</strong>), and hit
-            <strong> “Run content agent.”</strong> The workflow animates through five steps —
+            <strong> “Run content agent.”</strong> The workflow animates through five steps -
             trigger, branch detection, audience-tailored thinking, refinement, and output. The
             final polished text types out live with markdown-style bold headers, and you can click
             <strong> “Switch to Account Manager version”</strong> to instantly see the same draft

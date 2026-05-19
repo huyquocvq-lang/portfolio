@@ -1,4 +1,4 @@
-# Full Technical Documentation — Jenny Tang Portfolio
+# Full Technical Documentation - Jenny Tang Portfolio
 
 **Repository:** `huyquocvq-lang/portfolio`  
 **Document version:** 1.0  
@@ -74,7 +74,7 @@ portfolio/
 │   └── API_FLOW.md
 ├── public/
 │   └── images/                # Static assets (served at /images/...)
-│       ├── hero-bg.jpg        # (expected — may be placeholder)
+│       ├── hero-bg.jpg        # (expected - may be placeholder)
 │       └── projects/*.jpg
 └── src/
     ├── main.jsx               # ReactDOM.createRoot entry
@@ -138,12 +138,12 @@ portfolio/
 | `OtherProject.jsx` | Grid project card; ditto |
 | `BannerEmbed.jsx` | Sandboxed `<iframe>` wrapper for `public/banners/*.html` |
 | `Footer.jsx` | CTA + contact columns |
-| `project/ProjectShell.jsx` | Wrapper for all project detail pages — hero banner + breadcrumbs + pager |
+| `project/ProjectShell.jsx` | Wrapper for all project detail pages - hero banner + breadcrumbs + pager |
 | `project/EmbedSlot.jsx` | Lazy slot for dashboards; fullscreen toggle |
 
 ### `/src/projects`
 
-**One React component per case study** — each with custom markup and dedicated CSS. This is intentional; do not merge into a generic template.
+**One React component per case study** - each with custom markup and dedicated CSS. This is intentional; do not merge into a generic template.
 
 ### `/src/data`
 
@@ -181,7 +181,7 @@ Files copied verbatim to build output root. Image URLs start with `/images/`. Ba
 
 - **Presentation components** read imported JSON-like modules from `src/data/`.
 - **Project pages** embed narrative structure in dedicated JSX files.
-- **No global state manager** — local state only where interaction requires it (hero, nav menu).
+- **No global state manager** - local state only where interaction requires it (hero, nav menu).
 
 ## Data flow
 
@@ -195,7 +195,7 @@ User click     →  react-router Link    →  swap route component, no full relo
 
 | Component | State | Purpose |
 |-----------|-------|---------|
-| `Hero` | (none) | Pure presentation — `<picture>` handles art direction, CSS handles layout/hover |
+| `Hero` | (none) | Pure presentation - `<picture>` handles art direction, CSS handles layout/hover |
 | `Nav` | `open` | Mobile drawer |
 | `EmbedSlot` | `fullscreen` | Toggle dashboard fullscreen view |
 | `AiRewriterProject` | `zoomed` | Screenshot lightbox overlay |
@@ -242,11 +242,11 @@ npm install
 
 ## iOS setup
 
-**N/A** — not a native iOS project.
+**N/A** - not a native iOS project.
 
 ## Android setup
 
-**N/A** — not a native Android project.
+**N/A** - not a native Android project.
 
 ## Run commands
 
@@ -288,7 +288,7 @@ npm run preview   # Preview production build locally
 
 ## Stack navigation
 
-**N/A** — web SPA uses flat route table, not React Navigation stacks.
+**N/A** - web SPA uses flat route table, not React Navigation stacks.
 
 ## Tab navigation
 
@@ -354,7 +354,7 @@ const [open, setOpen] = useState(false)
 
 ## Store / actions / reducers / async / side effects
 
-**N/A** — no Redux or similar.
+**N/A** - no Redux or similar.
 
 Side effects limited to:
 - `useEffect` for scroll listeners, keyboard Escape, hash scroll
@@ -416,7 +416,7 @@ Two themes share one set of tokens. **Dark is the default** and lives on `:root`
 | `--bg-primary` | `#1a1a1a` | `#ffffff` | Body + most sections |
 | `--bg-elevated` | `#222222` | `#f4f4f4` | Cards, panels |
 | `--bg-elevated-2` | `#2a2a2a` | `#ececec` | Tiles, dashboard surrounds |
-| `--accent` | `#c5a47e` | `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze — same in both themes for brand) |
+| `--accent` | `#c5a47e` | `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze - same in both themes for brand) |
 | `--accent-hover` | `#d4b896` | `#b89468` | Accent hover state |
 | `--text-heading` | `#ffffff` | `#1a1a1a` | Headings, big stat numbers, nav links |
 | `--text-body` | `#a0a0a0` | `#555555` | Paragraph copy, footer body |
@@ -437,10 +437,10 @@ Two themes share one set of tokens. **Dark is the default** and lives on `:root`
 
 ### Surfaces excluded from theme switching
 
-- **Hero** (`Hero.jsx`) — copy sits on top of an image with a fixed dark overlay (`rgba(0,0,0,0.55)`). White text is intentional in both themes for readability.
-- **AI rewriter lightbox** (`src/styles/projects/ai-rewriter.css`) — full-screen modal stays dark for media viewing.
-- **Animated banners** (`public/banners/*.html`) — self-contained iframed documents with their own colors; not driven by the host site's `data-theme`. Their card/hero wrappers (border, fallback bg) **do** follow the site theme.
-- **Dashboard embeds** (`src/embeds/*Dashboard.tsx`) — Claude artifact exports with hard-coded palettes. The surrounding `EmbedSlot` chrome (border, title, fullscreen overlay) follows the site theme.
+- **Hero** (`Hero.jsx`) - copy sits on top of an image with a fixed dark overlay (`rgba(0,0,0,0.55)`). White text is intentional in both themes for readability.
+- **AI rewriter lightbox** (`src/styles/projects/ai-rewriter.css`) - full-screen modal stays dark for media viewing.
+- **Animated banners** (`public/banners/*.html`) - self-contained iframed documents with their own colors; not driven by the host site's `data-theme`. Their card/hero wrappers (border, fallback bg) **do** follow the site theme.
+- **Dashboard embeds** (`src/embeds/*Dashboard.tsx`) - Claude artifact exports with hard-coded palettes. The surrounding `EmbedSlot` chrome (border, title, fullscreen overlay) follows the site theme.
 
 Display font: Cormorant Garamond (`.author-name`). Body: Source Sans Pro.
 
@@ -449,7 +449,7 @@ Display font: Cormorant Garamond (`.author-name`). Body: Source Sans Pro.
 - Uppercase eyebrows with wide letter-spacing (bronze accent)
 - Light font weights (300) for headings on dark surfaces
 - Hover accent on project titles and CTAs
-- Hero overlays + embedded dashboards keep their own internal palettes — site shell theme applies around them
+- Hero overlays + embedded dashboards keep their own internal palettes - site shell theme applies around them
 - Mobile breakpoint: **768px** (primary), **960px**, **520px**
 
 ---
@@ -469,7 +469,7 @@ Display font: Cormorant Garamond (`.author-name`). Body: Source Sans Pro.
 
 ## Project features (F7–F13)
 
-Documented in [FEATURE_MAP.md](./FEATURE_MAP.md). Each project file contains its own static narrative — no shared business logic module. Every detail page mounts one `<EmbedSlot {...projectEmbeds.<key>} />` (lazy `src/embeds/*Dashboard.tsx`).
+Documented in [FEATURE_MAP.md](./FEATURE_MAP.md). Each project file contains its own static narrative - no shared business logic module. Every detail page mounts one `<EmbedSlot {...projectEmbeds.<key>} />` (lazy `src/embeds/*Dashboard.tsx`).
 
 ---
 
@@ -512,7 +512,7 @@ Maps string keys → React icon components.
 
 ## Validation logic
 
-**None** — static content, no forms.
+**None** - static content, no forms.
 
 ## Constants
 
@@ -538,10 +538,10 @@ Content constants live in data files, not a separate `constants.js`.
 
 | Technique | Usage |
 |-----------|--------|
-| Memoization (`useMemo`/`memo`) | **Not used** — small static tree |
-| Lazy loading (`React.lazy`) | **Not used** — bundle is small |
-| List virtualization | N/A — short lists |
-| Image optimization | Manual — use compressed JPG/WebP in `public/` |
+| Memoization (`useMemo`/`memo`) | **Not used** - small static tree |
+| Lazy loading (`React.lazy`) | **Not used** - bundle is small |
+| List virtualization | N/A - short lists |
+| Image optimization | Manual - use compressed JPG/WebP in `public/` |
 | Scroll listeners | `{ passive: true }` on hero scroll |
 | CSS animations | GPU-friendly `transform`/`opacity` on hero |
 
@@ -551,7 +551,7 @@ Content constants live in data files, not a separate `constants.js`.
 
 # 15. Native Modules
 
-**N/A** — web-only project. No `ios/`, `android/`, or native bridges.
+**N/A** - web-only project. No `ios/`, `android/`, or native bridges.
 
 ---
 
@@ -648,7 +648,7 @@ See dedicated [AI_AGENT_GUIDE.md](./AI_AGENT_GUIDE.md).
 |-------------|---------|
 | WebP images + `srcset` | Faster LCP on hero |
 | Preload hero image in `index.html` | Faster first paint |
-| `font-display: swap` already via Google Fonts | — |
+| `font-display: swap` already via Google Fonts | - |
 
 ## Refactoring
 
@@ -675,11 +675,11 @@ See dedicated [AI_AGENT_GUIDE.md](./AI_AGENT_GUIDE.md).
 
 ---
 
-## Appendix A — `profile.js` schema
+## Appendix A - `profile.js` schema
 
 ```javascript
 {
-  name: string,         // "Jenny Tang" — split into lead + accent for hero title
+  name: string,         // "Jenny Tang" - split into lead + accent for hero title
   role: string,         // ` · `-separated; hero subtitle replaces with ` | `
   tagline: string,
   intro: string,
@@ -691,7 +691,7 @@ See dedicated [AI_AGENT_GUIDE.md](./AI_AGENT_GUIDE.md).
 
 Hero background images live in `public/hero-banners/` and are not referenced from `profile.js` (the old `heroImage` field is gone).
 
-## Appendix B — Project card schema (`projects.js`)
+## Appendix B - Project card schema (`projects.js`)
 
 ```javascript
 {
@@ -704,12 +704,12 @@ Hero background images live in `public/hero-banners/` and are not referenced fro
   tools?: string,         // featured only
   impact: string,
   image: string,          // fallback for ProjectShell hero when no banner
-  banner?: string,        // /banners/<slug>.html — enables BannerEmbed on home + detail
+  banner?: string,        // /banners/<slug>.html - enables BannerEmbed on home + detail
   link: string            // must match App.jsx path
 }
 ```
 
-## Appendix B-bis — Personal interest schema (`personal.js`)
+## Appendix B-bis - Personal interest schema (`personal.js`)
 
 ```javascript
 {
@@ -720,7 +720,7 @@ Hero background images live in `public/hero-banners/` and are not referenced fro
 }
 ```
 
-## Appendix B-ter — Dashboard embed schema (`projectEmbeds.js`)
+## Appendix B-ter - Dashboard embed schema (`projectEmbeds.js`)
 
 ```javascript
 {
@@ -739,7 +739,7 @@ const dashboards = {
 }
 ```
 
-## Appendix C — Related documentation
+## Appendix C - Related documentation
 
 | Document | Audience |
 |----------|----------|

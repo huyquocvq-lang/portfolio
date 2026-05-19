@@ -25,7 +25,7 @@ export const impactHighlights = [
   },
   {
     big: '30+',
-    desc: 'Publishers consolidated into PF Master reporting — Google, Facebook, CNN, NAF, DV360, Yahoo DSP, Dianomi, Xandr, AOL, and more.'
+    desc: 'Publishers consolidated into PF Master reporting - Google, Facebook, CNN, NAF, DV360, Yahoo DSP, Dianomi, Xandr, AOL, and more.'
   },
   {
     big: '~15 min',

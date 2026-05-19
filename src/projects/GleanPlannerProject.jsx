@@ -26,7 +26,7 @@ export default function GleanPlannerProject() {
 
         <section className="glean-why">
           <p>
-            Media Ops priorities shift fast — offers pause, KPIs change, data delays, traffic spikes.
+            Media Ops priorities shift fast - offers pause, KPIs change, data delays, traffic spikes.
             This agent reduces context switching by surfacing what matters in one Slack summary.
           </p>
         </section>

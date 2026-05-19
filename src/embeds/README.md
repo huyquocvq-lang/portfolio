@@ -37,6 +37,6 @@ Claude artifact exports live here. Vite compiles them; project pages load via `E
 ## Notes
 
 - Replacement: overwrite the `.tsx` in place; keep `export default function …`.
-- `public/embeds/` is legacy placeholder HTML — not loaded when TSX embeds are wired.
+- `public/embeds/` is legacy placeholder HTML - not loaded when TSX embeds are wired.
 - Embeds render inside `.embed-slot__canvas` (max-height ~520px desktop; fullscreen toggle available).
 - Dashboards keep their own internal color palette; the site shell applies the dark charcoal + bronze theme around them.

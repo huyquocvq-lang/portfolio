@@ -1,4 +1,4 @@
-# Feature Map — Jenny Tang Portfolio
+# Feature Map - Jenny Tang Portfolio
 
 ## Feature index
 
@@ -20,12 +20,12 @@
 
 ---
 
-## F1 — Hero banner
+## F1 - Hero banner
 
 **Purpose:** Full-viewport intro (`100vw × 100dvh`) with a responsive art-directed background image and left-anchored text panel.
 
 **Data sources:**
-- `src/data/profile.js` — `name` (split into lead + accent), `role` (separator transformed `· → |` for the subtitle)
+- `src/data/profile.js` - `name` (split into lead + accent), `role` (separator transformed `· → |` for the subtitle)
 
 **Responsive image (`<picture>`):** Browser picks the first `<source>` whose `media` matches AND whose `type` is supported. WebP first, PNG fallback for each art-direction.
 
@@ -39,27 +39,27 @@
 | `(max-aspect-ratio: 14/10)` | `hero_tablet` |
 | default `<img>` | `hero_desktop_fhd` |
 
-Order in `Hero.jsx` matters — most specific first; width caps before generic aspect-ratio buckets.
+Order in `Hero.jsx` matters - most specific first; width caps before generic aspect-ratio buckets.
 
-**Assets:** `public/hero-banners/<variant>.{webp,png}` (8 variants × 2 formats; `hero_mobile_landscape.*` exists but isn't wired by default — add a `(orientation: landscape) and (max-width: 900px)` source if needed). `<img>` uses `loading="eager"`, `fetchpriority="high"`, `decoding="async"`.
+**Assets:** `public/hero-banners/<variant>.{webp,png}` (8 variants × 2 formats; `hero_mobile_landscape.*` exists but isn't wired by default - add a `(orientation: landscape) and (max-width: 900px)` source if needed). `<img>` uses `loading="eager"`, `fetchpriority="high"`, `decoding="async"`.
 
 **Layout (`.hero-content`):** flex column, vertically centered, `max-width: 50%`, left padding `clamp(24px, 6vw, 96px)`. Mobile (≤768px) → `max-width: 100%`; portrait (`max-aspect-ratio: 3/4`) → content sticks to bottom with gradient flipping to a bottom-up dim.
 
 **Text:**
-- Kicker (`.hero-kicker`) — monospace, bronze, wide letter-spacing — `"Portfolio · 2026"`
-- Title (`.hero-title`) — light weight; second word wrapped in `.hero-title-accent` (Cormorant Garamond italic, bronze, trailing `.`)
-- Subtitle (`.hero-subtitle`) — derived from `profile.role` with ` · ` replaced by ` | `
-- CTA (`.hero-cta`) — outline bronze button, hover fills accent; `href="#work"` (smooth scroll via `html { scroll-behavior: smooth }`)
+- Kicker (`.hero-kicker`) - monospace, bronze, wide letter-spacing - `"Portfolio · 2026"`
+- Title (`.hero-title`) - light weight; second word wrapped in `.hero-title-accent` (Cormorant Garamond italic, bronze, trailing `.`)
+- Subtitle (`.hero-subtitle`) - derived from `profile.role` with ` · ` replaced by ` | `
+- CTA (`.hero-cta`) - outline bronze button, hover fills accent; `href="#work"` (smooth scroll via `html { scroll-behavior: smooth }`)
 
-**CSS:** `src/styles/global.css` — `.hero`, `.hero-picture`, `.hero-img`, `.hero-overlay`, `.hero-content`, `.hero-kicker`, `.hero-title`, `.hero-title-accent`, `.hero-subtitle`, `.hero-cta`.
+**CSS:** `src/styles/global.css` - `.hero`, `.hero-picture`, `.hero-img`, `.hero-overlay`, `.hero-content`, `.hero-kicker`, `.hero-title`, `.hero-title-accent`, `.hero-subtitle`, `.hero-cta`.
 
 ---
 
-## F2 — Navigation
+## F2 - Navigation
 
 **Purpose:** Sticky header; section links on home; hamburger drawer on mobile.
 
-**Data:** `profile.js` — name, `contact.linkedin`, `contact.resume`, optional `contact.github`
+**Data:** `profile.js` - name, `contact.linkedin`, `contact.resume`, optional `contact.github`
 
 **State:** `open` boolean for mobile menu; locks `document.body.overflow`
 
@@ -68,99 +68,99 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 - External: LinkedIn, Resume (Google Docs)
 - Logo: `/`
 
-**CSS:** `src/styles/global.css` — `.nav`, `.nav--open`, `.nav-toggle` (visible ≤768px)
+**CSS:** `src/styles/global.css` - `.nav`, `.nav--open`, `.nav-toggle` (visible ≤768px)
 
 ---
 
-## F3 — Impact highlights
+## F3 - Impact highlights
 
 **Purpose:** Six quantitative achievements in a responsive grid.
 
-**Data:** `src/data/stats.js` — `impactHighlights[]` with `{ big, desc }`
+**Data:** `src/data/stats.js` - `impactHighlights[]` with `{ big, desc }`
 
-**Component:** `src/components/Impact.jsx` — maps array to `.impact-item`
+**Component:** `src/components/Impact.jsx` - maps array to `.impact-item`
 
 **Anchor:** `id="impact"`
 
 ---
 
-## F3b — Education
+## F3b - Education
 
 **Purpose:** List of graduate programs below Impact, ordered most-recent first.
 
-**Data:** `src/data/education.js` — array of `{ school, degree, focus, location, date, gpa, honors[] }`.
+**Data:** `src/data/education.js` - array of `{ school, degree, focus, location, date, gpa, honors[] }`.
 
-**Component:** `src/components/Education.jsx` — 2-column grid (`220px 1fr` desktop, stacked on mobile). Date is the eyebrow column; body lists school → degree + focus → location · GPA → honors (em-dash bullets).
+**Component:** `src/components/Education.jsx` - 2-column grid (`220px 1fr` desktop, stacked on mobile). Date is the eyebrow column; body lists school → degree + focus → location · GPA → honors (em-dash bullets).
 
 **Anchor:** `id="education"`.
 
-**CSS:** `src/styles/global.css` — `.education`, `.education-inner`, `.education-eyebrow`, `.edu-item`, `.edu-date`, `.edu-body`, `.edu-degree`, `.edu-focus`, `.edu-meta`, `.edu-honors`.
+**CSS:** `src/styles/global.css` - `.education`, `.education-inner`, `.education-eyebrow`, `.edu-item`, `.edu-date`, `.edu-body`, `.edu-degree`, `.edu-focus`, `.edu-meta`, `.edu-honors`.
 
 ---
 
-## F3c — Work Experience
+## F3c - Work Experience
 
-**Purpose:** Reverse-chronological work history below Education. Bullets from the resume are rewritten as flowing paragraphs (per user request — no list markers).
+**Purpose:** Reverse-chronological work history below Education. Bullets from the resume are rewritten as flowing paragraphs (per user request - no list markers).
 
-**Data:** `src/data/experience.js` — array of `{ company, role, location, start, end, paragraphs[], meta?[] }`. The optional `meta` is a `dt/dd` table for things like *Banking clients* / *Partners & channels*.
+**Data:** `src/data/experience.js` - array of `{ company, role, location, start, end, paragraphs[], meta?[] }`. The optional `meta` is a `dt/dd` table for things like *Banking clients* / *Partners & channels*.
 
-**Component:** `src/components/Experience.jsx` — ordered list with the same 2-column grid as Education. Period (start–end) on the left; role → company · location → paragraphs → meta on the right.
+**Component:** `src/components/Experience.jsx` - ordered list with the same 2-column grid as Education. Period (start–end) on the left; role → company · location → paragraphs → meta on the right.
 
 **Anchor:** `id="experience"` (linked from Nav).
 
-**CSS:** `src/styles/global.css` — `.experience`, `.experience-inner`, `.experience-eyebrow`, `.exp-timeline`, `.exp-item`, `.exp-period`, `.exp-role`, `.exp-company`, `.exp-para`, `.exp-meta`, `.exp-meta-row`.
+**CSS:** `src/styles/global.css` - `.experience`, `.experience-inner`, `.experience-eyebrow`, `.exp-timeline`, `.exp-item`, `.exp-period`, `.exp-role`, `.exp-company`, `.exp-para`, `.exp-meta`, `.exp-meta-row`.
 
 ---
 
-## F4 — About + skills
+## F4 - About + skills
 
 **Purpose:** Two-column layout (about text sticky on desktop); 2×3 skills grid with Font Awesome icons via react-icons.
 
 **Data:**
-- `src/data/about.js` — `eyebrow`, `heading`, `paragraphs[]`
-- `src/data/skills.js` — skill objects with `icon` key
-- `src/data/skillIcons.js` — maps keys to `react-icons/fa` components
+- `src/data/about.js` - `eyebrow`, `heading`, `paragraphs[]`
+- `src/data/skills.js` - skill objects with `icon` key
+- `src/data/skillIcons.js` - maps keys to `react-icons/fa` components
 
 **Components:**
-- `AboutSkills.jsx` — layout wrapper
-- `Skill.jsx` — single card; resolves icon via `skillIconMap[icon]`
+- `AboutSkills.jsx` - layout wrapper
+- `Skill.jsx` - single card; resolves icon via `skillIconMap[icon]`
 
 **Anchor:** `id="about"`
 
 ---
 
-## F4b — Personal interest + masonry wall
+## F4b - Personal interest + masonry wall
 
 **Purpose:** Personal copy + Pinterest-style masonry of personal photos between About and Projects.
 
-**Data:** `src/data/personal.js` — `eyebrow`, `heading`, `paragraphs[]`, `images[]`
+**Data:** `src/data/personal.js` - `eyebrow`, `heading`, `paragraphs[]`, `images[]`
 
-**Component:** `src/components/PersonalInterest.jsx` — header + `.personal-masonry` (CSS `column-count: 3 / 2 / 1` responsive)
+**Component:** `src/components/PersonalInterest.jsx` - header + `.personal-masonry` (CSS `column-count: 3 / 2 / 1` responsive)
 
 **Images:** `public/images/personal/personal_1.jpeg` … `personal_6.jpeg`. Hover scales image to 1.05.
 
 **Anchor:** `id="personal"` · Nav link: "Interests"
 
-**CSS:** `src/styles/global.css` — `.personal*` block
+**CSS:** `src/styles/global.css` - `.personal*` block
 
 ---
 
-## F5 — Projects listing
+## F5 - Projects listing
 
 **Purpose:** One featured project (large layout) + grid of six additional projects (7 total).
 
 **Data:** `src/data/projects.js`
-- `featuredProject` — full card + detail route
-- `otherProjects[]` — grid cards
+- `featuredProject` - full card + detail route
+- `otherProjects[]` - grid cards
 - Each card carries `slug`, `link`, `image` (fallback) and optional `banner` (`/banners/<slug>.html`)
 - Helpers: `getAllProjects()`, `getProjectCard(slug)`
 
 **Navigation:** Each card uses `react-router-dom` `<Link to={project.link}>`
 
 **Subcomponents:**
-- `FeaturedProject.jsx` — image link + meta + CTA; renders `<BannerEmbed>` iframe when `project.banner` set
-- `OtherProject.jsx` — thumb + title + impact line; ditto
-- `BannerEmbed.jsx` — sandboxed iframe (`allow-scripts allow-same-origin`, lazy-loaded) — single source for home thumbs + detail hero
+- `FeaturedProject.jsx` - image link + meta + CTA; renders `<BannerEmbed>` iframe when `project.banner` set
+- `OtherProject.jsx` - thumb + title + impact line; ditto
+- `BannerEmbed.jsx` - sandboxed iframe (`allow-scripts allow-same-origin`, lazy-loaded) - single source for home thumbs + detail hero
 
 **Card aspect-ratio:** `560/510` when a banner is present (matches banner native canvas); falls back to `16/10` for image-only cards. Classes `thumb--banner` / `featured-img--banner` + `:has(iframe)` both trigger the override.
 
@@ -168,7 +168,7 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 ---
 
-## F6 — Footer
+## F6 - Footer
 
 **Purpose:** CTA, contact columns (address/email/social from profile).
 
@@ -182,15 +182,15 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 | Piece | File |
 |-------|------|
-| Hero banner | `ProjectShell` — embeds `public/banners/<slug>.html` via `<BannerEmbed>` when `project.banner` ends in `.html/.svg`; otherwise `project.image` as background-image; fallback dark gradient |
-| Hero overlay | `radial-gradient` + `linear-gradient` dim layer (`.project-shell-banner--embed::after`) — banner reads as a hero image, not a card |
-| Hero height | `clamp(280px, 38vw, 420px)` — banner fits width, top/bottom cropped centered |
+| Hero banner | `ProjectShell` - embeds `public/banners/<slug>.html` via `<BannerEmbed>` when `project.banner` ends in `.html/.svg`; otherwise `project.image` as background-image; fallback dark gradient |
+| Hero overlay | `radial-gradient` + `linear-gradient` dim layer (`.project-shell-banner--embed::after`) - banner reads as a hero image, not a card |
+| Hero height | `clamp(280px, 38vw, 420px)` - banner fits width, top/bottom cropped centered |
 | Breadcrumbs | Home → Projects → **current title** (below banner) |
 | Pager | Prev / next project links |
 
 ---
 
-## F7 — Winterplace Ski Resort
+## F7 - Winterplace Ski Resort
 
 | Field | Value |
 |-------|-------|
@@ -204,7 +204,7 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 ---
 
-## F8 — Programmatic Placement Cutover Sheet
+## F8 - Programmatic Placement Cutover Sheet
 
 | Field | Value |
 |-------|-------|
@@ -216,7 +216,7 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 ---
 
-## F9 — Publisher Trend Analysis
+## F9 - Publisher Trend Analysis
 
 | Field | Value |
 |-------|-------|
@@ -228,7 +228,7 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 ---
 
-## F10 — PF Master Reporting Dashboard
+## F10 - PF Master Reporting Dashboard
 
 | Field | Value |
 |-------|-------|
@@ -240,7 +240,7 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 ---
 
-## F11 — Glean Daily Action Planner
+## F11 - Glean Daily Action Planner
 
 | Field | Value |
 |-------|-------|
@@ -252,7 +252,7 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 ---
 
-## F12 — AI Stakeholder Update Rewriter
+## F12 - AI Stakeholder Update Rewriter
 
 | Field | Value |
 |-------|-------|
@@ -265,7 +265,7 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 
 ---
 
-## F13 — Monthly Media Ops Retro Analyst
+## F13 - Monthly Media Ops Retro Analyst
 
 | Field | Value |
 |-------|-------|
@@ -292,9 +292,9 @@ Provides:
 
 ---
 
-## FX — Theme tokens + dark/light toggle
+## FX - Theme tokens + dark/light toggle
 
-Charcoal + bronze gold theme with a runtime **dark ↔ light** toggle. Tokens are CSS variables on `:root` in `src/styles/global.css`; the light theme is an attribute override on `:root[data-theme="light"]`. Use `var(...)` everywhere new — never hardcode the swatches.
+Charcoal + bronze gold theme with a runtime **dark ↔ light** toggle. Tokens are CSS variables on `:root` in `src/styles/global.css`; the light theme is an attribute override on `:root[data-theme="light"]`. Use `var(...)` everywhere new - never hardcode the swatches.
 
 ### Theme switching
 
@@ -302,7 +302,7 @@ Charcoal + bronze gold theme with a runtime **dark ↔ light** toggle. Tokens ar
 |-------|------|-------|
 | Provider + hook | `src/context/ThemeContext.jsx` | `theme`, `setTheme`, `toggleTheme`. `localStorage` key `portfolio-theme`. Falls back to `prefers-color-scheme`. Writes `document.documentElement.dataset.theme` + updates `<meta name="theme-color">`. |
 | Mount | `src/main.jsx` | Wraps `<App />` in `<ThemeProvider>`. |
-| UI | `src/components/ThemeToggle.jsx` | Sun/moon icon button. Mounted in `Nav.jsx` `.nav-actions` (visible on desktop + mobile, both home and project pages — `ProjectShell` reuses `Nav`). |
+| UI | `src/components/ThemeToggle.jsx` | Sun/moon icon button. Mounted in `Nav.jsx` `.nav-actions` (visible on desktop + mobile, both home and project pages - `ProjectShell` reuses `Nav`). |
 | Anti-FOUC | `index.html` inline `<script>` in `<head>` | Resolves theme before bundle loads to avoid flash. Mirrors `ThemeContext` defaults. |
 
 ### Token table (defaults = dark, overrides = light)
@@ -324,20 +324,20 @@ Charcoal + bronze gold theme with a runtime **dark ↔ light** toggle. Tokens ar
 
 ### Surfaces excluded from theme switching
 
-- **Hero (`Hero.jsx`)** — image + dark gradient overlay; copy stays white in both themes for readability.
-- **AI rewriter lightbox** (`src/styles/projects/ai-rewriter.css`) — full-screen overlay always dim.
-- **Animated banners** (`public/banners/*.html`) — self-contained iframed docs with their own palette; not driven by `data-theme`. Cards/wrappers around them follow the site theme.
-- **Dashboard embeds** (`src/embeds/*Dashboard.tsx`) — internal palettes are hard-coded (Claude artifact exports). The surrounding `EmbedSlot` chrome (border, header, fullscreen background) follows the site theme.
+- **Hero (`Hero.jsx`)** - image + dark gradient overlay; copy stays white in both themes for readability.
+- **AI rewriter lightbox** (`src/styles/projects/ai-rewriter.css`) - full-screen overlay always dim.
+- **Animated banners** (`public/banners/*.html`) - self-contained iframed docs with their own palette; not driven by `data-theme`. Cards/wrappers around them follow the site theme.
+- **Dashboard embeds** (`src/embeds/*Dashboard.tsx`) - internal palettes are hard-coded (Claude artifact exports). The surrounding `EmbedSlot` chrome (border, header, fullscreen background) follows the site theme.
 
 ---
 
-## FY — Dashboard embed system
+## FY - Dashboard embed system
 
 | Piece | File |
 |-------|------|
-| Slot component | `src/components/project/EmbedSlot.jsx` — lazy-loads from `dashboards` map; supports Fullscreen toggle (Esc to exit) |
+| Slot component | `src/components/project/EmbedSlot.jsx` - lazy-loads from `dashboards` map; supports Fullscreen toggle (Esc to exit) |
 | Keys + titles | `src/data/projectEmbeds.js` (one entry per embed) |
-| TSX dashboards | `src/embeds/*Dashboard.tsx` — Claude artifact exports, default-exported React components |
+| TSX dashboards | `src/embeds/*Dashboard.tsx` - Claude artifact exports, default-exported React components |
 | Styles | `src/styles/embed-slot.css` |
 | Docs | `src/embeds/README.md` (full wiring guide) |
 
@@ -345,17 +345,17 @@ Every detail page (F7–F13) mounts one `<EmbedSlot {...projectEmbeds.<key>} />`
 
 ---
 
-## FZ — Banner system
+## FZ - Banner system
 
 Animated/interactive project banners shared between the home page cards and detail page heroes.
 
 | Piece | File |
 |-------|------|
-| Banner HTML | `public/banners/<slug>.html` — self-contained doc with native 560×510 canvas + inline `<script>` that sets a CSS var to scale to iframe width |
-| Iframe wrapper | `src/components/BannerEmbed.jsx` — sandboxed `<iframe>` (`allow-scripts allow-same-origin`), `loading="lazy"`, `scrolling="no"` |
-| Home card mount | `FeaturedProject.jsx` / `OtherProject.jsx` — passes `className="featured-img-inner"` / `"thumb-inner"` |
-| Detail hero mount | `ProjectShell.jsx` — detects `.html`/`.svg` banner, renders `<BannerEmbed>` + dim overlay |
-| Source of truth | `public/banners/*.html` — edit in place; no separate `docs/` source dir |
+| Banner HTML | `public/banners/<slug>.html` - self-contained doc with native 560×510 canvas + inline `<script>` that sets a CSS var to scale to iframe width |
+| Iframe wrapper | `src/components/BannerEmbed.jsx` - sandboxed `<iframe>` (`allow-scripts allow-same-origin`), `loading="lazy"`, `scrolling="no"` |
+| Home card mount | `FeaturedProject.jsx` / `OtherProject.jsx` - passes `className="featured-img-inner"` / `"thumb-inner"` |
+| Detail hero mount | `ProjectShell.jsx` - detects `.html`/`.svg` banner, renders `<BannerEmbed>` + dim overlay |
+| Source of truth | `public/banners/*.html` - edit in place; no separate `docs/` source dir |
 
 Scaling pattern inside each banner:
 ```js

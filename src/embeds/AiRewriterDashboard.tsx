@@ -83,7 +83,7 @@ export default function App() {
     if (cache[key]) { setOutput(cache[key]); return; }
     const result = await callAI(draft, aud);
     if (result) { setOutput(result); setCache(p => ({ ...p, [key]: result })); }
-    else { setErr("AI unavailable — showing structured fallback"); setOutput(fallback(draft, aud)); }
+    else { setErr("AI unavailable - showing structured fallback"); setOutput(fallback(draft, aud)); }
   };
 
   const switchAud = async () => {
@@ -138,7 +138,7 @@ export default function App() {
                 <span style={{ fontSize: 10, color: C.purple, letterSpacing: 2.5, fontWeight: 600 }}>AI CONTENT REPHRASING</span>
               </div>
               <h1 style={{ fontSize: 19, fontWeight: 600, color: C.text, margin: "0 0 3px", fontFamily: "Georgia,serif" }}>Audience-aware update writer</h1>
-              <p style={{ fontSize: 11, color: C.muted, margin: 0, maxWidth: 400 }}>Load a sample or type anything — choose audience — get AI-rewritten output live</p>
+              <p style={{ fontSize: 11, color: C.muted, margin: 0, maxWidth: 400 }}>Load a sample or type anything - choose audience - get AI-rewritten output live</p>
             </div>
             <div style={{ display: "flex", gap: 6 }}>
               <div style={{ textAlign: "center", padding: "6px 12px", background: C.purple + "14", borderRadius: 8, border: `1px solid ${C.purple}20` }}>
@@ -175,7 +175,7 @@ export default function App() {
             }}>{"\u270F\uFE0F"} Type your own</button>
           </div>
           <textarea value={draft} onChange={e => setDraft(e.target.value)} disabled={phase !== "input"}
-            placeholder="Type or paste any rough draft here — meeting notes, status updates, project recaps, anything. The AI will restructure it for your chosen audience..."
+            placeholder="Type or paste any rough draft here - meeting notes, status updates, project recaps, anything. The AI will restructure it for your chosen audience..."
             style={{ width: "100%", height: 140, background: "rgba(255,255,255,.02)", border: `1px solid ${C.border}`, borderRadius: 8, padding: 12, fontSize: 12, color: C.text, fontFamily: "inherit", resize: "vertical", lineHeight: 1.6, outline: "none", boxSizing: "border-box" }} />
           {draft && <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, fontSize: 10, color: C.muted }}>
             <span>{wc(draft)} words</span>
@@ -273,7 +273,7 @@ export default function App() {
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
                 <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg,${aud === "executive" ? C.purple : C.teal},${aud === "executive" ? "#7C3AED" : "#0D9488"})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>{aud === "executive" ? "\uD83D\uDC54" : "\uD83E\uDD1D"}</div>
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 600 }}>Final output — {aud === "executive" ? "Executive" : "Account Manager"}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600 }}>Final output - {aud === "executive" ? "Executive" : "Account Manager"}</div>
                   <div style={{ fontSize: 10, color: C.muted }}>AI-refined {"\u00B7"} audience-tailored</div>
                 </div>
                 <div style={{ marginLeft: "auto", fontSize: 10, color: C.green, background: C.green + "12", padding: "3px 10px", borderRadius: 8, fontWeight: 600 }}>{"\u2713"} Live AI</div>

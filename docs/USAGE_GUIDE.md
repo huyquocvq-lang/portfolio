@@ -1,4 +1,4 @@
-# Usage Guide — Jenny Tang Portfolio
+# Usage Guide - Jenny Tang Portfolio
 
 For **developers** and **AI agents (Cursor / Claude)**. Read with [AGENTS.md](../AGENTS.md) at the repo root.
 
@@ -6,7 +6,7 @@ For **developers** and **AI agents (Cursor / Claude)**. Read with [AGENTS.md](..
 
 ## 1. What this project is
 
-A static portfolio SPA for Jenny Tang — React + Vite, deployed as static files (GitHub Pages, Netlify, Vercel, etc.).
+A static portfolio SPA for Jenny Tang - React + Vite, deployed as static files (GitHub Pages, Netlify, Vercel, etc.).
 
 **This is not a React Native mobile app.**
 
@@ -37,7 +37,7 @@ Open http://localhost:5173
 ```
 src/data/          ← Homepage + project copy (edit here)
 src/components/    ← Homepage UI (Nav, Hero, Impact, AboutSkills, PersonalInterest, Projects, Footer, BannerEmbed, ThemeToggle)
-src/context/       ← React Context providers (ThemeContext — dark/light theme)
+src/context/       ← React Context providers (ThemeContext - dark/light theme)
 src/pages/         ← HomePage
 src/projects/      ← One JSX file per project (unique layout)
 src/embeds/        ← TSX dashboard exports (lazy-loaded by EmbedSlot)
@@ -52,7 +52,7 @@ docs/CONTENT_SOURCE.md  ← Authoring reference (mapping only, not bundled)
 
 ## 3.1 Content source file (`CONTENT_SOURCE.md`)
 
-`docs/CONTENT_SOURCE.md` holds the **original long-form copy** for homepage sections and project case studies. Use it to map text into code — it is **not** imported at runtime.
+`docs/CONTENT_SOURCE.md` holds the **original long-form copy** for homepage sections and project case studies. Use it to map text into code - it is **not** imported at runtime.
 
 | Rule | Detail |
 |------|--------|
@@ -128,15 +128,15 @@ Do not leave docs describing old behavior.
 2. Edit `src/styles/projects/<name>.css`
 3. Homepage card teaser only: `src/data/projects.js`
 4. Update `docs/FEATURE_MAP.md` (section Fx)
-5. **Do not** merge into a shared template — each project keeps its own files
+5. **Do not** merge into a shared template - each project keeps its own files
 
 ### Add a new project (e.g. 8th)
 
-1. `src/data/projects.js` — add object with `slug`, `link`, `image`, optional `banner` (`/banners/<slug>.html`)
+1. `src/data/projects.js` - add object with `slug`, `link`, `image`, optional `banner` (`/banners/<slug>.html`)
 2. `src/projects/MyProject.jsx` + `src/styles/projects/my-project.css`
-3. `src/App.jsx` — add `<Route path="/projects/<slug>" element={<MyProject />} />`
+3. `src/App.jsx` - add `<Route path="/projects/<slug>" element={<MyProject />} />`
 4. `public/images/projects/my-project.jpg` (still useful as ProjectShell fallback)
-5. `public/banners/<slug>.html` (optional — animated hero banner, see existing files for wrapper CSS / JS scale pattern)
+5. `public/banners/<slug>.html` (optional - animated hero banner, see existing files for wrapper CSS / JS scale pattern)
 6. Optional dashboard: drop `MyDashboard.tsx` in `src/embeds/`, register in `EmbedSlot.jsx` + `projectEmbeds.js`, mount `<EmbedSlot {...projectEmbeds.myKey} />` on the page
 7. Update docs: `FEATURE_MAP`, `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE`, `FULL_DOCUMENTATION`, `API_FLOW`
 8. Verify prev/next on `ProjectShell`
@@ -145,7 +145,7 @@ Do not leave docs describing old behavior.
 
 ```bash
 npm run build
-# Upload dist/ — enable SPA fallback (all paths → index.html)
+# Upload dist/ - enable SPA fallback (all paths → index.html)
 ```
 
 ---
@@ -169,7 +169,7 @@ npm run build
 
 1. Open the repo in Cursor
 2. Rule **sync-documentation** applies automatically (`alwaysApply: true`)
-3. Skill: `.cursor/skills/portfolio-site/SKILL.md` — say *"follow portfolio-site skill"* or let Cursor auto-load it
+3. Skill: `.cursor/skills/portfolio-site/SKILL.md` - say *"follow portfolio-site skill"* or let Cursor auto-load it
 4. @ mention: `@AGENTS.md`, `@docs/AI_AGENT_GUIDE.md`
 
 ## 8. Using with Claude Code
@@ -181,7 +181,7 @@ Project skills live in `.claude/skills/` (committed to Git, same repo as Cursor 
 | `portfolio-site` | `/portfolio-site` | Full workflow: data, routes, project pages, doc sync |
 | `sync-documentation` | `/sync-documentation` | Verify/update docs after code changes |
 
-1. Run `claude` from the repo root (or any subdirectory — parent `.claude/skills/` is discovered)
+1. Run `claude` from the repo root (or any subdirectory - parent `.claude/skills/` is discovered)
 2. Claude auto-loads skills when the task matches their `description`
 3. Or invoke directly: `/portfolio-site` or `/sync-documentation`
 4. `CLAUDE.md` at the repo root loads every session

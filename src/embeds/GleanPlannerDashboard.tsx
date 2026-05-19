@@ -19,7 +19,7 @@ const platforms = [
 ];
 
 const workflowSteps = [
-  { label: "Trigger", desc: "Agent runs on schedule — scanning last 24 hours", icon: "⚡", dur: 1200 },
+  { label: "Trigger", desc: "Agent runs on schedule - scanning last 24 hours", icon: "⚡", dur: 1200 },
   { label: "Company search", desc: "Searching Slack, Jira, Email, Airtable, Confluence, Calendar...", icon: "🔍", dur: 2800 },
   { label: "Read documents", desc: "Reading all search results and extracting action items...", icon: "📄", dur: 2000 },
   { label: "AI prioritization", desc: "Scoring by revenue impact, urgency, blockers, deadlines...", icon: "🧠", dur: 2200 },
@@ -28,29 +28,29 @@ const workflowSteps = [
 
 const scanMessages = [
   { platform: "Slack", text: "#media-ops: \"CPC offer 2044 pacing 140% of daily cap\"", type: "urgent" },
-  { platform: "Email", text: "Publisher Omega invoice missing — finance flagged", type: "urgent" },
+  { platform: "Email", text: "Publisher Omega invoice missing - finance flagged", type: "urgent" },
   { platform: "Jira", text: "MEDIA-347: Update DV360 line items for Q2 flight", type: "blocked" },
   { platform: "Slack", text: "#revenue: \"Client X changed KPI target from 52% to 58% GPM\"", type: "urgent" },
-  { platform: "Airtable", text: "Placement allocation tracker — 3 rows need cost update", type: "followup" },
+  { platform: "Airtable", text: "Placement allocation tracker - 3 rows need cost update", type: "followup" },
   { platform: "Confluence", text: "Monthly analysis template due Friday", type: "low" },
   { platform: "Jira", text: "MEDIA-352: Tableau dashboard data delayed 2 days", type: "blocked" },
   { platform: "Email", text: "Network Alpha requesting new creative specs by EOD", type: "followup" },
   { platform: "Calendar", text: "Publisher QBR prep meeting tomorrow 10am", type: "followup" },
   { platform: "Slack", text: "#alerts: \"Finance Wire M traffic dropped 60% overnight\"", type: "urgent" },
   { platform: "Airtable", text: "Cap VTC lag matrix needs week 3 data entry", type: "low" },
-  { platform: "Email", text: "Team standup notes from yesterday — action items pending", type: "low" },
+  { platform: "Email", text: "Team standup notes from yesterday - action items pending", type: "low" },
 ];
 
 const prioritizedTasks = [
-  { priority: "P0", title: "CPC offer 2044 overpacing at 140%", why: "Revenue risk — will exceed daily budget by $8K if uncapped", next: "Pause or reduce bid on DSP Platform Y line items", owner: "You", blocker: null, source: "Slack #media-ops", color: C.red },
-  { priority: "P0", title: "Finance Wire M traffic dropped 60%", why: "Revenue-impacting — $12K daily run rate at risk", next: "Check publisher status page, contact rep, review Tableau", owner: "You + Publisher team", blocker: "Need publisher confirmation", source: "Slack #alerts", color: C.red },
+  { priority: "P0", title: "CPC offer 2044 overpacing at 140%", why: "Revenue risk - will exceed daily budget by $8K if uncapped", next: "Pause or reduce bid on DSP Platform Y line items", owner: "You", blocker: null, source: "Slack #media-ops", color: C.red },
+  { priority: "P0", title: "Finance Wire M traffic dropped 60%", why: "Revenue-impacting - $12K daily run rate at risk", next: "Check publisher status page, contact rep, review Tableau", owner: "You + Publisher team", blocker: "Need publisher confirmation", source: "Slack #alerts", color: C.red },
   { priority: "P0", title: "Client X GPM target changed to 58%", why: "Affects all active placement allocations this month", next: "Re-run optimization model with new 58% target, flag impacted offers", owner: "You", blocker: null, source: "Slack #revenue", color: C.orange },
-  { priority: "P1", title: "Publisher Omega invoice missing", why: "Finance escalation — blocks month-end close", next: "Email Publisher Omega rep, CC finance, attach PO reference", owner: "You + Finance", blocker: "Waiting on publisher", source: "Email", color: C.amber },
-  { priority: "P1", title: "DV360 line items need Q2 update", why: "Flight starts May 1 — 3 days to launch", next: "Update targeting, budgets, and creatives in DV360 console", owner: "You", blocker: "Blocked by creative approval (MEDIA-350)", source: "Jira MEDIA-347", color: C.amber },
-  { priority: "P2", title: "Network Alpha creative specs due EOD", why: "Publisher relationship — delayed specs delay launch", next: "Pull specs from Confluence template, send to rep", owner: "You", blocker: null, source: "Email", color: C.blue },
-  { priority: "P2", title: "QBR prep meeting tomorrow", why: "Stakeholder visibility — need performance deck ready", next: "Pull MTD numbers from Tableau, update slides 4-8", owner: "You", blocker: "Tableau data delayed (MEDIA-352)", source: "Calendar", color: C.blue },
-  { priority: "P3", title: "Placement tracker — update 3 cost rows", why: "Data hygiene — non-urgent but affects weekly report accuracy", next: "Update Airtable rows with DV360 cost data", owner: "You", blocker: null, source: "Airtable", color: C.muted },
-  { priority: "P3", title: "Monthly analysis template due Friday", why: "Documentation — low urgency, 3 days runway", next: "Clone last month's template, update header dates", owner: "You", blocker: null, source: "Confluence", color: C.muted },
+  { priority: "P1", title: "Publisher Omega invoice missing", why: "Finance escalation - blocks month-end close", next: "Email Publisher Omega rep, CC finance, attach PO reference", owner: "You + Finance", blocker: "Waiting on publisher", source: "Email", color: C.amber },
+  { priority: "P1", title: "DV360 line items need Q2 update", why: "Flight starts May 1 - 3 days to launch", next: "Update targeting, budgets, and creatives in DV360 console", owner: "You", blocker: "Blocked by creative approval (MEDIA-350)", source: "Jira MEDIA-347", color: C.amber },
+  { priority: "P2", title: "Network Alpha creative specs due EOD", why: "Publisher relationship - delayed specs delay launch", next: "Pull specs from Confluence template, send to rep", owner: "You", blocker: null, source: "Email", color: C.blue },
+  { priority: "P2", title: "QBR prep meeting tomorrow", why: "Stakeholder visibility - need performance deck ready", next: "Pull MTD numbers from Tableau, update slides 4-8", owner: "You", blocker: "Tableau data delayed (MEDIA-352)", source: "Calendar", color: C.blue },
+  { priority: "P3", title: "Placement tracker - update 3 cost rows", why: "Data hygiene - non-urgent but affects weekly report accuracy", next: "Update Airtable rows with DV360 cost data", owner: "You", blocker: null, source: "Airtable", color: C.muted },
+  { priority: "P3", title: "Monthly analysis template due Friday", why: "Documentation - low urgency, 3 days runway", next: "Clone last month's template, update header dates", owner: "You", blocker: null, source: "Confluence", color: C.muted },
 ];
 
 function Banner({ onRun }) {
@@ -217,7 +217,7 @@ export default function App() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
               <div style={{ width: 28, height: 28, borderRadius: 8, background: `linear-gradient(135deg, ${C.slack}, #7C3AED)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>💬</div>
               <div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Daily action planner — April 28, 2026</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Daily action planner - April 28, 2026</div>
                 <div style={{ fontSize: 10, color: C.muted }}>via Glean AI Agent → Slack DM</div>
               </div>
               <div style={{ marginLeft: "auto", fontSize: 10, color: C.lime, background: `${C.lime}12`, padding: "3px 10px", borderRadius: 8, fontWeight: 600 }}>9 tasks prioritized</div>

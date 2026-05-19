@@ -159,7 +159,7 @@ function Banner() {
             <div style={{ width: 7, height: 7, borderRadius: "50%", background: C.green, boxShadow: `0 0 6px ${C.green}` }} />
             <span style={{ fontSize: 10, color: C.green, letterSpacing: 2.5, fontWeight: 500 }}>1ST PARTY · 3RD PARTY · QA FLAGGING</span>
           </div>
-          <h1 style={{ fontSize: 20, fontWeight: 600, color: C.text, margin: "0 0 3px", fontFamily: "Georgia, serif" }}>Master analysis dashboard — April 2026</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 600, color: C.text, margin: "0 0 3px", fontFamily: "Georgia, serif" }}>Master analysis dashboard - April 2026</h1>
           <p style={{ fontSize: 11, color: C.muted, margin: 0 }}>Aggregate, offer→placement & placement→offer DOD performance with data reconciliation</p>
         </div>
         <div style={{ display: "flex", gap: 14, marginTop: 8 }}>
@@ -236,7 +236,7 @@ export default function App() {
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
               <Card>
-                <Label>1st party vs. 3rd party clicks — all offers</Label>
+                <Label>1st party vs. 3rd party clicks - all offers</Label>
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={offers.map(o => {
                     const s = seed(o.id);
@@ -254,7 +254,7 @@ export default function App() {
                 </ResponsiveContainer>
               </Card>
               <Card>
-                <Label>Offer performance — revenue & conversions</Label>
+                <Label>Offer performance - revenue & conversions</Label>
                 <ResponsiveContainer width="100%" height={220}>
                   <BarChart data={offerAgg} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" stroke={C.border} horizontal={false} />
@@ -267,7 +267,7 @@ export default function App() {
               </Card>
             </div>
             <Card>
-              <Label>Daily impressions trend — all offers</Label>
+              <Label>Daily impressions trend - all offers</Label>
               <ResponsiveContainer width="100%" height={220}>
                 <LineChart data={days.map((d, i) => {
                   const o = { day: d };
@@ -403,7 +403,7 @@ export default function App() {
               </Card>
             </div>
             <Card>
-              <Label>All offers on {pubs.find(p => p.id === selPub)?.name} — daily conversions</Label>
+              <Label>All offers on {pubs.find(p => p.id === selPub)?.name} - daily conversions</Label>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={days.map((d, i) => {
                   const o = { day: d };
@@ -463,7 +463,7 @@ export default function App() {
               </div>
             </Card>
             <div style={{ padding: "10px 14px", background: `${C.amber}08`, borderRadius: 8, border: `1px solid ${C.amber}20`, fontSize: 11, color: C.subtle }}>
-              <span style={{ color: C.amber, fontWeight: 600 }}>Why this matters:</span> 1P/3P click variance above 15% typically signals pixel misfires, bot inflation, or redirect chain drops. This QA layer catches revenue leakage and tracking integrity issues before month-end reconciliation — saving an estimated 4–6 hours of manual investigation per reporting cycle.
+              <span style={{ color: C.amber, fontWeight: 600 }}>Why this matters:</span> 1P/3P click variance above 15% typically signals pixel misfires, bot inflation, or redirect chain drops. This QA layer catches revenue leakage and tracking integrity issues before month-end reconciliation - saving an estimated 4–6 hours of manual investigation per reporting cycle.
             </div>
           </>
         )}

@@ -160,7 +160,7 @@ export default function App() {
                 <span style={{ fontSize: 16 }}>{"\uD83D\uDCCA"}</span>
                 <span style={{ fontSize: 10, color: C.amber, letterSpacing: 2.5, fontWeight: 600 }}>MONTHLY RETRO ANALYST AGENT</span>
               </div>
-              <h1 style={{ fontSize: 19, fontWeight: 600, color: C.text, margin: "0 0 3px", fontFamily: "Georgia,serif" }}>Publisher cutover retro — April 2026</h1>
+              <h1 style={{ fontSize: 19, fontWeight: 600, color: C.text, margin: "0 0 3px", fontFamily: "Georgia,serif" }}>Publisher cutover retro - April 2026</h1>
               <p style={{ fontSize: 11, color: C.muted, margin: 0, maxWidth: 460 }}>AI agent analyzes 12 months of publisher history, ranks YTD performance, and auto-generates a retro with wins, misses, action plans & offer-level callouts</p>
             </div>
             <button onClick={runAgent} style={{
@@ -215,7 +215,7 @@ export default function App() {
               <div style={{ animation: "fadeIn .4s ease" }}>
                 {/* RETRO TABLE */}
                 <div style={{ background: C.card, borderRadius: 12, border: `1px solid ${C.border}`, padding: 16, marginBottom: 14, overflowX: "auto" }}>
-                  <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 12 }}>{"\uD83D\uDCCB"} Publisher retro — April 2026</div>
+                  <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 12 }}>{"\uD83D\uDCCB"} Publisher retro - April 2026</div>
                   <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
                     <thead><tr style={{ borderBottom: `1px solid ${C.border}` }}>
                       {["Publisher", "Win", "Miss", "Action Plan"].map(h => (
@@ -286,7 +286,7 @@ export default function App() {
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
                   <div style={{ background: C.card, borderRadius: 12, border: `1px solid ${C.border}`, padding: 16 }}>
-                    <div style={{ fontSize: 12, color: C.muted, marginBottom: 10 }}>Revenue ($K) — 12 months</div>
+                    <div style={{ fontSize: 12, color: C.muted, marginBottom: 10 }}>Revenue ($K) - 12 months</div>
                     <ResponsiveContainer width="100%" height={200}>
                       <BarChart data={months.map((m, i) => ({ month: m, rev: publishers[selPub].data[i] }))}>
                         <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
@@ -300,7 +300,7 @@ export default function App() {
                     </ResponsiveContainer>
                   </div>
                   <div style={{ background: C.card, borderRadius: 12, border: `1px solid ${C.border}`, padding: 16 }}>
-                    <div style={{ fontSize: 12, color: C.muted, marginBottom: 10 }}>GPM % — 12 months</div>
+                    <div style={{ fontSize: 12, color: C.muted, marginBottom: 10 }}>GPM % - 12 months</div>
                     <ResponsiveContainer width="100%" height={200}>
                       <LineChart data={months.map((m, i) => ({ month: m, gpm: publishers[selPub].gpm[i] }))}>
                         <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
@@ -313,7 +313,7 @@ export default function App() {
                   </div>
                 </div>
                 <div style={{ background: C.card, borderRadius: 12, border: `1px solid ${C.border}`, padding: 16 }}>
-                  <div style={{ fontSize: 12, color: C.muted, marginBottom: 10 }}>All publishers — revenue trend ($K)</div>
+                  <div style={{ fontSize: 12, color: C.muted, marginBottom: 10 }}>All publishers - revenue trend ($K)</div>
                   <ResponsiveContainer width="100%" height={240}>
                     <LineChart data={trendData}>
                       <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
@@ -361,7 +361,7 @@ export default function App() {
                   </table>
                 </div>
                 <div style={{ padding: "10px 14px", background: C.amber + "08", borderRadius: 8, border: `1px solid ${C.amber}20`, fontSize: 11, color: C.subtle, lineHeight: 1.6 }}>
-                  <span style={{ color: C.amber, fontWeight: 600 }}>Highlight:</span> Facebook Media GPM swung from <span style={{ color: C.red, fontWeight: 600 }}>-8%</span> in Feb to <span style={{ color: C.green, fontWeight: 600 }}>+5%</span> in April — a 13pp improvement but still the weakest margin in the portfolio. Google SEM hit <span style={{ color: C.green, fontWeight: 600 }}>72% GPM</span> on $485K revenue, its best month on record.
+                  <span style={{ color: C.amber, fontWeight: 600 }}>Highlight:</span> Facebook Media GPM swung from <span style={{ color: C.red, fontWeight: 600 }}>-8%</span> in Feb to <span style={{ color: C.green, fontWeight: 600 }}>+5%</span> in April - a 13pp improvement but still the weakest margin in the portfolio. Google SEM hit <span style={{ color: C.green, fontWeight: 600 }}>72% GPM</span> on $485K revenue, its best month on record.
                 </div>
               </div>
             )}

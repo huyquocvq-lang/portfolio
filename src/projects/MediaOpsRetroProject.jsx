@@ -56,7 +56,7 @@ export default function MediaOpsRetroProject() {
           <h2>The problem</h2>
           <p>
             Writing a monthly publisher cutover retro manually takes ~2 hours of pulling data across
-            spreadsheets, ranking performance, and writing up insights — and the quality varies
+            spreadsheets, ranking performance, and writing up insights - and the quality varies
             depending on who does it.
           </p>
         </section>
@@ -68,7 +68,7 @@ export default function MediaOpsRetroProject() {
             the target month), then automatically ranks each publisher’s revenue against their YTD
             history, computes GPM / eCPA / funding / bank CPM trends, flags anyone under $20K as
             sub-scale, and produces a structured retro table with wins, misses, and action plans
-            that logically follow from the data. It also surfaces scalable offer-level callouts —
+            that logically follow from the data. It also surfaces scalable offer-level callouts -
             the kind of insight that usually gets buried in a pivot table.
           </p>
         </section>

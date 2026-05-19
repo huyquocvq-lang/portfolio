@@ -26,7 +26,7 @@ html { scroll-behavior: smooth; }
   --border-on-dark: rgba(255, 255, 255, 0.15);
 }
 
-/* Light theme — same accent bronze for brand consistency, brighter surfaces. */
+/* Light theme - same accent bronze for brand consistency, brighter surfaces. */
 :root[data-theme="light"] {
   --bg-primary: #ffffff;
   --bg-elevated: #f4f4f4;
@@ -70,7 +70,7 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
 }
 
-/* Responsive background — <picture> with art-directed sources.
+/* Responsive background - <picture> with art-directed sources.
    The element fills the hero; .hero-bg-img uses object-fit:cover. */
 .hero-bg {
   position: absolute;
@@ -527,7 +527,7 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.6;
 }
 .edu-honors li::before {
-  content: '—';
+  content: '-';
   position: absolute;
   left: 0;
   color: var(--accent);
@@ -1211,7 +1211,7 @@ footer {
 
   body { overflow-x: hidden; }
 
-  /* —— Nav: hamburger —— */
+  /* -- Nav: hamburger -- */
   .nav-inner {
     position: relative;
     padding: 14px 20px;
@@ -1263,7 +1263,7 @@ footer {
     letter-spacing: 0.18em;
   }
 
-  /* —— Hero: compact —— */
+  /* -- Hero: compact -- */
   .hero {
     min-height: 100svh;
     min-height: 100dvh;
@@ -1303,7 +1303,7 @@ footer {
     font-size: 16px;
   }
 
-  /* —— Sections —— */
+  /* -- Sections -- */
   .impact { padding: 56px 20px; }
   .impact h2 { margin-bottom: 36px; }
   .impact-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -1319,7 +1319,7 @@ footer {
   .skill h3 { font-size: 18px; }
   .skill p { font-size: 15px; }
 
-  /* —— Projects —— */
+  /* -- Projects -- */
   .projects { padding: 56px 20px 72px; }
   .projects-header {
     flex-direction: column;
@@ -1361,7 +1361,7 @@ footer {
     padding: 12px 0;
   }
 
-  /* —— Footer —— */
+  /* -- Footer -- */
   footer { padding: 56px 20px 32px; }
   .footer-cta { margin-bottom: 48px; }
   .footer-cta h2 { font-size: clamp(26px, 6.5vw, 32px); }
@@ -1380,7 +1380,7 @@ footer {
   .nav-links { width: 100vw; border-left: 0; }
 }
 
-/* MacBook 13" / laptop — slightly larger type */
+/* MacBook 13" / laptop - slightly larger type */
 @media (min-width: 1024px) and (max-width: 1440px) {
   :root { --text-base: 21px; }
   .hero h1.author-name {

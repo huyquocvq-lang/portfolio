@@ -1,4 +1,4 @@
-# API & External Data Flow — Jenny Tang Portfolio
+# API & External Data Flow - Jenny Tang Portfolio
 
 > This project has **no first-party REST/GraphQL API** and **no authentication layer**. It is a static content site. This document describes actual external data flows and what to do if you add a backend later.
 
@@ -32,7 +32,7 @@ sequenceDiagram
 
 | URL | Method | Used by | Purpose |
 |-----|--------|---------|---------|
-| N/A (bundled modules) | — | All components | Content from `src/data` and project JSX |
+| N/A (bundled modules) | - | All components | Content from `src/data` and project JSX |
 | `https://fonts.googleapis.com/...` | GET | `index.html` | Source Sans Pro + Cormorant Garamond |
 | `profile.contact.linkedin` | GET (browser navigation) | `Nav.jsx` | User profile |
 | `profile.contact.resume` | GET (browser navigation) | `Nav.jsx` | Google Docs resume |
@@ -43,7 +43,7 @@ sequenceDiagram
 
 | Path | Referenced in |
 |------|----------------|
-| `/hero-banners/hero_*.{webp,png}` | `Hero.jsx` — 8 art-directed variants × 2 formats (mobile portrait, mobile landscape, tablet, MacBook 13, FHD, QHD, 4K, ultrawide) |
+| `/hero-banners/hero_*.{webp,png}` | `Hero.jsx` - 8 art-directed variants × 2 formats (mobile portrait, mobile landscape, tablet, MacBook 13, FHD, QHD, 4K, ultrawide) |
 | `/images/projects/winterplace.jpg` | `featuredProject.image` |
 | `/images/projects/programmatic.jpg` | `otherProjects[0]` |
 | `/images/projects/trend-analysis.jpg` | `otherProjects[1]` |
@@ -67,7 +67,7 @@ sequenceDiagram
 | `/banners/ai-rewriter.html` | `otherProjects[4].banner` |
 | `/banners/media-ops-retro.html` | `otherProjects[5].banner` |
 
-Each file is loaded as an `<iframe>` document — keeps animation CSS / inline `<script>` self-contained. The sandbox flags are `allow-scripts allow-same-origin`.
+Each file is loaded as an `<iframe>` document - keeps animation CSS / inline `<script>` self-contained. The sandbox flags are `allow-scripts allow-same-origin`.
 
 ### Lazy-loaded dashboard chunks
 
@@ -105,7 +105,7 @@ To add a catch-all route, extend `App.jsx`:
 `react-router-dom` handles client-side navigation only:
 
 ```javascript
-// src/App.jsx — explicit route table
+// src/App.jsx - explicit route table
 <Route path="/projects/winterplace" element={<WinterplaceProject />} />
 ```
 
@@ -154,7 +154,7 @@ Not in scope today. Would typically use:
 - HttpOnly cookies (preferred for web), or
 - Bearer token in memory + refresh flow
 
-Do not store secrets in `src/data/*` — those files are public in the bundle.
+Do not store secrets in `src/data/*` - those files are public in the bundle.
 
 ## Third-party services summary
 

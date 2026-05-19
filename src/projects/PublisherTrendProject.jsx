@@ -44,7 +44,7 @@ export default function PublisherTrendProject() {
             <h2>Problem</h2>
             <p>
               The team needed a faster way to see which publishers were improving, declining, or
-              creating risk — shifts driven by traffic quality, offer/creative changes, APY updates, or
+              creating risk - shifts driven by traffic quality, offer/creative changes, APY updates, or
               budget allocation.
             </p>
           </div>
@@ -52,7 +52,7 @@ export default function PublisherTrendProject() {
             <h2>Method</h2>
             <p>
               Compared publisher and placement performance across current month, prior month, and
-              historical trends — revenue growth, conversion quality, rising eCPA, weaker RPM, volume
+              historical trends - revenue growth, conversion quality, rising eCPA, weaker RPM, volume
               shifts.
             </p>
           </div>

@@ -1,4 +1,4 @@
-# Architecture Overview — Jenny Tang Portfolio
+# Architecture Overview - Jenny Tang Portfolio
 
 > **Stack reality check:** This repository is a **React 18 single-page application (SPA)** built with **Vite 5**, deployed as static web assets. It is **not** a React Native mobile app. There is no `ios/`, `android/`, Metro bundler, or native bridge code.
 
@@ -39,7 +39,7 @@ flowchart TB
 
   subgraph assets [Static asset layer]
     BANNERS[public/banners/*.html]
-    DASHBOARDS[src/embeds/*.tsx — lazy]
+    DASHBOARDS[src/embeds/*.tsx - lazy]
     PHOTOS[public/images/**]
   end
 
@@ -57,15 +57,15 @@ flowchart TB
 | Pattern | How it applies in this project |
 |---------|--------------------------------|
 | **Component-based UI** | React function components only; no class components |
-| **Data-driven content** | All copy, stats, projects live in `src/data/*.js` — UI reads imports |
+| **Data-driven content** | All copy, stats, projects live in `src/data/*.js` - UI reads imports |
 | **Page-per-route** | `HomePage` + 7 dedicated project page components |
 | **Per-feature styling** | Global CSS + per-project CSS files (not CSS-in-JS); theme tokens on `:root` of `global.css` |
 | **Thin shell wrapper** | `ProjectShell` provides Nav, hero banner (iframe or image), breadcrumbs, children, prev/next pager, Footer |
 | **Lazy embed slots** | Dashboards live in `src/embeds/*.tsx` and are `React.lazy`-loaded by `EmbedSlot` per project page |
 | **Self-contained banners** | Each project banner is a standalone HTML in `public/banners/` rendered via sandboxed `<iframe>` (`BannerEmbed`) on both home cards and detail heroes |
-| **Single React Context** | `ThemeContext` (`src/context/ThemeContext.jsx`) for dark/light theme — only global state in the app. Persists to `localStorage` (`portfolio-theme`); first-visit defaults to OS `prefers-color-scheme`. Anti-FOUC inline script in `index.html` sets `data-theme` before bundle loads. |
+| **Single React Context** | `ThemeContext` (`src/context/ThemeContext.jsx`) for dark/light theme - only global state in the app. Persists to `localStorage` (`portfolio-theme`); first-visit defaults to OS `prefers-color-scheme`. Anti-FOUC inline script in `index.html` sets `data-theme` before bundle loads. |
 
-**Not used:** Redux, Zustand, React Query, backend API layer, React Native Navigation. (Context API limited to theme switching only — see `ThemeContext.jsx`.)
+**Not used:** Redux, Zustand, React Query, backend API layer, React Native Navigation. (Context API limited to theme switching only - see `ThemeContext.jsx`.)
 
 ## Data flow
 
@@ -96,12 +96,12 @@ Defined explicitly in `src/App.jsx` (not file-based routing):
 
 | State type | Location | Scope |
 |------------|----------|-------|
-| Hero entrance animation | `Hero.jsx` — `ready` | Local |
-| Hero scroll crossfade | `Hero.jsx` — `scrollProgress` | Local + window scroll listener |
-| Mobile nav drawer | `Nav.jsx` — `open` | Local + body overflow lock |
-| Theme (dark/light) | `src/context/ThemeContext.jsx` — `theme` | Global via React Context; mirrored to `html[data-theme]` + `localStorage` |
-| Dashboard fullscreen toggle | `EmbedSlot.jsx` — `fullscreen` | Local + body overflow lock + Esc handler |
-| AI rewriter lightbox | `AiRewriterProject.jsx` — `zoomed` | Local + body overflow lock + Esc handler |
+| Hero entrance animation | `Hero.jsx` - `ready` | Local |
+| Hero scroll crossfade | `Hero.jsx` - `scrollProgress` | Local + window scroll listener |
+| Mobile nav drawer | `Nav.jsx` - `open` | Local + body overflow lock |
+| Theme (dark/light) | `src/context/ThemeContext.jsx` - `theme` | Global via React Context; mirrored to `html[data-theme]` + `localStorage` |
+| Dashboard fullscreen toggle | `EmbedSlot.jsx` - `fullscreen` | Local + body overflow lock + Esc handler |
+| AI rewriter lightbox | `AiRewriterProject.jsx` - `zoomed` | Local + body overflow lock + Esc handler |
 | Banner scaling | inline `<script>` inside each `public/banners/*.html` | Per-iframe document |
 | Everything else | Props from imported data | Stateless presentation |
 
@@ -127,7 +127,7 @@ CSS variables in `:root` (`global.css`):
   - Borders: `--border-subtle`, `--border-accent`
   - Always-dark surfaces (hero overlay copy, lightbox): `--text-on-dark`, `--text-on-dark-soft`, `--text-on-dark-muted`, `--text-on-dark-faint`, `--border-on-dark`
 
-The active theme is selected by `:root[data-theme]` (set by `ThemeContext` at runtime + an anti-FOUC inline script in `index.html`). All non-hero / non-dashboard surfaces reference these tokens via `var(...)` — never hardcode the swatch.
+The active theme is selected by `:root[data-theme]` (set by `ThemeContext` at runtime + an anti-FOUC inline script in `index.html`). All non-hero / non-dashboard surfaces reference these tokens via `var(...)` - never hardcode the swatch.
 
 ## External integrations (not owned API)
 
@@ -177,6 +177,6 @@ main.jsx
 - `getAllProjects()` order defines prev/next pager sequence
 - `slug` in `projects.js` must match route path and `ProjectShell slug` prop
 - Hero scroll math assumes `#impact` exists below hero on home page
-- Banner HTML must keep `<meta viewport>` + `.banner-fit` wrapper + inline `--scale` script — otherwise the banner won't scale to iframe width
+- Banner HTML must keep `<meta viewport>` + `.banner-fit` wrapper + inline `--scale` script - otherwise the banner won't scale to iframe width
 - Each `EmbedSlot embedKey` must exist in both `projectEmbeds.js` AND the `dashboards` lazy map in `EmbedSlot.jsx`
-- Theme token names (`--bg-primary`, `--accent`, etc.) are referenced across 10+ CSS files — rename with full repo grep
+- Theme token names (`--bg-primary`, `--accent`, etc.) are referenced across 10+ CSS files - rename with full repo grep

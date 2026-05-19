@@ -223,7 +223,7 @@ export default function WinterplaceDashboard() {
             lineHeight: 1.15,
           }}>Marketing Analysis Dashboard</h1>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: "rgba(255,255,255,0.5)", margin: 0, maxWidth: 520 }}>
-            Data-driven storytelling — channel performance, customer segments & budget optimization insights for 2021–2024
+            Data-driven storytelling - channel performance, customer segments & budget optimization insights for 2021–2024
           </p>
 
           {/* KPI Row */}
@@ -462,7 +462,7 @@ export default function WinterplaceDashboard() {
                 ))}
               </div>
               <div style={{ marginTop: 18, padding: "12px 18px", background: `${COLORS.linkedin}15`, borderRadius: 10, border: `1px solid ${COLORS.linkedin}25`, fontSize: 13, color: "rgba(255,255,255,0.7)", textAlign: "center" }}>
-                LinkedIn drives <strong style={{ color: COLORS.linkedin }}>37%</strong> Teen Family bookings — the highest-value segment at <strong style={{ color: COLORS.gold }}>$4,269</strong> avg. booking value
+                LinkedIn drives <strong style={{ color: COLORS.linkedin }}>37%</strong> Teen Family bookings - the highest-value segment at <strong style={{ color: COLORS.gold }}>$4,269</strong> avg. booking value
               </div>
             </div>
           </>
@@ -470,7 +470,7 @@ export default function WinterplaceDashboard() {
 
         {activeTab === "recommendation" && (
           <>
-            <SectionTitle icon="🎯">Budget Shift Scenarios — Incremental Revenue</SectionTitle>
+            <SectionTitle icon="🎯">Budget Shift Scenarios - Incremental Revenue</SectionTitle>
             <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 24, border: "1px solid rgba(255,255,255,0.06)" }}>
               <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={scenarioComparison} barSize={60}>
@@ -489,7 +489,7 @@ export default function WinterplaceDashboard() {
                 {[
                   { label: "Social Media Shift", color: COLORS.teal, val: "$1.1MM", desc: "From other social → LinkedIn" },
                   { label: "Channel Shift", color: COLORS.gold, val: "$900K", desc: "From other channels → LinkedIn" },
-                  { label: "Hybrid Shift ★", color: COLORS.coral, val: "$1.6MM", desc: "Both combined — Recommended" },
+                  { label: "Hybrid Shift ★", color: COLORS.coral, val: "$1.6MM", desc: "Both combined - Recommended" },
                 ].map((s, i) => (
                   <div key={i} style={{
                     background: i === 2 ? `${COLORS.coral}12` : "rgba(255,255,255,0.03)",
@@ -550,7 +550,7 @@ export default function WinterplaceDashboard() {
                 background: `${COLORS.gold}12`, borderRadius: 10, border: `1px solid ${COLORS.gold}25`,
                 fontSize: 13, color: "rgba(255,255,255,0.7)",
               }}>
-                ⚠️ High sensitivity to conversion rate — continuous monitoring recommended during execution
+                ⚠️ High sensitivity to conversion rate - continuous monitoring recommended during execution
               </div>
             </div>
           </>

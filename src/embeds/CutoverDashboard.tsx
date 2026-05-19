@@ -183,10 +183,10 @@ function PlacementPanel({ pubName, color }) {
               <td style={{ padding: "8px" }}><Flag gpm={r.gpm} /></td>
               <td style={{ padding: "8px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.muted }}>{fmtS(r.clicks)}</td>
               <td style={{ padding: "8px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.text }}>{r.conv}</td>
-              <td style={{ padding: "8px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.purple }}>{r.planned > 0 ? fmt(r.planned) : "—"}</td>
-              <td style={{ padding: "8px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: r.optimized > 0 ? C.accent : C.dim }}>{r.optimized > 0 ? fmt(r.optimized) : "—"}</td>
+              <td style={{ padding: "8px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.purple }}>{r.planned > 0 ? fmt(r.planned) : "-"}</td>
+              <td style={{ padding: "8px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: r.optimized > 0 ? C.accent : C.dim }}>{r.optimized > 0 ? fmt(r.optimized) : "-"}</td>
               <td style={{ padding: "8px", textAlign: "right", fontFamily: "'JetBrains Mono'", fontWeight: 700, color: r.delta > 0 ? C.accent : r.delta < 0 ? C.red : C.dim }}>
-                {r.delta > 0 ? "+"+fmt(r.delta) : r.delta < 0 ? "-"+fmt(Math.abs(r.delta)) : "—"}
+                {r.delta > 0 ? "+"+fmt(r.delta) : r.delta < 0 ? "-"+fmt(Math.abs(r.delta)) : "-"}
               </td>
             </tr>
           ))}</tbody>
@@ -233,7 +233,7 @@ export default function App() {
       </div>
       <div style={{ background: "linear-gradient(135deg, rgba(110,231,183,0.06), rgba(96,165,250,0.06))", border: "1px solid "+C.accent+"33", borderRadius: 10, padding: "12px 18px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
         <span style={{ fontSize: 16 }}>⚡</span>
-        <span style={{ color: C.muted, fontSize: 11 }}><strong style={{ color: C.accent }}>Optimization saves $25K</strong> — budget shifted from low-GPM publishers to high-GPM. <strong style={{ color: C.accent }}>Placements tab</strong> shows the per-placement breakdown with expandable drilldowns.</span>
+        <span style={{ color: C.muted, fontSize: 11 }}><strong style={{ color: C.accent }}>Optimization saves $25K</strong> - budget shifted from low-GPM publishers to high-GPM. <strong style={{ color: C.accent }}>Placements tab</strong> shows the per-placement breakdown with expandable drilldowns.</span>
       </div>
 
       {tab === "Overview" && (<>
@@ -300,9 +300,9 @@ export default function App() {
                 <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.muted }}>{fmt(p.hist_cost)}</td>
                 <td style={{ padding: "10px" }}><Flag gpm={p.gpm} /></td>
                 <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.purple }}>{fmt(p.planned)}</td>
-                <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: p.optimized>0?C.accent:C.dim }}>{p.optimized>0?fmt(p.optimized):"—"}</td>
-                <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", fontWeight: 700, color: d>0?C.accent:d<0?C.red:C.dim }}>{d>0?"+"+fmt(d):d<0?"-"+fmt(Math.abs(d)):"—"}</td>
-                <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.text }}>{p.proj_rev>0?fmt(p.proj_rev):"—"}</td>
+                <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: p.optimized>0?C.accent:C.dim }}>{p.optimized>0?fmt(p.optimized):"-"}</td>
+                <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", fontWeight: 700, color: d>0?C.accent:d<0?C.red:C.dim }}>{d>0?"+"+fmt(d):d<0?"-"+fmt(Math.abs(d)):"-"}</td>
+                <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.text }}>{p.proj_rev>0?fmt(p.proj_rev):"-"}</td>
                 <td style={{ padding: "10px", textAlign: "right", fontFamily: "'JetBrains Mono'", color: C.muted }}>{fmtS(p.conv)}</td>
               </tr>);})}</tbody>
           </table>

@@ -354,7 +354,7 @@ export default function Dashboard() {
               </Card>
             </div>
             <Card>
-              <SectionLabel>All offers — impressions trend (K)</SectionLabel>
+              <SectionLabel>All offers - impressions trend (K)</SectionLabel>
               <ResponsiveContainer width="100%" height={260}>
                 <LineChart data={offerLineData}>
                   <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
@@ -387,7 +387,7 @@ export default function Dashboard() {
                 </div>
               </Card>
               <Card>
-                <SectionLabel>Publisher — planned vs. optimized ($K)</SectionLabel>
+                <SectionLabel>Publisher - planned vs. optimized ($K)</SectionLabel>
                 <ResponsiveContainer width="100%" height={320}>
                   <BarChart data={pubSOV} layout="vertical" barGap={2}>
                     <CartesianGrid strokeDasharray="3 3" stroke={C.border} horizontal={false} />
@@ -459,7 +459,7 @@ export default function Dashboard() {
             </div>
 
             <Card style={{ marginBottom: 16 }}>
-              <SectionLabel>Daily lag decay — VTC vs. CTC</SectionLabel>
+              <SectionLabel>Daily lag decay - VTC vs. CTC</SectionLabel>
               <ResponsiveContainer width="100%" height={260}>
                 <AreaChart data={capChartData}>
                   <CartesianGrid strokeDasharray="3 3" stroke={C.border} />
@@ -473,7 +473,7 @@ export default function Dashboard() {
             </Card>
 
             <Card>
-              <SectionLabel>Cumulative conversions — optimization window</SectionLabel>
+              <SectionLabel>Cumulative conversions - optimization window</SectionLabel>
               <ResponsiveContainer width="100%" height={240}>
                 <LineChart data={capChartData}>
                   <CartesianGrid strokeDasharray="3 3" stroke={C.border} />

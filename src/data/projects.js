@@ -23,7 +23,7 @@ export const otherProjects = [
     title: 'Programmatic Placement Cutover Sheet',
     subtitle: 'Automated daily cost planning & publisher allocation model',
     description:
-      'A three-layer scoring model that converts publisher-level offer allocation into placement-level plans across NAF, DV360, Yahoo DSP, Dianomi, and Xandr — using normalized revenue, GPM, and eCPA scores to guide ramp, pause, and test decisions.',
+      'A three-layer scoring model that converts publisher-level offer allocation into placement-level plans across NAF, DV360, Yahoo DSP, Dianomi, and Xandr - using normalized revenue, GPM, and eCPA scores to guide ramp, pause, and test decisions.',
     impact: '~10% GPM improvement, ≈ $50K monthly impact',
     image: '/images/projects/programmatic.jpg',
     banner: '/banners/programmatic-cutover.html',
@@ -35,7 +35,7 @@ export const otherProjects = [
     title: 'Month-over-Month Publisher Trend Analysis',
     subtitle: 'Publisher & placement performance recommendations',
     description:
-      'Analyzed month-over-month shifts across Impressions, CTR, RPM, eCPA, and GPM to surface which publishers should be ramped, slowed, paused, or tested — connecting performance changes to clear business actions.',
+      'Analyzed month-over-month shifts across Impressions, CTR, RPM, eCPA, and GPM to surface which publishers should be ramped, slowed, paused, or tested - connecting performance changes to clear business actions.',
     impact: 'Faster network moves, fewer reactive decisions',
     image: '/images/projects/trend-analysis.jpg',
     banner: '/banners/publisher-trend-analysis.html',
@@ -59,7 +59,7 @@ export const otherProjects = [
     title: 'Glean Daily Action Planner',
     subtitle: 'AI-powered task prioritization workflow',
     description:
-      'A Glean agent that searches across Email, Slack, Jira, Airtable, and Confluence to surface urgent items, blockers, and revenue-impacting tasks — then returns a prioritized daily summary directly in Slack.',
+      'A Glean agent that searches across Email, Slack, Jira, Airtable, and Confluence to surface urgent items, blockers, and revenue-impacting tasks - then returns a prioritized daily summary directly in Slack.',
     impact: 'Less context switching, sharper daily focus',
     image: '/images/projects/glean-planner.jpg',
     banner: '/banners/glean-planner.html',
@@ -71,7 +71,7 @@ export const otherProjects = [
     title: 'AI Stakeholder Update Rewriter',
     subtitle: 'Audience-based communication agent',
     description:
-      'Takes a rough draft update and rewrites it for the target audience — executive summary, Media Buyer note, Manager update, client-facing explanation, or escalation note.',
+      'Takes a rough draft update and rewrites it for the target audience - executive summary, Media Buyer note, Manager update, client-facing explanation, or escalation note.',
     impact: 'Faster, clearer, more consistent communication',
     image: '/images/projects/ai-rewriter.jpg',
     banner: '/banners/ai-rewriter.html',

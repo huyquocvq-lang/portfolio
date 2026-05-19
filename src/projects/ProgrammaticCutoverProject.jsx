@@ -10,12 +10,12 @@ const LAYERS = [
   {
     num: '01',
     title: 'Placement breakdown by publisher',
-    text: 'Identifies how much allocation each offer runs across placements within each publisher — estimating planned revenue and cost at placement level.'
+    text: 'Identifies how much allocation each offer runs across placements within each publisher - estimating planned revenue and cost at placement level.'
   },
   {
     num: '02',
     title: 'Offer allocation at publisher level',
-    text: 'Summarizes expected offer volume per publisher from the Yield Plan and recent performance — revenue, cost, conversions, and pacing.'
+    text: 'Summarizes expected offer volume per publisher from the Yield Plan and recent performance - revenue, cost, conversions, and pacing.'
   },
   {
     num: '03',
@@ -52,7 +52,7 @@ export default function ProgrammaticCutoverProject() {
           <h2>Why this existed</h2>
           <p>
             Programmatic cost planning was highly manual. Performance varied by publisher, offer, and
-            placement — some drove revenue but weak GPM, others had low eCPA but limited scale. The team
+            placement - some drove revenue but weak GPM, others had low eCPA but limited scale. The team
             needed a structured way to balance revenue growth, client KPI, and profitability at month start.
           </p>
         </section>

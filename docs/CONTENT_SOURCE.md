@@ -12,13 +12,13 @@
 
 # **Portfolio Homepage**
 
-## **Hero Section** (new — 2026 redesign)
+## **Hero Section** (new - 2026 redesign)
 
 **Component:** `src/components/Hero.jsx` · **Background:** `<picture>` element with 8 responsive variants from `public/hero-banners/` · **Theme:** charcoal `#1a1a1a` + bronze gold `#c5a47e`
 
 **Kicker:** `Portfolio · 2026` (monospace, bronze, wide letter-spacing)
-**Heading:** `Jenny` / `Tang.` (the second word italic + bronze accent — Cormorant Garamond display font)
-**Subtitle:** Derived from `profile.role`, with ` · ` separators rendered as ` | ` — i.e. *Media Operations Analyst | Marketing Analytics | Programmatic Optimization | AI Workflow Automation*
+**Heading:** `Jenny` / `Tang.` (the second word italic + bronze accent - Cormorant Garamond display font)
+**Subtitle:** Derived from `profile.role`, with ` · ` separators rendered as ` | ` - i.e. *Media Operations Analyst | Marketing Analytics | Programmatic Optimization | AI Workflow Automation*
 **CTA:** `View Projects →` (outline → fills bronze on hover; scrolls to `#work`)
 
 ---
@@ -375,11 +375,11 @@ This agent improves communication speed and clarity. It helps convert messy note
 
 ### **The Problem**
 
-Writing a monthly publisher cutover retro manually takes ~2 hours of pulling data across spreadsheets, ranking performance, and writing up insights — and the quality varies depending on who does it.
+Writing a monthly publisher cutover retro manually takes ~2 hours of pulling data across spreadsheets, ranking performance, and writing up insights - and the quality varies depending on who does it.
 
 ### **What the Agent Does**
 
-The agent ingests two files (12-month publisher history + offer-by-publisher data for the target month), then automatically ranks each publisher's revenue against their YTD history, computes GPM / eCPA / funding / bank CPM trends, flags anyone under $20K as sub-scale, and produces a structured retro table with wins, misses, and action plans that logically follow from the data. It also surfaces scalable offer-level callouts — the kind of insight that usually gets buried in a pivot table.
+The agent ingests two files (12-month publisher history + offer-by-publisher data for the target month), then automatically ranks each publisher's revenue against their YTD history, computes GPM / eCPA / funding / bank CPM trends, flags anyone under $20K as sub-scale, and produces a structured retro table with wins, misses, and action plans that logically follow from the data. It also surfaces scalable offer-level callouts - the kind of insight that usually gets buried in a pivot table.
 
 ### **Rules Baked In**
 
@@ -398,9 +398,9 @@ The agent ingests two files (12-month publisher history + offer-by-publisher dat
 
 ### **Three Tabs of Output**
 
-* **Retro Output** — publisher-by-publisher table with auto-generated wins, misses, action plans; sub-$20K flags; 8 offer-level callouts.
-* **Publisher Trends** — 12-month revenue bars + GPM line per publisher; all-publishers overlay.
-* **MoM Compare** — March → April comparison table with deltas + color-coded badges.
+* **Retro Output** - publisher-by-publisher table with auto-generated wins, misses, action plans; sub-$20K flags; 8 offer-level callouts.
+* **Publisher Trends** - 12-month revenue bars + GPM line per publisher; all-publishers overlay.
+* **MoM Compare** - March → April comparison table with deltas + color-coded badges.
 
 ### **Impact**
 
@@ -416,8 +416,8 @@ Replaces ~2 hours of manual monthly retro work with a senior-analyst-grade write
 
 Reverse-chronological list of graduate programs:
 
-1. **Arizona State University, Thunderbird School of Global Management** — Master of Global Management; Global Digital Transformation. Phoenix, AZ · December 2024 · GPA 4.0/4.0. Honors: Thunderbird Alumni Scholarship; Thunderbird Southeast Asia Scholarship.
-2. **National Taiwan University of Science and Technology** — Master of Business Administration; Industrial Management. Taipei, Taiwan · January 2021 · GPA 3.9/4.3. Honors: Full-ride scholarship from NTUST.
+1. **Arizona State University, Thunderbird School of Global Management** - Master of Global Management; Global Digital Transformation. Phoenix, AZ · December 2024 · GPA 4.0/4.0. Honors: Thunderbird Alumni Scholarship; Thunderbird Southeast Asia Scholarship.
+2. **National Taiwan University of Science and Technology** - Master of Business Administration; Industrial Management. Taipei, Taiwan · January 2021 · GPA 3.9/4.3. Honors: Full-ride scholarship from NTUST.
 
 ---
 
@@ -425,33 +425,33 @@ Reverse-chronological list of graduate programs:
 
 **Anchor:** `#experience` · **Component:** `src/components/Experience.jsx` · **Data:** `src/data/experience.js`
 
-Resume bullets are merged into flowing paragraphs (per user request — *"em remove bullet point đi là được"*).
+Resume bullets are merged into flowing paragraphs (per user request - *"em remove bullet point đi là được"*).
 
-### Gen Digital, Inc. — Media Operations Analyst
+### Gen Digital, Inc. - Media Operations Analyst
 Tempe, AZ · May 2025 – Present
 
-Optimized full-funnel campaign performance across 30+ publishers and 35+ audience segments by analyzing ROAS, CPO, %ATC, %CTR, %C2C, conversion, revenue, and %GPM; refined SOV to profitable publisher placements, testing thresholds, and traffic allocation across CPC and CPA offers — contributing to a 5–10% return and $400K in monthly revenue lift.
+Optimized full-funnel campaign performance across 30+ publishers and 35+ audience segments by analyzing ROAS, CPO, %ATC, %CTR, %C2C, conversion, revenue, and %GPM; refined SOV to profitable publisher placements, testing thresholds, and traffic allocation across CPC and CPA offers - contributing to a 5–10% return and $400K in monthly revenue lift.
 
 Delivered GBR's record-high revenue of $10M in Q1 2026 while maintaining 58–60% GPM by developing a data-driven budget allocation and pacing strategy across GoBankingRates, CNN, SEM/Google, paid social/Facebook, programmatic platforms, and endemic publishers using historical performance, seasonality trends, and benchmark normalization.
 
-Leveraged AI automation tools (Glean, Copilot, Claude), Excel, and Tableau to automate campaign reporting and performance analysis — improving operational efficiency by 30%, reducing reporting time by 60%, and accelerating optimization against client KPIs and monetization targets.
+Leveraged AI automation tools (Glean, Copilot, Claude), Excel, and Tableau to automate campaign reporting and performance analysis - improving operational efficiency by 30%, reducing reporting time by 60%, and accelerating optimization against client KPIs and monetization targets.
 
-Supported closing an $800K monthly revenue gap across CPA offers — including SoFi, Truist, Axos, and Bank of America — by resolving ETL-related data delays, coordinating traffic execution, and leading A/B testing on landing pages and APY-driven messaging.
+Supported closing an $800K monthly revenue gap across CPA offers - including SoFi, Truist, Axos, and Bank of America - by resolving ETL-related data delays, coordinating traffic execution, and leading A/B testing on landing pages and APY-driven messaging.
 
 **Banking clients:** Capital One · Wells Fargo · Bank of America · E*TRADE · Betterment · Gainbridge · SoFi · Axos · Truist · Robinhood
 **Partners / channels:** Google · Bing · CNN · Facebook · NAF · Yahoo DSP · DV360 · Xandr · MSN · Dianomi · AOL · select SME publishers
 
-### Arizona State University, Thunderbird School of Global Management — Business Operations Analyst
+### Arizona State University, Thunderbird School of Global Management - Business Operations Analyst
 Tempe, AZ · May 2024 – May 2025
 
-Automated transcript processing through OnBase, AI Raptor, and Salesforce — supporting a 30% process improvement while maintaining data integrity. Collaborated cross-functionally to train student workers and improve CRM adoption using data-join techniques for smoother backend-to-frontend integration.
+Automated transcript processing through OnBase, AI Raptor, and Salesforce - supporting a 30% process improvement while maintaining data integrity. Collaborated cross-functionally to train student workers and improve CRM adoption using data-join techniques for smoother backend-to-frontend integration.
 
-### PlusBlocks Technology L.L.C. — Business Analyst
+### PlusBlocks Technology L.L.C. - Business Analyst
 AI-driven Web3 entertainment platform · Nov 2021 – May 2023
 
-Led market development in Southeast Asia, cultivating relationships with over 1,000 key opinion leaders, guilds, and communities — growing the user base to more than 100,000 in 11 months while maintaining referral costs at $5 per KYC user.
+Led market development in Southeast Asia, cultivating relationships with over 1,000 key opinion leaders, guilds, and communities - growing the user base to more than 100,000 in 11 months while maintaining referral costs at $5 per KYC user.
 
-Led an end-to-end partnership project; cross-functional collaboration with Product Development and UI/UX teams to build an ICO/INO/Airdrop platform using Salesforce and SAP — secured the first INO partner, adding 10,000 new users and generating $700,000 in INO funding.
+Led an end-to-end partnership project; cross-functional collaboration with Product Development and UI/UX teams to build an ICO/INO/Airdrop platform using Salesforce and SAP - secured the first INO partner, adding 10,000 new users and generating $700,000 in INO funding.
 
 Generated new revenue streams by offering marketing services and tournament hosting for partners, and developed the company's first marketing-agency fee structure to support executive decision-making.
 
@@ -462,7 +462,7 @@ Generated new revenue streams by offering marketing services and tournament host
 **Anchor:** `#personal` · **Component:** `src/components/PersonalInterest.jsx` · **Data:** `src/data/personal.js`
 
 **Eyebrow:** Personal Interest  
-**Heading:** A little more about me — outside of work.
+**Heading:** A little more about me - outside of work.
 
 **Paragraph 1:**
 
