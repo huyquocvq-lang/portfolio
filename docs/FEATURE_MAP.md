@@ -7,12 +7,14 @@
 | F1 | Hero banner | `src/components/Hero.jsx` | `/#top` |
 | F2 | Sticky navigation | `src/components/Nav.jsx` | global |
 | F3 | Impact highlights | `src/components/Impact.jsx` | `/#impact` |
+| F3b | Education list | `src/components/Education.jsx`, `src/data/education.js` | `/#education` |
+| F3c | Work experience timeline | `src/components/Experience.jsx`, `src/data/experience.js` | `/#experience` |
 | F4 | About + skills grid | `src/components/AboutSkills.jsx`, `Skill.jsx` | `/#about` |
 | F4b | Personal interest + masonry image wall | `src/components/PersonalInterest.jsx`, `src/data/personal.js` | `/#personal` |
 | F5 | Projects listing (animated banner thumbs) | `src/components/Projects.jsx`, `FeaturedProject.jsx`, `OtherProject.jsx`, `BannerEmbed.jsx` | `/#work` |
 | F6 | Footer / CTA | `src/components/Footer.jsx` | footer |
 | F7–F13 | Individual project case studies | `src/projects/*Project.jsx` | `/projects/:slug` |
-| FX | Theme tokens (charcoal + bronze) | `src/styles/global.css` `:root` | global |
+| FX | Theme tokens (charcoal + bronze) + dark/light toggle | `src/styles/global.css` `:root` / `[data-theme="light"]`, `src/context/ThemeContext.jsx`, `src/components/ThemeToggle.jsx` | global |
 | FY | Dashboard embed system | `src/components/project/EmbedSlot.jsx`, `src/embeds/*.tsx`, `src/data/projectEmbeds.js` | every detail page |
 | FZ | Banner system (home thumbs + detail hero) | `public/banners/*.html`, `BannerEmbed.jsx`, `ProjectShell.jsx` | home + detail |
 
@@ -79,6 +81,34 @@ Order in `Hero.jsx` matters — most specific first; width caps before generic a
 **Component:** `src/components/Impact.jsx` — maps array to `.impact-item`
 
 **Anchor:** `id="impact"`
+
+---
+
+## F3b — Education
+
+**Purpose:** List of graduate programs below Impact, ordered most-recent first.
+
+**Data:** `src/data/education.js` — array of `{ school, degree, focus, location, date, gpa, honors[] }`.
+
+**Component:** `src/components/Education.jsx` — 2-column grid (`220px 1fr` desktop, stacked on mobile). Date is the eyebrow column; body lists school → degree + focus → location · GPA → honors (em-dash bullets).
+
+**Anchor:** `id="education"`.
+
+**CSS:** `src/styles/global.css` — `.education`, `.education-inner`, `.education-eyebrow`, `.edu-item`, `.edu-date`, `.edu-body`, `.edu-degree`, `.edu-focus`, `.edu-meta`, `.edu-honors`.
+
+---
+
+## F3c — Work Experience
+
+**Purpose:** Reverse-chronological work history below Education. Bullets from the resume are rewritten as flowing paragraphs (per user request — no list markers).
+
+**Data:** `src/data/experience.js` — array of `{ company, role, location, start, end, paragraphs[], meta?[] }`. The optional `meta` is a `dt/dd` table for things like *Banking clients* / *Partners & channels*.
+
+**Component:** `src/components/Experience.jsx` — ordered list with the same 2-column grid as Education. Period (start–end) on the left; role → company · location → paragraphs → meta on the right.
+
+**Anchor:** `id="experience"` (linked from Nav).
+
+**CSS:** `src/styles/global.css` — `.experience`, `.experience-inner`, `.experience-eyebrow`, `.exp-timeline`, `.exp-item`, `.exp-period`, `.exp-role`, `.exp-company`, `.exp-para`, `.exp-meta`, `.exp-meta-row`.
 
 ---
 
@@ -262,25 +292,42 @@ Provides:
 
 ---
 
-## FX — Theme tokens
+## FX — Theme tokens + dark/light toggle
 
-Charcoal + bronze gold dark theme. Defined as CSS variables on `:root` in `src/styles/global.css`. Use `var(...)` everywhere new — never hardcode the swatches.
+Charcoal + bronze gold theme with a runtime **dark ↔ light** toggle. Tokens are CSS variables on `:root` in `src/styles/global.css`; the light theme is an attribute override on `:root[data-theme="light"]`. Use `var(...)` everywhere new — never hardcode the swatches.
 
-| Variable | Value | Use |
-|----------|-------|-----|
-| `--bg-primary` | `#1a1a1a` | Body + most section backgrounds |
-| `--bg-elevated` | `#222222` | Cards, panels, raised surfaces |
-| `--bg-elevated-2` | `#2a2a2a` | Tiles, dashboard internal surfaces |
-| `--accent` | `#c5a47e` | Eyebrows, links, accent borders, CTA |
-| `--accent-hover` | `#d4b896` | Hover state for accent |
-| `--text-heading` | `#ffffff` | h1/h2/h3, big stat numbers |
-| `--text-body` | `#a0a0a0` | Paragraph copy |
-| `--text-muted` | `#808080` | Labels, captions, meta |
-| `--text-on-accent` | `#ffffff` | Text inside accent-filled buttons |
-| `--border-subtle` | `#2a2a2a` | Quiet section dividers |
-| `--border-accent` | `rgba(197,164,126,0.35)` | Accented separators (impact, featured-project top rule) |
+### Theme switching
 
-Hero overlays (`rgba(0,0,0,…)`) and dashboard internal palettes stay as-is — they're already dark.
+| Piece | File | Notes |
+|-------|------|-------|
+| Provider + hook | `src/context/ThemeContext.jsx` | `theme`, `setTheme`, `toggleTheme`. `localStorage` key `portfolio-theme`. Falls back to `prefers-color-scheme`. Writes `document.documentElement.dataset.theme` + updates `<meta name="theme-color">`. |
+| Mount | `src/main.jsx` | Wraps `<App />` in `<ThemeProvider>`. |
+| UI | `src/components/ThemeToggle.jsx` | Sun/moon icon button. Mounted in `Nav.jsx` `.nav-actions` (visible on desktop + mobile, both home and project pages — `ProjectShell` reuses `Nav`). |
+| Anti-FOUC | `index.html` inline `<script>` in `<head>` | Resolves theme before bundle loads to avoid flash. Mirrors `ThemeContext` defaults. |
+
+### Token table (defaults = dark, overrides = light)
+
+| Variable | Dark | Light | Use |
+|----------|------|-------|-----|
+| `--bg-primary` | `#1a1a1a` | `#ffffff` | Body + most section backgrounds |
+| `--bg-elevated` | `#222222` | `#f4f4f4` | Cards, panels, raised surfaces |
+| `--bg-elevated-2` | `#2a2a2a` | `#ececec` | Tiles, dashboard internal surfaces |
+| `--accent` | `#c5a47e` | `#c5a47e` | Eyebrows, links, accent borders, CTA (kept bronze for brand) |
+| `--accent-hover` | `#d4b896` | `#b89468` | Hover state for accent |
+| `--text-heading` | `#ffffff` | `#1a1a1a` | h1/h2/h3, big stat numbers, nav links |
+| `--text-body` | `#a0a0a0` | `#555555` | Paragraph copy, footer body |
+| `--text-muted` | `#808080` | `#888888` | Labels, captions, meta, footer-bottom |
+| `--text-on-accent` | `#ffffff` | `#ffffff` | Text inside accent-filled buttons |
+| `--border-subtle` | `#2a2a2a` | `#e5e5e5` | Quiet section dividers, footer rules |
+| `--border-accent` | `rgba(197,164,126,0.35)` | `rgba(197,164,126,0.5)` | Accented separators (impact, featured-project top rule) |
+| `--text-on-dark*` | white-on-dark family | unchanged | Surfaces that **stay dark** regardless of theme (hero overlay copy, lightbox chrome) |
+
+### Surfaces excluded from theme switching
+
+- **Hero (`Hero.jsx`)** — image + dark gradient overlay; copy stays white in both themes for readability.
+- **AI rewriter lightbox** (`src/styles/projects/ai-rewriter.css`) — full-screen overlay always dim.
+- **Animated banners** (`public/banners/*.html`) — self-contained iframed docs with their own palette; not driven by `data-theme`. Cards/wrappers around them follow the site theme.
+- **Dashboard embeds** (`src/embeds/*Dashboard.tsx`) — internal palettes are hard-coded (Claude artifact exports). The surrounding `EmbedSlot` chrome (border, header, fullscreen background) follows the site theme.
 
 ---
 
@@ -347,4 +394,4 @@ When updating narrative (unless the user says otherwise): sync `CONTENT_SOURCE.m
 | Projects cards | `projects.js` links matching `App.jsx` routes; `banner` path matching a file in `public/banners/` |
 | Project pages | `projects.js` for pager + optional `getProjectCard`; matching key in `projectEmbeds.js` + lazy entry in `EmbedSlot.jsx` for dashboards |
 | Skill icons | `skills.icon` key ∈ `skillIconMap` keys |
-| Theme | All non-hero/non-dashboard surfaces must reference `var(--*)` tokens from global.css `:root` |
+| Theme | All non-hero/non-dashboard surfaces must reference `var(--*)` tokens from global.css `:root`. Toggle state owned by `ThemeContext` + persisted in `localStorage` key `portfolio-theme`. |

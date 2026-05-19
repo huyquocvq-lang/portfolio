@@ -128,6 +128,8 @@ portfolio/
 | `Hero.jsx` | Full-viewport responsive `<picture>` background + left-anchored text panel + CTA |
 | `Nav.jsx` | Sticky nav, mobile hamburger |
 | `Impact.jsx` | Impact metrics grid |
+| `Education.jsx` | Education list (graduate programs) |
+| `Experience.jsx` | Reverse-chronological work timeline |
 | `AboutSkills.jsx` | About column + skills grid |
 | `Skill.jsx` | Single skill cell with icon |
 | `PersonalInterest.jsx` | Personal copy + Pinterest-style masonry image wall |
@@ -266,11 +268,13 @@ npm run preview   # Preview production build locally
 
 ```
 /  (HomePage)
-├── #top       Hero
-├── #impact    Impact
-├── #about     About + Skills
-├── #personal  Personal Interest + masonry
-├── #work      Projects
+├── #top        Hero
+├── #impact     Impact
+├── #education  Education
+├── #experience Work Experience
+├── #about      About + Skills
+├── #personal   Personal Interest + masonry
+├── #work       Projects
 └── (Footer)
 
 /projects/winterplace
@@ -405,21 +409,38 @@ Side effects limited to:
 
 ## Theme system
 
-Charcoal + bronze gold dark theme. All tokens defined on `:root` of `src/styles/global.css`:
+Two themes share one set of tokens. **Dark is the default** and lives on `:root`; **light is an attribute override** on `:root[data-theme="light"]`. The active theme is controlled by `ThemeContext` and an anti-FOUC inline script in `index.html`.
 
-| Token | Value | Use |
-|-------|-------|-----|
-| `--bg-primary` | `#1a1a1a` | Body + most sections |
-| `--bg-elevated` | `#222222` | Cards, panels |
-| `--bg-elevated-2` | `#2a2a2a` | Tiles, dashboard surrounds |
-| `--accent` | `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze) |
-| `--accent-hover` | `#d4b896` | Accent hover state |
-| `--text-heading` | `#ffffff` | Headings, big stat numbers |
-| `--text-body` | `#a0a0a0` | Paragraph copy |
-| `--text-muted` | `#808080` | Labels, captions, meta |
-| `--text-on-accent` | `#ffffff` | Text inside accent-filled buttons |
-| `--border-subtle` | `#2a2a2a` | Quiet section dividers |
-| `--border-accent` | `rgba(197,164,126,0.35)` | Accented separators |
+| Token | Dark | Light | Use |
+|-------|------|-------|-----|
+| `--bg-primary` | `#1a1a1a` | `#ffffff` | Body + most sections |
+| `--bg-elevated` | `#222222` | `#f4f4f4` | Cards, panels |
+| `--bg-elevated-2` | `#2a2a2a` | `#ececec` | Tiles, dashboard surrounds |
+| `--accent` | `#c5a47e` | `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze — same in both themes for brand) |
+| `--accent-hover` | `#d4b896` | `#b89468` | Accent hover state |
+| `--text-heading` | `#ffffff` | `#1a1a1a` | Headings, big stat numbers, nav links |
+| `--text-body` | `#a0a0a0` | `#555555` | Paragraph copy, footer body |
+| `--text-muted` | `#808080` | `#888888` | Labels, captions, meta, footer-bottom |
+| `--text-on-accent` | `#ffffff` | `#ffffff` | Text inside accent-filled buttons |
+| `--border-subtle` | `#2a2a2a` | `#e5e5e5` | Quiet section dividers, footer rules |
+| `--border-accent` | `rgba(197,164,126,0.35)` | `rgba(197,164,126,0.5)` | Accented separators |
+| `--text-on-dark`, `--text-on-dark-soft`, `--text-on-dark-muted`, `--text-on-dark-faint`, `--border-on-dark` | white-on-dark family | unchanged | Surfaces that stay dark in both themes (hero overlay copy, lightbox chrome). |
+
+### Dark/light toggle implementation
+
+| Piece | File | Notes |
+|-------|------|-------|
+| Context + hook | `src/context/ThemeContext.jsx` | Exports `ThemeProvider` and `useTheme()` → `{ theme, setTheme, toggleTheme }`. Persists to `localStorage` key `portfolio-theme`; first visit falls back to `window.matchMedia('(prefers-color-scheme: light)')`. On every change, writes `document.documentElement.dataset.theme` and updates `<meta name="theme-color">`. |
+| Provider mount | `src/main.jsx` | `<ThemeProvider>` wraps `<App />`. |
+| UI control | `src/components/ThemeToggle.jsx` | Sun/moon icon button with accessible `aria-label`. Mounted in `Nav.jsx` `.nav-actions` so it appears on every page (homepage + project pages via `ProjectShell`), desktop and mobile. |
+| Anti-FOUC | `index.html` `<head>` | Inline `<script>` reads `localStorage` (then `prefers-color-scheme`) and sets `data-theme` + `theme-color` meta before the React bundle parses. |
+
+### Surfaces excluded from theme switching
+
+- **Hero** (`Hero.jsx`) — copy sits on top of an image with a fixed dark overlay (`rgba(0,0,0,0.55)`). White text is intentional in both themes for readability.
+- **AI rewriter lightbox** (`src/styles/projects/ai-rewriter.css`) — full-screen modal stays dark for media viewing.
+- **Animated banners** (`public/banners/*.html`) — self-contained iframed documents with their own colors; not driven by the host site's `data-theme`. Their card/hero wrappers (border, fallback bg) **do** follow the site theme.
+- **Dashboard embeds** (`src/embeds/*Dashboard.tsx`) — Claude artifact exports with hard-coded palettes. The surrounding `EmbedSlot` chrome (border, title, fullscreen overlay) follows the site theme.
 
 Display font: Cormorant Garamond (`.author-name`). Body: Source Sans Pro.
 

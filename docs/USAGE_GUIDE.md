@@ -36,11 +36,12 @@ Open http://localhost:5173
 
 ```
 src/data/          ← Homepage + project copy (edit here)
-src/components/    ← Homepage UI (Nav, Hero, Impact, AboutSkills, PersonalInterest, Projects, Footer, BannerEmbed)
+src/components/    ← Homepage UI (Nav, Hero, Impact, AboutSkills, PersonalInterest, Projects, Footer, BannerEmbed, ThemeToggle)
+src/context/       ← React Context providers (ThemeContext — dark/light theme)
 src/pages/         ← HomePage
 src/projects/      ← One JSX file per project (unique layout)
 src/embeds/        ← TSX dashboard exports (lazy-loaded by EmbedSlot)
-src/styles/        ← CSS (theme vars live in :root of global.css)
+src/styles/        ← CSS (dark theme tokens on :root, light overrides on :root[data-theme="light"])
 public/images/     ← Images (paths like /images/...)
 public/banners/    ← Self-contained HTML banner files for each project (one per slug)
 docs/              ← Technical docs (MUST update when code changes)
@@ -78,6 +79,7 @@ Do not leave docs describing old behavior.
 | `src/data/stats.js` | `FEATURE_MAP` (F1, F3), `FULL_DOCUMENTATION` | `CONTENT_SOURCE.md` |
 | `src/data/about.js`, `skills.js`, `skillIcons.js` | `FEATURE_MAP` (F4) | |
 | `src/data/personal.js` (interest copy + images) | `FEATURE_MAP` (F4b), `CONTENT_SOURCE.md` | |
+| `src/data/education.js`, `experience.js` | `FEATURE_MAP` (F3b / F3c), `CONTENT_SOURCE.md` | |
 | `src/data/projects.js` (card/slug/link/banner) | `FEATURE_MAP`, `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE`, `API_FLOW` | `FULL_DOCUMENTATION` Appendix B |
 | `src/data/projectEmbeds.js` (embed keys) | `AI_AGENT_GUIDE` embed table, `src/embeds/README.md` | `FEATURE_MAP` |
 | `src/App.jsx` (routes) | `ARCHITECTURE_OVERVIEW`, `FEATURE_MAP`, `AI_AGENT_GUIDE`, `FULL_DOCUMENTATION` §5 | `USAGE_GUIDE` §3 |
@@ -88,7 +90,8 @@ Do not leave docs describing old behavior.
 | `src/embeds/*Dashboard.tsx` | `src/embeds/README.md`, `AI_AGENT_GUIDE` embed table, `FEATURE_MAP` (matching Fx) | |
 | `public/banners/*.html` | `FEATURE_MAP` banner section, `AI_AGENT_GUIDE` banner notes | `API_FLOW` |
 | `src/projects/*Project.jsx` | `FEATURE_MAP` (matching Fx), layout notes in FEATURE_MAP | `CONTENT_SOURCE.md` (matching project section) |
-| Theme tokens in `src/styles/global.css :root` | `FEATURE_MAP` theme section, `AI_AGENT_GUIDE` theme notes | `FULL_DOCUMENTATION` |
+| Theme tokens in `src/styles/global.css :root` / `[data-theme="light"]` | `FEATURE_MAP` theme section, `AI_AGENT_GUIDE` theme notes | `FULL_DOCUMENTATION` |
+| `src/context/ThemeContext.jsx` / `src/components/ThemeToggle.jsx` / anti-FOUC script in `index.html` | `FEATURE_MAP` FX, `ARCHITECTURE_OVERVIEW` (state/styling sections), `AI_AGENT_GUIDE` theme notes | `FULL_DOCUMENTATION` |
 | `docs/CONTENT_SOURCE.md` | `USAGE_GUIDE` §3.1 if policy changes | `FEATURE_MAP` content-source section |
 | `src/styles/projects/*.css` | Note in FEATURE_MAP if layout changes significantly | |
 | `src/components/project/ProjectShell.jsx` | `ARCHITECTURE_OVERVIEW`, `AI_AGENT_GUIDE` (dangerous) | `FULL_DOCUMENTATION` |

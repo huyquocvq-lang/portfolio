@@ -27,8 +27,11 @@ export default function Footer() {
         <div className="footer-col">
           <h3>Contact</h3>
           <ul>
-            {contact.resume && <li><a href={contact.resume}>Resume</a></li>}
             {contact.linkedin && <li><a href={contact.linkedin}>LinkedIn</a></li>}
+            {contact.phone && (
+              <li><a href={`tel:${contact.phone.replace(/[^+\d]/g, '')}`}>{contact.phone}</a></li>
+            )}
+            {contact.resume && <li><a href={contact.resume}>Resume</a></li>}
             {contact.github && <li><a href={contact.github}>GitHub</a></li>}
           </ul>
         </div>

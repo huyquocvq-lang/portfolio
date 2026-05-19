@@ -44,7 +44,8 @@ Do not merge if docs are out of sync with the code.
 | Project page (layout + copy) | `src/projects/<Name>Project.jsx` + `src/styles/projects/<name>.css` |
 | Animated banner (home thumb + detail hero) | `public/banners/<slug>.html` (edit in place) |
 | Dashboard embed | `src/embeds/<Name>Dashboard.tsx` + register in `EmbedSlot.jsx` + `projectEmbeds.js` |
-| Theme tokens | `src/styles/global.css` `:root` (`--bg-primary`, `--accent`, etc.) |
+| Theme tokens (dark + light) | `src/styles/global.css` `:root` (dark defaults) + `:root[data-theme="light"]` (light overrides) |
+| Theme toggle wiring | `src/context/ThemeContext.jsx`, `src/components/ThemeToggle.jsx`, anti-FOUC script in `index.html` |
 | New route | `src/App.jsx` + `projects.js` slug/link |
 
 ## Architecture summary
@@ -54,8 +55,8 @@ Do not merge if docs are out of sync with the code.
 - **Shell:** `src/components/project/ProjectShell.jsx` — Nav, hero banner (iframe or image) + dim overlay, breadcrumbs, prev/next, Footer
 - **Banners:** `BannerEmbed.jsx` renders `public/banners/<slug>.html` as a sandboxed iframe (home cards + detail hero)
 - **Dashboards:** `EmbedSlot.jsx` lazy-loads `src/embeds/*Dashboard.tsx` (1 per project)
-- **Theme:** charcoal + bronze gold; tokens on `:root` of `global.css`, referenced via `var(--*)`
-- **State:** local only (`Hero`, `Nav`, `EmbedSlot` fullscreen, `AiRewriterProject` lightbox) — no Redux or API
+- **Theme:** charcoal + bronze gold dark default; light theme via `:root[data-theme="light"]` override. Tokens on `:root` of `global.css`, referenced via `var(--*)`. Toggle in nav (`ThemeToggle`), state in `ThemeContext`, persisted to `localStorage`.
+- **State:** local only for most components (`Hero`, `Nav`, `EmbedSlot` fullscreen, `AiRewriterProject` lightbox) + one React Context (`ThemeContext`) for the dark/light toggle. No Redux, no API.
 
 ## AI tooling
 

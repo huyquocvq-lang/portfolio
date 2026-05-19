@@ -63,8 +63,9 @@ flowchart TB
 | **Thin shell wrapper** | `ProjectShell` provides Nav, hero banner (iframe or image), breadcrumbs, children, prev/next pager, Footer |
 | **Lazy embed slots** | Dashboards live in `src/embeds/*.tsx` and are `React.lazy`-loaded by `EmbedSlot` per project page |
 | **Self-contained banners** | Each project banner is a standalone HTML in `public/banners/` rendered via sandboxed `<iframe>` (`BannerEmbed`) on both home cards and detail heroes |
+| **Single React Context** | `ThemeContext` (`src/context/ThemeContext.jsx`) for dark/light theme — only global state in the app. Persists to `localStorage` (`portfolio-theme`); first-visit defaults to OS `prefers-color-scheme`. Anti-FOUC inline script in `index.html` sets `data-theme` before bundle loads. |
 
-**Not used:** Redux, Zustand, Context API for global state, React Query, backend API layer, React Native Navigation.
+**Not used:** Redux, Zustand, React Query, backend API layer, React Native Navigation. (Context API limited to theme switching only — see `ThemeContext.jsx`.)
 
 ## Data flow
 
@@ -98,12 +99,13 @@ Defined explicitly in `src/App.jsx` (not file-based routing):
 | Hero entrance animation | `Hero.jsx` — `ready` | Local |
 | Hero scroll crossfade | `Hero.jsx` — `scrollProgress` | Local + window scroll listener |
 | Mobile nav drawer | `Nav.jsx` — `open` | Local + body overflow lock |
+| Theme (dark/light) | `src/context/ThemeContext.jsx` — `theme` | Global via React Context; mirrored to `html[data-theme]` + `localStorage` |
 | Dashboard fullscreen toggle | `EmbedSlot.jsx` — `fullscreen` | Local + body overflow lock + Esc handler |
 | AI rewriter lightbox | `AiRewriterProject.jsx` — `zoomed` | Local + body overflow lock + Esc handler |
 | Banner scaling | inline `<script>` inside each `public/banners/*.html` | Per-iframe document |
 | Everything else | Props from imported data | Stateless presentation |
 
-No global store. No persistence layer.
+Theme is the only piece of global state and the only piece persisted (to `localStorage`, key `portfolio-theme`).
 
 ## Styling architecture
 
@@ -118,13 +120,14 @@ src/styles/projects/*.css    → one file per project page (unique layouts)
 CSS variables in `:root` (`global.css`):
 
 - Typography: `--text-base`, `--font-body`, `--font-display` (Cormorant Garamond for author name)
-- Theme (charcoal + bronze gold):
+- Theme (charcoal + bronze gold by default; light overrides on `:root[data-theme="light"]`):
   - Surfaces: `--bg-primary`, `--bg-elevated`, `--bg-elevated-2`
-  - Accent: `--accent`, `--accent-hover`
+  - Accent: `--accent`, `--accent-hover` (accent stays bronze in both themes)
   - Text: `--text-heading`, `--text-body`, `--text-muted`, `--text-on-accent`
   - Borders: `--border-subtle`, `--border-accent`
+  - Always-dark surfaces (hero overlay copy, lightbox): `--text-on-dark`, `--text-on-dark-soft`, `--text-on-dark-muted`, `--text-on-dark-faint`, `--border-on-dark`
 
-All non-hero / non-dashboard surfaces reference these tokens via `var(...)` — never hardcode the swatch.
+The active theme is selected by `:root[data-theme]` (set by `ThemeContext` at runtime + an anti-FOUC inline script in `index.html`). All non-hero / non-dashboard surfaces reference these tokens via `var(...)` — never hardcode the swatch.
 
 ## External integrations (not owned API)
 
@@ -142,7 +145,8 @@ Static `dist/` after `npm run build`. Suitable for GitHub Pages, Netlify, Vercel
 
 ```
 main.jsx
-  └── App.jsx (react-router-dom)
+  └── ThemeProvider (src/context/ThemeContext.jsx)
+        └── App.jsx (react-router-dom)
         ├── HomePage
         │     ├── Hero → profile, stats
         │     ├── Nav → profile

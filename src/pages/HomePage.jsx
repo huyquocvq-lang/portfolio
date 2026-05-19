@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import Hero from '../components/Hero'
 import Nav from '../components/Nav'
 import Impact from '../components/Impact'
+import Education from '../components/Education'
+import Experience from '../components/Experience'
 import AboutSkills from '../components/AboutSkills'
 import PersonalInterest from '../components/PersonalInterest'
 import Projects from '../components/Projects'
@@ -22,6 +24,8 @@ export default function HomePage() {
       <Hero />
       <Nav />
       <Impact />
+      <Education />
+      <Experience />
       <AboutSkills />
       <PersonalInterest />
       <Projects />

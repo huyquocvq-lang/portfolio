@@ -16,7 +16,7 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 | Bundler | Vite 5.4 |
 | Router | react-router-dom 7.x |
 | Icons | react-icons (Font Awesome subset) |
-| State | Local `useState` / `useEffect` only |
+| State | Local `useState` / `useEffect` + one global `ThemeContext` for dark/light toggle |
 | Backend | None |
 | Styling | Plain CSS files (no Tailwind, no CSS modules) |
 
@@ -24,7 +24,7 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 
 | Area | Files | Risk |
 |------|-------|------|
-| Copy / metrics | `src/data/profile.js`, `stats.js`, `about.js`, `skills.js`, `personal.js` | Low |
+| Copy / metrics | `src/data/profile.js`, `stats.js`, `about.js`, `skills.js`, `personal.js`, `education.js`, `experience.js` | Low |
 | Project card blurbs | `src/data/projects.js` | Low — keep `slug` + `link` + `banner` in sync |
 | Single project layout | `src/projects/<Name>Project.jsx` + matching `src/styles/projects/*.css` | Low if isolated |
 | Homepage section styles | `src/styles/global.css` | Medium — affects whole site (theme vars in `:root` are global) |
@@ -80,25 +80,32 @@ Each project ships an animated/interactive HTML banner used both as the home-car
 | Mount | Home: `FeaturedProject` / `OtherProject`; Detail: `ProjectShell` when `project.banner` ends in `.html`/`.svg` |
 | Detail overlay | `radial-gradient` + `linear-gradient` dim on `.project-shell-banner--embed::after` |
 
-## Theme tokens
+## Theme tokens + dark/light toggle
 
-CSS variables defined on `:root` in `src/styles/global.css`. Use `var(--*)`, never hardcode the swatch.
+CSS variables on `:root` in `src/styles/global.css` define the **dark** defaults; `:root[data-theme="light"]` overrides them with a light palette. Use `var(--*)`, never hardcode the swatch.
 
-| Token | Purpose |
-|-------|---------|
-| `--bg-primary` `#1a1a1a` | Body / most sections |
-| `--bg-elevated` `#222222` | Cards, panels |
-| `--bg-elevated-2` `#2a2a2a` | Tiles, dashboard surrounds |
-| `--accent` `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze) |
-| `--accent-hover` `#d4b896` | Accent hover |
-| `--text-heading` `#ffffff` | Headings, big numbers |
-| `--text-body` `#a0a0a0` | Paragraph copy |
-| `--text-muted` `#808080` | Labels, captions |
-| `--text-on-accent` `#ffffff` | Text on accent-filled buttons |
-| `--border-subtle` `#2a2a2a` | Section dividers |
-| `--border-accent` `rgba(197,164,126,0.35)` | Featured / Impact separators |
+| Token | Dark | Light | Purpose |
+|-------|------|-------|---------|
+| `--bg-primary` | `#1a1a1a` | `#ffffff` | Body / most sections |
+| `--bg-elevated` | `#222222` | `#f4f4f4` | Cards, panels |
+| `--bg-elevated-2` | `#2a2a2a` | `#ececec` | Tiles, dashboard surrounds |
+| `--accent` | `#c5a47e` | `#c5a47e` | Eyebrows, links, CTA, accent borders (bronze; same both themes) |
+| `--accent-hover` | `#d4b896` | `#b89468` | Accent hover |
+| `--text-heading` | `#ffffff` | `#1a1a1a` | Headings, big numbers, nav links |
+| `--text-body` | `#a0a0a0` | `#555555` | Paragraph copy |
+| `--text-muted` | `#808080` | `#888888` | Labels, captions |
+| `--text-on-accent` | `#ffffff` | `#ffffff` | Text on accent-filled buttons |
+| `--border-subtle` | `#2a2a2a` | `#e5e5e5` | Section dividers |
+| `--border-accent` | `rgba(197,164,126,0.35)` | `rgba(197,164,126,0.5)` | Featured / Impact separators |
 
-Hero overlays (black gradients) and dashboard internal palettes stay as-is — they're already dark and visually separate.
+Theme switching:
+
+- `src/context/ThemeContext.jsx` — `ThemeProvider` wraps `<App />` in `main.jsx`. Hook: `useTheme()` → `{ theme, setTheme, toggleTheme }`.
+- `src/components/ThemeToggle.jsx` — sun/moon button mounted in `Nav.jsx` `.nav-actions` (visible on home + project pages, desktop + mobile).
+- Preference persisted to `localStorage` key `portfolio-theme`. First visit reads `prefers-color-scheme`.
+- `index.html` `<head>` runs an inline anti-FOUC script that sets `data-theme` and the `<meta name="theme-color">` before the React bundle loads.
+
+Always-dark surfaces (kept dark in both themes) — hero overlay copy, AI rewriter lightbox, banner iframes, dashboard internal palettes — use the `--text-on-dark*` / `--border-on-dark` family or are inherently isolated (sandboxed iframe, Claude artifact dashboards).
 
 ## Personal interest section (F4b)
 
@@ -115,7 +122,8 @@ Click a screenshot in `/projects/ai-rewriter` → fullscreen overlay (`.air-ligh
 
 ## Do NOT assume exists
 
-- Redux / Zustand / Context providers
+- Redux / Zustand
+- Multiple Context providers (only `ThemeContext` exists — see `src/context/ThemeContext.jsx`)
 - `src/api/`, `src/services/`, `src/hooks/` (no custom hooks folder yet)
 - Environment variables (none configured)
 - Tests (`*.test.*` absent)
@@ -236,8 +244,10 @@ After `npm run build`, deploy `dist/` with SPA fallback to `index.html` for `/pr
 ## File path cheat sheet
 
 ```
-src/main.jsx              Entry, CSS imports
+src/main.jsx              Entry, CSS imports, ThemeProvider wrap
 src/App.jsx               Routes
+src/context/ThemeContext.jsx  Dark/light theme provider + useTheme hook
+src/components/ThemeToggle.jsx  Sun/moon button (mounted in Nav)
 src/pages/HomePage.jsx    Landing composition
 src/components/Hero.jsx   Banner + scroll effects
 src/components/Nav.jsx    Header + mobile menu

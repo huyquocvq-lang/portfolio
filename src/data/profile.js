@@ -12,7 +12,8 @@ export const profile = {
   contact: {
     linkedin: 'https://www.linkedin.com/in/jenny-tang-26000tbird/',
     resume:
-      'https://docs.google.com/document/d/1RR1YLr08lzdM_jTmuyGd1mDZOwWY0IBL/edit',
+      'https://drive.google.com/drive/u/0/folders/1_v6wOGcUPX5f9c3OPFugTpO4MgOZd1N6',
+    phone: '+1-602-526-2682',
     github: null
   }
 }
