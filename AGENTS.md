@@ -51,7 +51,7 @@ Do not merge if docs are out of sync with the code.
 ## Architecture summary
 
 - **Home:** `src/pages/HomePage.jsx` → Hero, Nav, Impact, AboutSkills, **PersonalInterest**, Projects, Footer
-- **Projects:** 7 separate files in `src/projects/` - **no** shared generic template
+- **Projects:** 8 separate files in `src/projects/` - **no** shared generic template
 - **Shell:** `src/components/project/ProjectShell.jsx` - Nav, hero banner (iframe or image) + dim overlay, breadcrumbs, prev/next, Footer
 - **Banners:** `BannerEmbed.jsx` renders `public/banners/<slug>.html` as a sandboxed iframe (home cards + detail hero)
 - **Dashboards:** `EmbedSlot.jsx` lazy-loads `src/embeds/*Dashboard.tsx` (1 per project)

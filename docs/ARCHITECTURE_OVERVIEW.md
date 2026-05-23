@@ -25,6 +25,7 @@ flowchart TB
     P5[GleanPlannerProject]
     P6[AiRewriterProject]
     P7[MediaOpsRetroProject]
+    P8[CpaLineupProject]
   end
 
   subgraph data [Static data layer]
@@ -45,11 +46,11 @@ flowchart TB
 
   HTML --> MAIN --> APP --> ROUTER
   ROUTER --> HOME
-  ROUTER --> P1 & P2 & P3 & P4 & P5 & P6 & P7
+  ROUTER --> P1 & P2 & P3 & P4 & P5 & P6 & P7 & P8
   HOME --> PROFILE & STATS & ABOUT & SKILLS & PERSONAL & PROJECTS
-  P1 & P2 & P3 & P4 & P5 & P6 & P7 --> PROJECTS & EMBEDS
+  P1 & P2 & P3 & P4 & P5 & P6 & P7 & P8 --> PROJECTS & EMBEDS
   HOME --> BANNERS & PHOTOS
-  P1 & P2 & P3 & P4 & P5 & P6 & P7 --> BANNERS & DASHBOARDS
+  P1 & P2 & P3 & P4 & P5 & P6 & P7 & P8 --> BANNERS & DASHBOARDS
 ```
 
 ## Architectural pattern
@@ -58,7 +59,7 @@ flowchart TB
 |---------|--------------------------------|
 | **Component-based UI** | React function components only; no class components |
 | **Data-driven content** | All copy, stats, projects live in `src/data/*.js` - UI reads imports |
-| **Page-per-route** | `HomePage` + 7 dedicated project page components |
+| **Page-per-route** | `HomePage` + 8 dedicated project page components |
 | **Per-feature styling** | Global CSS + per-project CSS files (not CSS-in-JS); theme tokens on `:root` of `global.css` |
 | **Thin shell wrapper** | `ProjectShell` provides Nav, hero banner (iframe or image), breadcrumbs, children, prev/next pager, Footer |
 | **Lazy embed slots** | Dashboards live in `src/embeds/*.tsx` and are `React.lazy`-loaded by `EmbedSlot` per project page |
@@ -89,6 +90,7 @@ Defined explicitly in `src/App.jsx` (not file-based routing):
 | `/projects/glean-planner` | `GleanPlannerProject` |
 | `/projects/ai-rewriter` | `AiRewriterProject` |
 | `/projects/media-ops-retro` | `MediaOpsRetroProject` |
+| `/projects/cpa-lineup` | `CpaLineupProject` |
 
 `vite.config.js` sets `appType: 'spa'` so deep links work on static hosts that rewrite to `index.html`.
 

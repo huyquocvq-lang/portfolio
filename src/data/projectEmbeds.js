@@ -27,5 +27,9 @@ export const projectEmbeds = {
   mediaOpsRetro: {
     embedKey: 'mediaOpsRetro',
     title: 'Monthly Media Ops Retro Analyst'
+  },
+  cpaLineup: {
+    embedKey: 'cpaLineup',
+    title: 'CPA Lineup Intelligence Agent'
   }
 }

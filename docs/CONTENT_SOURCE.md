@@ -457,6 +457,34 @@ Generated new revenue streams by offering marketing services and tournament host
 
 ---
 
+# **Project 8: CPA Lineup Intelligence Agent**
+
+**Anchor:** `/projects/cpa-lineup` · **Component:** `src/projects/CpaLineupProject.jsx` · **Embed:** `src/embeds/CpaLineupDashboard.tsx`
+
+## **Auto-surface winners, scale opportunities, and waste across 433 placement-offer combos**
+
+**Scope:** 26 publishers · 6 offers · 433 placement-offer combinations.
+
+### **The problem**
+
+With 433 placement-offer combinations across 26 publishers and 6 offers, deciding what to prioritize, what to cut, and where to shift traffic means digging through spreadsheets, comparing RPMs, eyeballing conversion rates, and trusting gut feel. That is slow, error-prone, and leaves money on the table - running traffic through low-RPM combos while high-performing ones stay underserved.
+
+### **How the AI agent solves it**
+
+1. **Auto-surfaces what matters.** Scans every combo and flags high-RPM winners (MyPoints × Synchrony CD at $1,260 RPM), scale opportunities (strong C2C with low volume), and waste spots (CNN placements at 50M+ impressions with near-zero return).
+2. **Builds the lineup for you.** Generates a prioritized lineup sorted by RPM with action tags (MAX PRIORITY / PRIORITIZE / MAINTAIN / TEST MORE).
+3. **Answers ad-hoc questions on demand.** The Ask AI tab takes natural-language queries ("what is my best offer for Benzinga?") and returns analyst-style answers grounded in the live data.
+
+### **Impact**
+
+- **Scale revenue.** Top 10 combos run at $30 - $1,260 RPM but carry only a fraction of impression volume. Shifting 10 - 15% of traffic from low-RPM placements into these winners can 2 - 3x revenue output from the same impression pool.
+- **Reduce cost.** Hundreds of millions of impressions still flow through combos returning $0.01 - $0.17 RPM or zero conversions - CNN Mobile-Web-Partner-Bin alone burned 148M+ impressions. Identifying and pausing these recovers ad-serving cost and frees budget.
+- **Net effect.** Not spending more - spending smarter. Every dollar and impression works harder; "data in spreadsheet" → "actionable lineup decision" goes from hours to seconds.
+
+**Note:** Data in the live dashboard is sample/mock structured to mirror real publisher-offer performance. The Ask AI tab calls `api.anthropic.com` directly without auth - request fails in production; filters/KPIs/charts/ranked lineup all run client-side and work standalone.
+
+---
+
 # **Personal Interest** (section between About and Projects)
 
 **Anchor:** `#personal` · **Component:** `src/components/PersonalInterest.jsx` · **Data:** `src/data/personal.js`

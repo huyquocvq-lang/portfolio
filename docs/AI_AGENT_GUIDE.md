@@ -46,14 +46,14 @@ Entry points: [AGENTS.md](../AGENTS.md); Cursor: rule `.cursor/rules/sync-docume
 | `public/hero-banners/*` filenames | Hard-coded slugs (`hero_mobile_portrait`, `hero_ultrawide`, …) - renaming breaks `Hero.jsx` |
 | `Nav.jsx` body scroll lock | Regressions trap scroll on mobile |
 | `skillIcons.js` keys | Unknown `icon` key in `skills.js` → blank icon |
-| `ProjectShell.jsx` | Shared by all 7 project pages |
+| `ProjectShell.jsx` | Shared by all 8 project pages |
 | `BannerEmbed.jsx` + `public/banners/*.html` | Banner HTML must keep `.banner-fit` 560×510 + inline JS that sets `--scale` |
 | `EmbedSlot.jsx` `dashboards` map | Missing entry for an embed key in `projectEmbeds.js` → silently renders nothing |
 | Theme tokens in `:root` (`global.css`) | Renaming a `--*` variable breaks every file that consumes it - refactor with care |
 
-## Project dashboard embeds (F8–F10)
+## Project dashboard embeds (F8–F14)
 
-TSX exports in `src/embeds/`, lazy-loaded by `EmbedSlot.jsx` + `projectEmbeds.js`. All 7 projects now have a live embed.
+TSX exports in `src/embeds/`, lazy-loaded by `EmbedSlot.jsx` + `projectEmbeds.js`. All 8 projects now have a live embed.
 
 | File | Embed key | Route |
 |------|-----------|-------|
@@ -64,6 +64,7 @@ TSX exports in `src/embeds/`, lazy-loaded by `EmbedSlot.jsx` + `projectEmbeds.js
 | `GleanPlannerDashboard.tsx`   | `gleanPlanner`   | `/projects/glean-planner` |
 | `AiRewriterDashboard.tsx`     | `aiRewriter`     | `/projects/ai-rewriter` |
 | `MediaOpsRetroDashboard.tsx`  | `mediaOpsRetro`  | `/projects/media-ops-retro` |
+| `CpaLineupDashboard.tsx`      | `cpaLineup`      | `/projects/cpa-lineup` |
 
 Requires `recharts`. `EmbedSlot` - inline preview + **Fullscreen ↗** text control (same style as former external link). To add a new embed: see `src/embeds/README.md`.
 
