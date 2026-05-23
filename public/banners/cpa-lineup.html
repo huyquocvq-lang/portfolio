@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CPA Lineup Intelligence Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #020617; color: #e2e8f0; font-family: 'DM Sans', system-ui, sans-serif; min-height: 100vh; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+  .header { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border-bottom: 1px solid #1e293b; padding: 20px 28px; }
+  .header-top { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .logo { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, #4F46E5, #7C3AED); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .header h1 { font-size: 22px; font-weight: 700; color: #f1f5f9; letter-spacing: -0.02em; }
+  .header p { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+  .tabs { display: flex; gap: 4px; margin-top: 16px; background: #0f172a; border-radius: 8px; padding: 3px; width: fit-content; }
+  .tab { padding: 7px 18px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit; background: transparent; color: #94a3b8; transition: all .2s; }
+  .tab.active { background: #4F46E5; color: #fff; }
+
+  .container { padding: 20px 28px; }
+  .filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filter-group { display: flex; flex-direction: column; gap: 4px; }
+  .filter-group label { font-size: 11px; color: #64748b; font-weight: 500; }
+  .filter-group select { padding: 8px 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font-size: 12px; min-width: 180px; cursor: pointer; outline: none; font-family: inherit; }
+  .btn-clear { align-self: flex-end; padding: 8px 16px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #94a3b8; cursor: pointer; font-size: 12px; font-family: inherit; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .kpi { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 16px 18px; }
+  .kpi-label { font-size: 12px; color: #64748b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .kpi-value { font-size: 20px; font-weight: 700; color: #f1f5f9; font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em; }
+
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 900px) { .chart-row { grid-template-columns: 1fr; } }
+
+  .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .card h3 { font-size: 15px; font-weight: 600; color: #e2e8f0; margin-bottom: 16px; letter-spacing: -0.01em; }
+
+  .chart-container { position: relative; height: 300px; }
+  .chart-container-lg { position: relative; height: 380px; }
+
+  .insight { padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; }
+  .insight-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .insight-desc { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+  .insight.success { background: rgba(16,185,129,0.08); border-left: 3px solid #10B981; }
+  .insight.success .insight-title { color: #10B981; }
+  .insight.info { background: rgba(14,165,233,0.08); border-left: 3px solid #0EA5E9; }
+  .insight.info .insight-title { color: #0EA5E9; }
+  .insight.warning { background: rgba(245,158,11,0.08); border-left: 3px solid #F59E0B; }
+  .insight.warning .insight-title { color: #F59E0B; }
+
+  .table-wrap { overflow-x: auto; max-height: 500px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead tr { position: sticky; top: 0; background: #0f172a; z-index: 1; }
+  th { padding: 10px 8px; color: #64748b; font-weight: 600; cursor: pointer; border-bottom: 1px solid #1e293b; white-space: nowrap; user-select: none; font-size: 11px; }
+  th.left { text-align: left; }
+  th.right { text-align: right; }
+  td { padding: 8px; border-bottom: 1px solid #0f172a; }
+  td.mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-align: right; }
+  tbody tr:nth-child(even) { background: rgba(15,23,42,0.5); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .ellip { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .badge { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.03em; }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">⚡</div>
+    <div>
+      <h1>CPA Lineup Intelligence Agent</h1>
+      <p>AI-powered publisher & offer performance analysis • 3-Month Historicals</p>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="dashboard">📊 Dashboard</button>
+    <button class="tab" data-tab="lineup">🎯 Lineup View</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="filters">
+    <div class="filter-group">
+      <label>Publisher</label>
+      <select id="f-pub"></select>
+    </div>
+    <div class="filter-group">
+      <label>Placement</label>
+      <select id="f-pl"></select>
+    </div>
+    <div class="filter-group">
+      <label>Offer</label>
+      <select id="f-of"></select>
+    </div>
+    <button class="btn-clear" id="btn-clear">✕ Clear</button>
+  </div>
+
+  <!-- Dashboard Tab -->
+  <div id="tab-dashboard">
+    <div class="kpi-grid" id="kpi-grid"></div>
+
+    <div class="chart-row">
+      <div class="card">
+        <h3>Revenue by Publisher (Top 10)</h3>
+        <div class="chart-container"><canvas id="chart-pub"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Revenue Split by Offer</h3>
+        <div class="chart-container"><canvas id="chart-offer"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤖 AI Lineup Suggestions</h3>
+      <div id="insights"></div>
+    </div>
+
+    <div class="card">
+      <h3 id="table-title">Performance Data</h3>
+      <div class="table-wrap">
+        <table id="data-table">
+          <thead>
+            <tr>
+              <th class="left" data-col="pub">Publisher</th>
+              <th class="left" data-col="pl">Placement</th>
+              <th class="left" data-col="of">Offer</th>
+              <th class="right" data-col="imp">Impr</th>
+              <th class="right" data-col="clk">Clicks</th>
+              <th class="right" data-col="conv">Conv</th>
+              <th class="right" data-col="c2c">C2C</th>
+              <th class="right" data-col="rev">Rev</th>
+              <th class="right" data-col="rpm">RPM ↓</th>
+            </tr>
+          </thead>
+          <tbody id="data-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lineup Tab -->
+  <div id="tab-lineup" class="hidden">
+    <div class="card">
+      <h3>Traffic Lineup by RPM — Top Placements × Offers</h3>
+      <div class="chart-container-lg"><canvas id="chart-lineup"></canvas></div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 Recommended Lineup Order (by RPM)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="right">Rank</th>
+              <th class="left">Placement</th>
+              <th class="left">Offer</th>
+              <th class="right">RPM</th>
+              <th class="right">Conv</th>
+              <th class="right">Revenue</th>
+              <th class="right">C2C</th>
+              <th class="left">Action</th>
+            </tr>
+          </thead>
+          <tbody id="lineup-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const RAW=[{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":141255,"clk":441,"conv":1,"c2c":0.0023,"rev":300,"rpm":2.12},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x600","of":"Discover - Cashback Debit (1598)","imp":86507,"clk":87,"conv":1,"c2c":0.0115,"rev":350,"rpm":4.05},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x600","of":"Raisin - Western Alliance Bank 3M CD (2008)","imp":55950,"clk":11,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x600","of":"SoFi - Active Invest (1989)","imp":300983,"clk":684,"conv":13,"c2c":0.019,"rev":2600,"rpm":8.64},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x600","of":"Synchrony - 13 Month CD (321)","imp":105853,"clk":172,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"AOL","pl":"AOL_In-Content-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":3254617,"clk":673,"conv":1,"c2c":0.0015,"rev":300,"rpm":0.09},{"pub":"AOL","pl":"AOL_In-Content-300x600","of":"Discover - Cashback Debit (1598)","imp":268,"clk":0,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"AOL","pl":"AOL_In-Content-300x600","of":"Raisin - Western Alliance Bank 3M CD (2008)","imp":2629487,"clk":146,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"AOL","pl":"AOL_In-Content-300x600","of":"Synchrony - 13 Month CD (321)","imp":893984,"clk":50,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"AOL","pl":"AOL_In-Content-300x600","of":"Synchrony - HYSA (1999)","imp":1337625,"clk":55,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankBonus","pl":"BankBonus_Text-Ad","of":"Synchrony - 13 Month CD (321)","imp":0,"clk":441,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankCheckingSavings","pl":"BankCheckingSavings_In-Content","of":"Discover - Cashback Debit (1598)","imp":20468,"clk":0,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankCheckingSavings","pl":"BankCheckingSavings_In-Content","of":"SoFi - Active Invest (1989)","imp":517,"clk":1,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankCheckingSavings","pl":"BankCheckingSavings_In-Content","of":"Synchrony - 13 Month CD (321)","imp":600999,"clk":42,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankCheckingSavings","pl":"BankCheckingSavings_In-Content","of":"Synchrony - HYSA (1999)","imp":665,"clk":1,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankDealGuy","pl":"BankDealGuy_In-Content","of":"Discover - Cashback Debit (1598)","imp":949913,"clk":4,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankDealGuy","pl":"BankDealGuy_In-Content","of":"SoFi - Active Invest (1989)","imp":755,"clk":1,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"BankDealGuy","pl":"BankDealGuy_In-Content","of":"Synchrony - 13 Month CD (321)","imp":799374,"clk":50,"conv":1,"c2c":0.02,"rev":400,"rpm":0.5},{"pub":"BankDealGuy","pl":"BankDealGuy_In-Content","of":"Synchrony - HYSA (1999)","imp":2144,"clk":0,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x250","of":"Axos Bank - AXOS ONE (1908)","imp":37214,"clk":19,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x250","of":"Discover - Cashback Debit (1598)","imp":63045,"clk":15,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x250","of":"SoFi - Active Invest (1989)","imp":214259,"clk":155,"conv":1,"c2c":0.0065,"rev":250,"rpm":1.17},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x250","of":"Synchrony - 13 Month CD (321)","imp":9941,"clk":5,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Benzinga","pl":"Benzinga_CAU-Sidebar-300x250","of":"Synchrony - HYSA (1999)","imp":70835,"clk":35,"conv":1,"c2c":0.0286,"rev":400,"rpm":5.65},{"pub":"Benzinga","pl":"Benzinga_In-Content-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":2676324,"clk":2299,"conv":11,"c2c":0.0048,"rev":3300,"rpm":1.23},{"pub":"Benzinga","pl":"Benzinga_In-Content-300x600","of":"Discover - Cashback Debit (1598)","imp":2649515,"clk":733,"conv":1,"c2c":0.0014,"rev":350,"rpm":0.13},{"pub":"Benzinga","pl":"Benzinga_In-Content-300x600","of":"SoFi - Active Invest (1989)","imp":3706227,"clk":1867,"conv":11,"c2c":0.0059,"rev":5900,"rpm":1.59},{"pub":"Benzinga","pl":"Benzinga_In-Content-300x600","of":"Synchrony - 13 Month CD (321)","imp":2063313,"clk":763,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Benzinga","pl":"Benzinga_In-Content-300x600","of":"Synchrony - HYSA (1999)","imp":1,"clk":0,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Benzinga","pl":"Benzinga_Marketplace_CAU","of":"Axos Bank - AXOS ONE (1908)","imp":154295,"clk":1045,"conv":8,"c2c":0.0077,"rev":2400,"rpm":15.55},{"pub":"Benzinga","pl":"Benzinga_Marketplace_CAU","of":"Discover - Cashback Debit (1598)","imp":42446,"clk":389,"conv":4,"c2c":0.0103,"rev":1400,"rpm":32.98},{"pub":"Benzinga","pl":"Benzinga_Marketplace_CAU","of":"Raisin - Western Alliance Bank 3M CD (2008)","imp":118509,"clk":60,"conv":1,"c2c":0.0167,"rev":350,"rpm":2.95},{"pub":"Benzinga","pl":"Benzinga_Marketplace_CAU","of":"SoFi - Active Invest (1989)","imp":146900,"clk":3548,"conv":18,"c2c":0.0051,"rev":4500,"rpm":30.63},{"pub":"Benzinga","pl":"Benzinga_Marketplace_CAU","of":"Synchrony - 13 Month CD (321)","imp":144381,"clk":904,"conv":6,"c2c":0.0066,"rev":2400,"rpm":16.62},{"pub":"Benzinga","pl":"Benzinga_Marketplace_CAU","of":"Synchrony - HYSA (1999)","imp":100853,"clk":380,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Business-Insider","pl":"Business-Insider_ATF-CAU","of":"Synchrony - 13 Month CD (321)","imp":6120,"clk":96,"conv":1,"c2c":0.0104,"rev":400,"rpm":65.36},{"pub":"Business-Insider","pl":"Business-Insider_ATF-CAU","of":"Synchrony - HYSA (1999)","imp":7013,"clk":71,"conv":5,"c2c":0.0704,"rev":1900,"rpm":270.93},{"pub":"Business-Insider","pl":"Business-Insider_Below-Article","of":"Axos Bank - AXOS ONE (1908)","imp":427274,"clk":6398,"conv":52,"c2c":0.0081,"rev":15600,"rpm":36.51},{"pub":"Business-Insider","pl":"Business-Insider_Below-Article","of":"Discover - Cashback Debit (1598)","imp":157038,"clk":317,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Business-Insider","pl":"Business-Insider_Below-Article","of":"Raisin - Western Alliance Bank 3M CD (2008)","imp":97949,"clk":40,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"Business-Insider","pl":"Business-Insider_Below-Article","of":"SoFi - Active Invest (1989)","imp":240426,"clk":501,"conv":3,"c2c":0.006,"rev":1260,"rpm":5.24},{"pub":"Business-Insider","pl":"Business-Insider_Below-Article","of":"Synchrony - 13 Month CD (321)","imp":312104,"clk":1075,"conv":9,"c2c":0.0084,"rev":3550,"rpm":11.37},{"pub":"Business-Insider","pl":"Business-Insider_Below-Article","of":"Synchrony - HYSA (1999)","imp":245477,"clk":652,"conv":6,"c2c":0.0092,"rev":2400,"rpm":9.78},{"pub":"Business-Insider","pl":"Business-Insider_BI-Hosted-Splash-Page","of":"Axos Bank - AXOS ONE (1908)","imp":444286,"clk":898,"conv":2,"c2c":0.0022,"rev":600,"rpm":1.35},{"pub":"Business-Insider","pl":"Business-Insider_BI-Hosted-Splash-Page","of":"Discover - Cashback Debit (1598)","imp":478188,"clk":336,"conv":1,"c2c":0.003,"rev":350,"rpm":0.73},{"pub":"Business-Insider","pl":"Business-Insider_BI-Hosted-Splash-Page","of":"SoFi - Active Invest (1989)","imp":603975,"clk":453,"conv":1,"c2c":0.0022,"rev":394,"rpm":0.65},{"pub":"Business-Insider","pl":"Business-Insider_BI-Hosted-Splash-Page","of":"Synchrony - 13 Month CD (321)","imp":468098,"clk":540,"conv":3,"c2c":0.0056,"rev":1200,"rpm":2.56},{"pub":"Business-Insider","pl":"Business-Insider_BI-Hosted-Splash-Page","of":"Synchrony - HYSA (1999)","imp":713145,"clk":988,"conv":5,"c2c":0.0051,"rev":1950,"rpm":2.73},{"pub":"Business-Insider","pl":"Business-Insider_Geo-Text-Ad","of":"Axos Bank - AXOS ONE (1908)","imp":0,"clk":2136,"conv":43,"c2c":0.0201,"rev":12900,"rpm":0.0},{"pub":"Business-Insider","pl":"Business-Insider_Text-Ad","of":"Axos Bank - AXOS ONE (1908)","imp":0,"clk":3079,"conv":56,"c2c":0.0182,"rev":16800,"rpm":0.0},{"pub":"Business-Insider","pl":"Business-Insider_Text-Ad","of":"Discover - Cashback Debit (1598)","imp":0,"clk":888,"conv":44,"c2c":0.0495,"rev":15400,"rpm":0.0},{"pub":"Business-Insider","pl":"Business-Insider_Text-Ad","of":"Synchrony - 13 Month CD (321)","imp":0,"clk":1105,"conv":7,"c2c":0.0063,"rev":2800,"rpm":0.0},{"pub":"Business-Insider","pl":"Business-Insider_Text-Ad","of":"Synchrony - HYSA (1999)","imp":0,"clk":173,"conv":1,"c2c":0.0058,"rev":400,"rpm":0.0},{"pub":"CBS-MoneyWatch","pl":"CBS-MoneyWatch_CD_Marketplace_CAU","of":"Axos Bank - AXOS ONE (1908)","imp":896,"clk":44,"conv":0,"c2c":0.0,"rev":0,"rpm":0.0},{"pub":"CBS-MoneyWatch","pl":"CBS-MoneyWatch_Multi-Row-CAU","of":"Axos Bank - AXOS ONE (1908)","imp":168095,"clk":1254,"conv":1,"c2c":0.0008,"rev":300,"rpm":1.78},{"pub":"CBS-MoneyWatch","pl":"CBS-MoneyWatch_Multi-Row-CAU","of":"Synchrony - 13 Month CD (321)","imp":76102,"clk":320,"conv":3,"c2c":0.0094,"rev":1200,"rpm":15.77},{"pub":"CNN","pl":"CNN_Article-Elevate-Core_300x250","of":"Synchrony - 13 Month CD (321)","imp":4769545,"clk":3706,"conv":2,"c2c":0.0005,"rev":800,"rpm":0.17},{"pub":"CNN","pl":"CNN_Article-Elevate-Core_300x600","of":"SoFi - Active Invest (1989)","imp":215396,"clk":36,"conv":1,"c2c":0.0278,"rev":250,"rpm":1.16},{"pub":"CNN","pl":"CNN_Article-Elevate-Core_970x250","of":"Axos Bank - AXOS ONE (1908)","imp":997848,"clk":782,"conv":2,"c2c":0.0026,"rev":600,"rpm":0.6},{"pub":"CNN","pl":"CNN_Below-Article-HP","of":"Axos Bank - AXOS ONE (1908)","imp":59119029,"clk":2310,"conv":12,"c2c":0.0052,"rev":3600,"rpm":0.06},{"pub":"CNN","pl":"CNN_Below-Article-HP","of":"Synchrony - 13 Month CD (321)","imp":34695869,"clk":492,"conv":1,"c2c":0.002,"rev":400,"rpm":0.01},{"pub":"CNN","pl":"CNN_Business-HP-CAU-Rev-Share","of":"Axos Bank - AXOS ONE (1908)","imp":6928979,"clk":234,"conv":2,"c2c":0.0085,"rev":600,"rpm":0.09},{"pub":"CNN","pl":"CNN_Business-Right-Rail","of":"Axos Bank - AXOS ONE (1908)","imp":5867772,"clk":345,"conv":1,"c2c":0.0029,"rev":300,"rpm":0.05},{"pub":"CNN","pl":"CNN_Front-Partner-Bin","of":"Axos Bank - AXOS ONE (1908)","imp":3769315,"clk":555,"conv":3,"c2c":0.0054,"rev":900,"rpm":0.24},{"pub":"CNN","pl":"CNN_In-Content","of":"Synchrony - 13 Month CD (321)","imp":70428,"clk":170,"conv":2,"c2c":0.0118,"rev":800,"rpm":11.36},{"pub":"CNN","pl":"CNN_In-Content-Right-Rail","of":"Axos Bank - AXOS ONE (1908)","imp":31729990,"clk":2007,"conv":6,"c2c":0.003,"rev":1800,"rpm":0.06},{"pub":"CNN","pl":"CNN_In-Content-Right-Rail","of":"Synchrony - 13 Month CD (321)","imp":29407337,"clk":1091,"conv":3,"c2c":0.0027,"rev":1200,"rpm":0.04},{"pub":"CNN","pl":"CNN_In-Content-Right-Rail","of":"Synchrony - HYSA (1999)","imp":13028146,"clk":434,"conv":1,"c2c":0.0023,"rev":400,"rpm":0.03},{"pub":"CNN","pl":"CNN_Markets-CAU","of":"Axos Bank - AXOS ONE (1908)","imp":8131905,"clk":1135,"conv":4,"c2c":0.0035,"rev":1200,"rpm":0.15},{"pub":"CNN","pl":"CNN_Mobile-Web-Partner-Bin","of":"Axos Bank - AXOS ONE (1908)","imp":49105522,"clk":15856,"conv":27,"c2c":0.0017,"rev":8100,"rpm":0.16},{"pub":"CNN","pl":"CNN_Mobile-Web-Partner-Bin","of":"SoFi - Active Invest (1989)","imp":14213963,"clk":1894,"conv":1,"c2c":0.0005,"rev":256,"rpm":0.02},{"pub":"CNN","pl":"CNN_Mobile-Web-Partner-Bin","of":"Synchrony - 13 Month CD (321)","imp":52659182,"clk":11009,"conv":6,"c2c":0.0005,"rev":2400,"rpm":0.05},{"pub":"Dianomi","pl":"Dianomi_CNN-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":21594451,"clk":4101,"conv":21,"c2c":0.0051,"rev":6300,"rpm":0.29},{"pub":"Dianomi","pl":"Dianomi_CNN-300x600","of":"Synchrony - 13 Month CD (321)","imp":12114908,"clk":998,"conv":3,"c2c":0.003,"rev":1150,"rpm":0.09},{"pub":"Dianomi","pl":"Dianomi_CNN-300x600","of":"Synchrony - HYSA (1999)","imp":10601926,"clk":675,"conv":1,"c2c":0.0015,"rev":400,"rpm":0.04},{"pub":"Dianomi","pl":"Dianomi_Kiplinger-300x250","of":"Axos Bank - AXOS ONE (1908)","imp":369641,"clk":96,"conv":1,"c2c":0.0104,"rev":300,"rpm":0.81},{"pub":"Dianomi","pl":"Dianomi_Reuters-300x250","of":"Axos Bank - AXOS ONE (1908)","imp":1331012,"clk":274,"conv":1,"c2c":0.0036,"rev":300,"rpm":0.23},{"pub":"Dianomi","pl":"Dianomi_CAU-300x250","of":"Synchrony - 13 Month CD (321)","imp":2180247,"clk":155,"conv":1,"c2c":0.0065,"rev":400,"rpm":0.18},{"pub":"Facebook","pl":"Facebook_Marketplace-2","of":"Axos Bank - AXOS ONE (1908)","imp":8843,"clk":1192,"conv":5,"c2c":0.0042,"rev":1500,"rpm":169.63},{"pub":"Facebook","pl":"Facebook_Marketplace-CAU","of":"Axos Bank - AXOS ONE (1908)","imp":43158,"clk":4665,"conv":30,"c2c":0.0064,"rev":9000,"rpm":208.54},{"pub":"Facebook","pl":"Facebook_Marketplace-CAU","of":"Discover - Cashback Debit (1598)","imp":78519,"clk":1244,"conv":2,"c2c":0.0016,"rev":700,"rpm":8.92},{"pub":"Facebook","pl":"Facebook_Marketplace-CAU","of":"SoFi - Active Invest (1989)","imp":86976,"clk":871,"conv":2,"c2c":0.0023,"rev":1286,"rpm":14.79},{"pub":"Facebook","pl":"Facebook_Marketplace-CAU","of":"Synchrony - 13 Month CD (321)","imp":84704,"clk":1505,"conv":2,"c2c":0.0013,"rev":700,"rpm":8.26},{"pub":"Facebook","pl":"Facebook_Marketplace-CAU","of":"Synchrony - HYSA (1999)","imp":85744,"clk":1556,"conv":4,"c2c":0.0026,"rev":1550,"rpm":18.08},{"pub":"Fortune","pl":"Fortune_ROS-Mobile-300x250","of":"Discover - Cashback Debit (1598)","imp":1513793,"clk":406,"conv":1,"c2c":0.0025,"rev":350,"rpm":0.23},{"pub":"Fortune","pl":"Fortune_ROS-Mobile-300x250","of":"Synchrony - HYSA (1999)","imp":1670452,"clk":731,"conv":1,"c2c":0.0014,"rev":400,"rpm":0.24},{"pub":"HustlerMoneyBlog","pl":"HustlerMoneyBlog_In-Content","of":"Synchrony - 13 Month CD (321)","imp":769789,"clk":73,"conv":1,"c2c":0.0137,"rev":400,"rpm":0.52},{"pub":"Markets-Insider","pl":"Markets-Insider_Below-Article","of":"SoFi - Active Invest (1989)","imp":136598,"clk":81,"conv":5,"c2c":0.0617,"rev":1322,"rpm":9.68},{"pub":"Markets-Insider","pl":"Markets-Insider_Data-Page-CAU","of":"Axos Bank - AXOS ONE (1908)","imp":4587986,"clk":641,"conv":1,"c2c":0.0016,"rev":300,"rpm":0.07},{"pub":"Markets-Insider","pl":"Markets-Insider_Data-Page-CAU","of":"Synchrony - HYSA (1999)","imp":5490907,"clk":319,"conv":2,"c2c":0.0063,"rev":800,"rpm":0.15},{"pub":"MarketWatch","pl":"MarketWatch_Below-Article","of":"Axos Bank - AXOS ONE (1908)","imp":16850284,"clk":3454,"conv":14,"c2c":0.0041,"rev":4200,"rpm":0.25},{"pub":"MarketWatch","pl":"MarketWatch_Below-Article","of":"Discover - Cashback Debit (1598)","imp":3628367,"clk":313,"conv":1,"c2c":0.0032,"rev":350,"rpm":0.1},{"pub":"MarketWatch","pl":"MarketWatch_Below-Article","of":"Raisin - Western Alliance Bank 3M CD (2008)","imp":5720156,"clk":114,"conv":1,"c2c":0.0088,"rev":350,"rpm":0.06},{"pub":"MarketWatch","pl":"MarketWatch_Below-Article","of":"SoFi - Active Invest (1989)","imp":27958729,"clk":3392,"conv":31,"c2c":0.0091,"rev":8774,"rpm":0.31},{"pub":"MarketWatch","pl":"MarketWatch_Below-Article","of":"Synchrony - 13 Month CD (321)","imp":21342204,"clk":3185,"conv":6,"c2c":0.0019,"rev":2300,"rpm":0.11},{"pub":"MyPoints","pl":"MyPoints_Marketplace-CAU","of":"Raisin - Western Alliance Bank 3M CD (2008)","imp":588,"clk":45,"conv":1,"c2c":0.0222,"rev":350,"rpm":595.24},{"pub":"MyPoints","pl":"MyPoints_Marketplace-CAU","of":"Synchrony - 13 Month CD (321)","imp":5077,"clk":558,"conv":16,"c2c":0.0287,"rev":6400,"rpm":1260.59},{"pub":"MyPoints","pl":"MyPoints_Marketplace-CAU","of":"Synchrony - HYSA (1999)","imp":4991,"clk":587,"conv":15,"c2c":0.0256,"rev":6000,"rpm":1202.16},{"pub":"NAF-Digital","pl":"NAF-Digital_AOL-Login-CAU","of":"Axos Bank - AXOS ONE (1908)","imp":7090610,"clk":2027,"conv":8,"c2c":0.0039,"rev":2400,"rpm":0.34},{"pub":"NAF-Digital","pl":"NAF-Digital_AOL-Login-CAU","of":"Synchrony - HYSA (1999)","imp":3163448,"clk":483,"conv":1,"c2c":0.0021,"rev":400,"rpm":0.13},{"pub":"NAF-Digital","pl":"NAF-Digital_AOL-Open-Folder","of":"Axos Bank - AXOS ONE (1908)","imp":2007560,"clk":1141,"conv":6,"c2c":0.0053,"rev":1800,"rpm":0.9},{"pub":"NAF-Digital","pl":"NAF-Digital_AOL-Sent-Folder","of":"Axos Bank - AXOS ONE (1908)","imp":7221273,"clk":8155,"conv":29,"c2c":0.0036,"rev":8700,"rpm":1.2},{"pub":"NAF-Digital","pl":"NAF-Digital_AOL-Sent-Folder","of":"Synchrony - 13 Month CD (321)","imp":6423853,"clk":5586,"conv":10,"c2c":0.0018,"rev":3950,"rpm":0.61},{"pub":"NAF-Digital","pl":"NAF-Digital_AOL-Sent-Folder","of":"Synchrony - HYSA (1999)","imp":4324709,"clk":3323,"conv":8,"c2c":0.0024,"rev":3200,"rpm":0.74},{"pub":"NAF-Digital","pl":"NAF-Digital_CNN-ROS-300x600","of":"Synchrony - 13 Month CD (321)","imp":10869525,"clk":595,"conv":1,"c2c":0.0017,"rev":400,"rpm":0.04},{"pub":"NAF-Digital","pl":"NAF-Digital_MSN-Money-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":19910584,"clk":2602,"conv":11,"c2c":0.0042,"rev":3300,"rpm":0.17},{"pub":"NAF-Digital","pl":"NAF-Digital_MSN-Money-300x600","of":"Synchrony - 13 Month CD (321)","imp":5718807,"clk":342,"conv":1,"c2c":0.0029,"rev":400,"rpm":0.07},{"pub":"NAF-Digital","pl":"NAF-Digital_MSN-News-300x600","of":"Synchrony - 13 Month CD (321)","imp":3287262,"clk":172,"conv":2,"c2c":0.0116,"rev":800,"rpm":0.24},{"pub":"NAF-Digital","pl":"NAF-Digital_MSN-HP-970x250","of":"Axos Bank - AXOS ONE (1908)","imp":190708,"clk":106,"conv":1,"c2c":0.0094,"rev":300,"rpm":1.57},{"pub":"NAF-Digital","pl":"NAF-Digital_USA-Today-300x600","of":"Synchrony - HYSA (1999)","imp":11152942,"clk":714,"conv":2,"c2c":0.0028,"rev":800,"rpm":0.07},{"pub":"NAF-Digital","pl":"NAF-Digital_Yahoo-Finance-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":4620807,"clk":385,"conv":3,"c2c":0.0078,"rev":900,"rpm":0.19},{"pub":"NAF-Digital","pl":"NAF-Digital_Yahoo-Webmail","of":"Axos Bank - AXOS ONE (1908)","imp":3546219,"clk":127,"conv":1,"c2c":0.0079,"rev":300,"rpm":0.08},{"pub":"NAF-Digital","pl":"NAF-Digital_Yahoo-Webmail","of":"Synchrony - 13 Month CD (321)","imp":3506046,"clk":45,"conv":1,"c2c":0.0222,"rev":400,"rpm":0.11},{"pub":"OneSmartDollar","pl":"OneSmartDollar_300x600","of":"SoFi - Active Invest (1989)","imp":10560,"clk":23,"conv":1,"c2c":0.0435,"rev":250,"rpm":23.67},{"pub":"OneSmartDollar","pl":"OneSmartDollar_Text-Ad","of":"Discover - Cashback Debit (1598)","imp":53,"clk":135,"conv":4,"c2c":0.0296,"rev":1400,"rpm":26415.09},{"pub":"ThePennyHoarder","pl":"ThePennyHoarder_Text-Ad","of":"Synchrony - 13 Month CD (321)","imp":0,"clk":514,"conv":5,"c2c":0.0097,"rev":2000,"rpm":0.0},{"pub":"Xandr","pl":"Xandr_MSN-Money-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":12936151,"clk":2186,"conv":15,"c2c":0.0069,"rev":4500,"rpm":0.35},{"pub":"Xandr","pl":"Xandr_MSN-Money-300x600","of":"Raisin - Western Alliance Bank 3M CD (2008)","imp":3349915,"clk":5,"conv":1,"c2c":0.2,"rev":350,"rpm":0.1},{"pub":"Xandr","pl":"Xandr_MSN-News-300x600","of":"Axos Bank - AXOS ONE (1908)","imp":739135,"clk":87,"conv":1,"c2c":0.0115,"rev":300,"rpm":0.41},{"pub":"Young-and-The-Invested","pl":"Young-and-The-Invested_In-Content-300x600","of":"SoFi - Active Invest (1989)","imp":738567,"clk":171,"conv":1,"c2c":0.0058,"rev":250,"rpm":0.34},{"pub":"Young-and-The-Invested","pl":"Young-and-The-Invested_In-Content-300x600","of":"Synchrony - 13 Month CD (321)","imp":750501,"clk":217,"conv":3,"c2c":0.0138,"rev":1200,"rpm":1.6}];
+
+const COLORS = ['#4F46E5','#0EA5E9','#10B981','#F59E0B','#EF4444','#8B5CF6','#EC4899','#14B8A6','#F97316','#6366F1'];
+const OFFER_COLORS = {'Axos Bank - AXOS ONE (1908)':'#4F46E5','Discover - Cashback Debit (1598)':'#0EA5E9','Raisin - Western Alliance Bank 3M CD (2008)':'#10B981','SoFi - Active Invest (1989)':'#F59E0B','Synchrony - 13 Month CD (321)':'#EF4444','Synchrony - HYSA (1999)':'#8B5CF6'};
+
+const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : n.toFixed(0);
+const fmtUSD = n => '$' + fmt(n);
+
+// State
+let state = { pub:'All', pl:'All', of:'All', sortCol:'rpm', sortDir:'desc', tab:'dashboard' };
+let charts = {};
+
+// Populate filters
+function uniq(arr) { return [...new Set(arr)].sort(); }
+function populateFilters() {
+  const pubs = ['All', ...uniq(RAW.map(r => r.pub))];
+  document.getElementById('f-pub').innerHTML = pubs.map(p => `<option value="${p}">${p === 'All' ? 'All Publishers' : p}</option>`).join('');
+
+  const base = state.pub === 'All' ? RAW : RAW.filter(r => r.pub === state.pub);
+  const pls = ['All', ...uniq(base.map(r => r.pl))];
+  document.getElementById('f-pl').innerHTML = pls.map(p => `<option value="${p}">${p === 'All' ? 'All Placements' : (p.length > 40 ? p.substring(0,40)+'...' : p)}</option>`).join('');
+  document.getElementById('f-pl').value = pls.includes(state.pl) ? state.pl : 'All';
+  if (!pls.includes(state.pl)) state.pl = 'All';
+
+  const ofs = ['All', ...uniq(RAW.map(r => r.of))];
+  document.getElementById('f-of').innerHTML = ofs.map(o => `<option value="${o}">${o === 'All' ? 'All Offers' : o}</option>`).join('');
+  document.getElementById('f-of').value = state.of;
+}
+
+function getFiltered() {
+  return RAW.filter(r =>
+    (state.pub === 'All' || r.pub === state.pub) &&
+    (state.pl === 'All' || r.pl === state.pl) &&
+    (state.of === 'All' || r.of === state.of)
+  );
+}
+
+function renderKPIs(data) {
+  const t = { imp:0, clk:0, conv:0, rev:0 };
+  data.forEach(r => { t.imp += r.imp; t.clk += r.clk; t.conv += r.conv; t.rev += r.rev; });
+  t.rpm = t.imp > 0 ? (t.rev / t.imp) * 1000 : 0;
+  t.c2c = t.clk > 0 ? t.conv / t.clk : 0;
+
+  const kpis = [
+    { label:'Impressions', value: fmt(t.imp), icon:'👁' },
+    { label:'Clicks', value: fmt(t.clk), icon:'🖱' },
+    { label:'Conversions', value: t.conv.toLocaleString(), icon:'✅' },
+    { label:'Revenue', value: fmtUSD(t.rev), icon:'💰' },
+    { label:'Avg RPM', value: '$'+t.rpm.toFixed(2), icon:'📈' },
+    { label:'Avg C2C', value: (t.c2c*100).toFixed(2)+'%', icon:'🔄' }
+  ];
+  document.getElementById('kpi-grid').innerHTML = kpis.map(k =>
+    `<div class="kpi"><div class="kpi-label"><span>${k.icon}</span> ${k.label}</div><div class="kpi-value">${k.value}</div></div>`
+  ).join('');
+}
+
+function renderPubChart(data) {
+  const byPub = {};
+  data.forEach(r => byPub[r.pub] = (byPub[r.pub] || 0) + r.rev);
+  const entries = Object.entries(byPub).filter(([,v]) => v > 0).sort((a,b) => b[1]-a[1]).slice(0,10);
+
+  if (charts.pub) charts.pub.destroy();
+  const ctx = document.getElementById('chart-pub').getContext('2d');
+  charts.pub = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: entries.map((_,i) => COLORS[i % COLORS.length]), borderRadius: 4 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor:'#0f172a', borderColor:'#334155', borderWidth:1, callbacks:{label: c => '$' + c.raw.toLocaleString()} } },
+      scales: {
+        x: { ticks: { color:'#94a3b8', font:{size:10}, maxRotation:35, minRotation:35 }, grid:{display:false} },
+        y: { ticks: { color:'#94a3b8', font:{size:11}, callback: v => '$'+fmt(v) }, grid:{color:'#1e293b'} }
+      }
+    }
+  });
+}
+
+function renderOfferChart(data) {
+  const byOffer = {};
+  data.forEach(r => {
+    const k = r.of.split(' - ')[0];
+    byOffer[k] = (byOffer[k] || 0) + r.rev;
+  });
+  const entries = Object.entries(byOffer).filter(([,v]) => v > 0);
+
+  if (charts.offer) charts.offer.destroy();
+  const ctx = document.getElementById('chart-offer').getContext('2d');
+  charts.offer = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: entries.map(e => e[0]),
+      datasets: [{ data: entries.map(e => e[1]), backgroundColor: entries.map(e => OFFER_COLORS[Object.keys(OFFER_COLORS).find(k => k.startsWith(e[0]))] || '#666'), borderWidth: 0 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'right', labels: { color:'#cbd5e1', font:{size:11}, padding:10, boxWidth:12 } },
+        tooltip: { backgroundColor:'#0f172a', borderColor:'#334155', borderWidth:1, callbacks:{label: c => c.label + ': $' + c.raw.toLocaleString()} }
+      }
+    }
+  });
+}
+
+function renderInsights(data) {
+  const converting = data.filter(r => r.conv > 0);
+  const insights = [];
+
+  [...converting].filter(r => r.rpm > 0).sort((a,b) => b.rpm - a.rpm).slice(0,5).forEach(r => {
+    insights.push({type:'success', icon:'🚀', title:`High RPM: ${r.pl.split('_').slice(1).join('_')} × ${r.of.split(' - ')[0]}`, desc:`RPM $${r.rpm.toFixed(2)} with ${r.conv} conversions and $${fmt(r.rev)} revenue. Prioritize in lineup.`});
+  });
+
+  converting.filter(r => r.c2c > 0.01 && r.imp < 200000).sort((a,b) => b.c2c - a.c2c).slice(0,3).forEach(r => {
+    insights.push({type:'info', icon:'📈', title:`Scale opportunity: ${r.pl.split('_').slice(1).join('_')} × ${r.of.split(' - ')[0]}`, desc:`C2C ${(r.c2c*100).toFixed(2)}% on only ${fmt(r.imp)} impressions. Increase traffic to this combo.`});
+  });
+
+  RAW.filter(r => r.imp > 1000000 && r.conv === 0 && r.rev === 0).sort((a,b) => b.imp - a.imp).slice(0,3).forEach(r => {
+    insights.push({type:'warning', icon:'⚠️', title:`Underperformer: ${r.pl.split('_').slice(1).join('_')} × ${r.of.split(' - ')[0]}`, desc:`${fmt(r.imp)} impressions with 0 conversions. Consider deprioritizing or pausing.`});
+  });
+
+  document.getElementById('insights').innerHTML = insights.slice(0, 8).map(i =>
+    `<div class="insight ${i.type}"><div class="insight-title">${i.icon} ${i.title}</div><div class="insight-desc">${i.desc}</div></div>`
+  ).join('');
+}
+
+function renderTable(data) {
+  const sorted = [...data].sort((a,b) => {
+    const m = state.sortDir === 'desc' ? -1 : 1;
+    const va = a[state.sortCol], vb = b[state.sortCol];
+    if (typeof va === 'string') return va.localeCompare(vb) * m;
+    return (va - vb) * m;
+  });
+
+  document.getElementById('table-title').textContent = `Performance Data (${sorted.length} rows)`;
+  document.getElementById('data-tbody').innerHTML = sorted.slice(0, 100).map(r => {
+    const rpmColor = r.rpm > 10 ? '#10B981' : r.rpm > 1 ? '#0EA5E9' : r.rpm > 0 ? '#94a3b8' : '#475569';
+    return `<tr>
+      <td style="color:#cbd5e1" class="ellip">${r.pub}</td>
+      <td style="color:#94a3b8;font-size:11px" class="ellip">${r.pl.split('_').slice(1).join('_')}</td>
+      <td class="ellip"><span class="dot" style="background:${OFFER_COLORS[r.of]||'#666'}"></span><span style="color:#cbd5e1;font-size:11px">${r.of.split(' - ')[0]}</span></td>
+      <td class="mono" style="color:#94a3b8">${fmt(r.imp)}</td>
+      <td class="mono" style="color:#94a3b8">${fmt(r.clk)}</td>
+      <td class="mono" style="color:${r.conv > 0 ? '#10B981' : '#475569'};font-weight:${r.conv > 0 ? 600 : 400}">${r.conv}</td>
+      <td class="mono" style="color:${r.c2c > 0.01 ? '#10B981' : '#94a3b8'}">${(r.c2c*100).toFixed(2)}%</td>
+      <td class="mono" style="color:${r.rev > 0 ? '#F59E0B' : '#475569'}">$${fmt(r.rev)}</td>
+      <td class="mono" style="color:${rpmColor};font-weight:600">$${r.rpm.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
+
+  // Update sort indicators
+  document.querySelectorAll('#data-table th').forEach(th => {
+    const c = th.dataset.col;
+    if (c) {
+      th.textContent = th.textContent.replace(/ [↓↑]$/, '');
+      if (c === state.sortCol) th.textContent += state.sortDir === 'desc' ? ' ↓' : ' ↑';
+    }
+  });
+}
+
+function renderLineupChart(data) {
+  const converting = data.filter(r => r.conv > 0);
+  const grouped = {};
+  converting.forEach(r => {
+    if (!grouped[r.pl]) grouped[r.pl] = { pl: r.pl, offers: {} };
+    grouped[r.pl].offers[r.of.split(' - ')[0]] = r.rpm;
+  });
+  const placements = Object.values(grouped).sort((a,b) => Math.max(...Object.values(b.offers)) - Math.max(...Object.values(a.offers))).slice(0,12);
+  const allOffers = [...new Set(converting.map(r => r.of.split(' - ')[0]))];
+
+  if (charts.lineup) charts.lineup.destroy();
+  const ctx = document.getElementById('chart-lineup').getContext('2d');
+  charts.lineup = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: placements.map(p => p.pl.split('_').slice(1).join('_').substring(0, 30)),
+      datasets: allOffers.map((of, i) => ({
+        label: of,
+        data: placements.map(p => p.offers[of] || 0),
+        backgroundColor: Object.values(OFFER_COLORS)[i % 6],
+        borderRadius: 3
+      }))
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'top', labels: { color:'#94a3b8', font:{size:10}, boxWidth:12 } },
+        tooltip: { backgroundColor:'#0f172a', borderColor:'#334155', borderWidth:1, callbacks:{label: c => c.dataset.label + ': $' + c.raw.toFixed(2)} }
+      },
+      scales: {
+        x: { stacked: true, ticks: { color:'#94a3b8', font:{size:11}, callback: v => '$'+v }, grid:{color:'#1e293b'}, title:{display:true, text:'RPM ($)', color:'#64748b'} },
+        y: { stacked: true, ticks: { color:'#cbd5e1', font:{size:10} }, grid:{display:false} }
+      }
+    }
+  });
+}
+
+function renderLineupTable(data) {
+  const converting = data.filter(r => r.conv > 0).sort((a,b) => b.rpm - a.rpm).slice(0, 30);
+  document.getElementById('lineup-tbody').innerHTML = converting.map((r, i) => {
+    const action = r.rpm > 50 ? 'MAX PRIORITY' : r.rpm > 10 ? 'PRIORITIZE' : r.rpm > 1 ? 'MAINTAIN' : 'TEST MORE';
+    const ac = r.rpm > 50 ? '#10B981' : r.rpm > 10 ? '#0EA5E9' : r.rpm > 1 ? '#F59E0B' : '#94a3b8';
+    return `<tr>
+      <td class="mono" style="font-weight:700;color:${ac};font-size:13px;text-align:center">#${i+1}</td>
+      <td style="color:#cbd5e1;font-size:11px">${r.pl.split('_').slice(1).join('_')}</td>
+      <td><span class="dot" style="background:${OFFER_COLORS[r.of]||'#666'}"></span><span style="color:#cbd5e1;font-size:11px">${r.of.split(' - ')[0]}</span></td>
+      <td class="mono" style="font-weight:700;color:${ac};font-size:12px">$${r.rpm.toFixed(2)}</td>
+      <td class="mono" style="color:#10B981">${r.conv}</td>
+      <td class="mono" style="color:#F59E0B">$${fmt(r.rev)}</td>
+      <td class="mono">${(r.c2c*100).toFixed(2)}%</td>
+      <td><span class="badge" style="background:${ac}22;color:${ac}">${action}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function render() {
+  const data = getFiltered();
+  renderKPIs(data);
+  renderPubChart(data);
+  renderOfferChart(data);
+  renderInsights(data);
+  renderTable(data);
+  renderLineupChart(data);
+  renderLineupTable(data);
+}
+
+// Event handlers
+document.getElementById('f-pub').addEventListener('change', e => { state.pub = e.target.value; state.pl = 'All'; populateFilters(); render(); });
+document.getElementById('f-pl').addEventListener('change', e => { state.pl = e.target.value; render(); });
+document.getElementById('f-of').addEventListener('change', e => { state.of = e.target.value; render(); });
+document.getElementById('btn-clear').addEventListener('click', () => { state.pub='All'; state.pl='All'; state.of='All'; populateFilters(); render(); });
+
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.tab = btn.dataset.tab;
+    document.getElementById('tab-dashboard').classList.toggle('hidden', state.tab !== 'dashboard');
+    document.getElementById('tab-lineup').classList.toggle('hidden', state.tab !== 'lineup');
+  });
+});
+
+document.querySelectorAll('#data-table th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (state.sortCol === col) state.sortDir = state.sortDir === 'desc' ? 'asc' : 'desc';
+    else { state.sortCol = col; state.sortDir = 'desc'; }
+    renderTable(getFiltered());
+  });
+});
+
+// Init
+populateFilters();
+render();
+</script>
+
+</body>
+</html>

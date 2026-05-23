@@ -8,7 +8,8 @@ const dashboards = {
   pfMaster: lazy(() => import('../../embeds/PfMasterDashboard')),
   gleanPlanner: lazy(() => import('../../embeds/GleanPlannerDashboard')),
   aiRewriter: lazy(() => import('../../embeds/AiRewriterDashboard')),
-  mediaOpsRetro: lazy(() => import('../../embeds/MediaOpsRetroDashboard'))
+  mediaOpsRetro: lazy(() => import('../../embeds/MediaOpsRetroDashboard')),
+  cpaLineup: lazy(() => import('../../embeds/CpaLineupDashboard'))
 }
 
 export default function EmbedSlot({ embedKey, title }) {

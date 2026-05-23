@@ -11,6 +11,7 @@ Claude artifact exports live here. Vite compiles them; project pages load via `E
 | `GleanPlannerDashboard.tsx`   | `gleanPlanner`   | `/projects/glean-planner` |
 | `AiRewriterDashboard.tsx`     | `aiRewriter`     | `/projects/ai-rewriter` |
 | `MediaOpsRetroDashboard.tsx`  | `mediaOpsRetro`  | `/projects/media-ops-retro` |
+| `CpaLineupDashboard.tsx`      | `cpaLineup`      | `/projects/cpa-lineup` |
 
 ## How it wires together
 

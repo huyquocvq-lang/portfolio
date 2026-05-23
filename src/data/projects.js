@@ -88,6 +88,18 @@ export const otherProjects = [
     image: '/images/projects/media-ops-retro.jpg',
     banner: '/banners/media-ops-retro.html',
     link: '/projects/media-ops-retro'
+  },
+  {
+    slug: 'cpa-lineup',
+    type: 'AI Agent · Programmatic Lineup Intelligence',
+    title: 'CPA Lineup Intelligence Agent',
+    subtitle: 'Auto-surface winners, scale opportunities, and waste across 433 placement-offer combos',
+    description:
+      'An interactive agent that scans 26 publishers × 6 offers (433 combos) and instantly flags high-RPM winners, low-volume scale opportunities, and impression-burning underperformers. Generates a prioritized lineup with action tags (MAX PRIORITY / PRIORITIZE / MAINTAIN / TEST MORE) and answers ad-hoc lineup questions on demand.',
+    impact: 'Compresses hours of pivot-table work into seconds of actionable lineup decisions',
+    image: '/images/projects/cpa-lineup.jpg',
+    banner: '/banners/cpa-lineup.html',
+    link: '/projects/cpa-lineup'
   }
 ]
 

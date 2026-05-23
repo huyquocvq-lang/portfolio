@@ -13,7 +13,7 @@
 | F4b | Personal interest + masonry image wall | `src/components/PersonalInterest.jsx`, `src/data/personal.js` | `/#personal` |
 | F5 | Projects listing (animated banner thumbs) | `src/components/Projects.jsx`, `FeaturedProject.jsx`, `OtherProject.jsx`, `BannerEmbed.jsx` | `/#work` |
 | F6 | Footer / CTA | `src/components/Footer.jsx` | footer |
-| F7–F13 | Individual project case studies | `src/projects/*Project.jsx` | `/projects/:slug` |
+| F7-F14 | Individual project case studies | `src/projects/*Project.jsx` | `/projects/:slug` |
 | FX | Theme tokens (charcoal + bronze) + dark/light toggle | `src/styles/global.css` `:root` / `[data-theme="light"]`, `src/context/ThemeContext.jsx`, `src/components/ThemeToggle.jsx` | global |
 | FY | Dashboard embed system | `src/components/project/EmbedSlot.jsx`, `src/embeds/*.tsx`, `src/data/projectEmbeds.js` | every detail page |
 | FZ | Banner system (home thumbs + detail hero) | `public/banners/*.html`, `BannerEmbed.jsx`, `ProjectShell.jsx` | home + detail |
@@ -277,7 +277,20 @@ Order in `Hero.jsx` matters - most specific first; width caps before generic asp
 
 ---
 
-## Shared project chrome (all F7–F13)
+## F14 - CPA Lineup Intelligence Agent
+
+| Field | Value |
+|-------|-------|
+| Route | `/projects/cpa-lineup` |
+| Component | `src/projects/CpaLineupProject.jsx` |
+| Styles | `src/styles/projects/cpa-lineup.css` |
+| Layout | Centered hero with 26 publishers / 6 offers / 433 combos stat row → problem → 3 numbered steps → 3 impact cards (Scale revenue / Reduce cost / Net effect) → **TSX dashboard** → mock-data note |
+| Embed | `EmbedSlot` · `CpaLineupDashboard.tsx` · `recharts` |
+| Notes | Dashboard's "Ask AI" tab calls `api.anthropic.com` directly without auth - request fails in production; filters / KPIs / charts / ranked lineup all run client-side and work standalone. |
+
+---
+
+## Shared project chrome (all F7-F14)
 
 **Component:** `src/components/project/ProjectShell.jsx`
 
@@ -341,7 +354,7 @@ Charcoal + bronze gold theme with a runtime **dark ↔ light** toggle. Tokens ar
 | Styles | `src/styles/embed-slot.css` |
 | Docs | `src/embeds/README.md` (full wiring guide) |
 
-Every detail page (F7–F13) mounts one `<EmbedSlot {...projectEmbeds.<key>} />`. `recharts` is the only chart dependency.
+Every detail page (F7-F14) mounts one `<EmbedSlot {...projectEmbeds.<key>} />`. `recharts` is the only chart dependency.
 
 ---
 

@@ -162,6 +162,7 @@ npm run build
 | `/projects/glean-planner` | GleanPlannerProject |
 | `/projects/ai-rewriter` | AiRewriterProject |
 | `/projects/media-ops-retro` | MediaOpsRetroProject |
+| `/projects/cpa-lineup` | CpaLineupProject |
 
 ---
 

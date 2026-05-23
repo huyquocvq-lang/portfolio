@@ -99,7 +99,9 @@ portfolio/
     │   ├── PublisherTrendProject.jsx
     │   ├── PfMasterProject.jsx
     │   ├── GleanPlannerProject.jsx
-    │   └── AiRewriterProject.jsx
+    │   ├── AiRewriterProject.jsx
+    │   ├── MediaOpsRetroProject.jsx
+    │   └── CpaLineupProject.jsx
     ├── data/                  # Static content modules
     │   ├── profile.js
     │   ├── stats.js
@@ -209,7 +211,7 @@ No Redux, Zustand, MobX, Context API (for app state), or React Query.
 
 ## Navigation structure
 
-- **Router-level:** 1 home + 7 project routes (`src/App.jsx`)
+- **Router-level:** 1 home + 8 project routes (`src/App.jsx`)
 - **Within home:** hash anchors `#impact`, `#about`, `#personal`, `#work`, `#top`
 - **Between projects:** `ProjectShell` prev/next uses `getAllProjects()` order
 
@@ -284,6 +286,7 @@ npm run preview   # Preview production build locally
 /projects/glean-planner
 /projects/ai-rewriter
 /projects/media-ops-retro
+/projects/cpa-lineup
 ```
 
 ## Stack navigation
@@ -467,7 +470,7 @@ Display font: Cormorant Garamond (`.author-name`). Body: Source Sans Pro.
 | Personal Interest | `#personal` | `personal.js` | `PersonalInterest.jsx` |
 | Projects | `#work` | `projects.js`, `public/banners/*.html` | `Projects.jsx`, `BannerEmbed.jsx` |
 
-## Project features (F7–F13)
+## Project features (F7-F14)
 
 Documented in [FEATURE_MAP.md](./FEATURE_MAP.md). Each project file contains its own static narrative - no shared business logic module. Every detail page mounts one `<EmbedSlot {...projectEmbeds.<key>} />` (lazy `src/embeds/*Dashboard.tsx`).
 

@@ -1,0 +1,153 @@
+.cpa section,
+.cpa aside {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 32px 40px;
+}
+
+.cpa-scope {
+  list-style: none;
+  margin: 28px auto 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 48px;
+  justify-content: center;
+}
+.cpa-scope li {
+  text-align: center;
+}
+.cpa-scope-val {
+  display: block;
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 300;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.cpa-scope-lbl {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.cpa h2 {
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  color: var(--text-heading);
+  letter-spacing: 0.005em;
+}
+.cpa p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--text-body);
+}
+
+.cpa-problem {
+  max-width: 760px;
+  text-align: center;
+}
+
+.cpa-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cpa-step {
+  position: relative;
+  padding: 24px 0 24px 36px;
+  border-left: 2px solid var(--accent);
+  margin-left: 18px;
+}
+.cpa-step > div {
+  max-width: 760px;
+}
+.cpa-step-n {
+  position: absolute;
+  left: -20px;
+  top: 22px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.cpa-step h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--text-heading);
+  line-height: 1.3;
+}
+.cpa-step p {
+  font-size: 17px;
+  color: var(--text-body);
+  line-height: 1.75;
+}
+
+.cpa-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.cpa-impact-card {
+  padding: 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-top: 3px solid var(--accent);
+  border-radius: 10px;
+}
+.cpa-impact-label {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.cpa-impact-card p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+.cpa-note {
+  margin-top: 8px;
+  padding: 18px 22px;
+  background: var(--bg-elevated);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+}
+.cpa-note p {
+  font-size: 14px;
+  color: var(--text-body);
+  line-height: 1.65;
+}
+
+@media (max-width: 768px) {
+  .cpa section,
+  .cpa aside {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .cpa-scope {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+  .cpa-impact-grid {
+    grid-template-columns: 1fr;
+  }
+}
